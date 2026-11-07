@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nuraan Perfumes — Artisanal Concentrated Perfume Oils & Attars</title>
+  <meta name="description" content="Nuraan Perfumes: Pure alcohol-free attar oils handcrafted with aged agarwood, Kashmiri saffron, Taif rose, and Mysore sandalwood. 12ml single roll-ons and Discovery Boxes. Inquire on WhatsApp & Instagram.">
+  <meta name="keywords" content="Nuraan Perfumes, Attar, Concentrated Perfume Oil, Alcohol-Free Perfume, Oud, Dehn Al Oudh, Kashmiri Saffron, Roll-on Attar, India Attar">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Nuraan Perfumes | Artisanal Concentrated Perfume Oils">
+  <meta property="og:description" content="100% Pure Alcohol-Free Attars in Precision Roll-on Bottles. Inquire and Order directly via WhatsApp & Instagram.">
+  <meta property="og:type" content="website">
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="styles/typography.css">
+  <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+
+  <!-- 1. PROMOTIONAL ANNOUNCEMENT BAR -->
+  <aside class="announcement-bar" id="announcement-text" aria-label="Announcement">
+    ✦ 100% Pure Alcohol-Free Attars • Precision Roll-on Bottles • Inquire & Order via WhatsApp & Instagram ✦
+  </aside>
+
+  <!-- 2. SITE HEADER (CLEAN LATIN LUXURY) -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <!-- Brand Logo / Emblem -->
+      <a href="#hero" class="brand-emblem-link" aria-label="Nuraan Perfumes Home">
+        <span class="brand-title">NURAAN</span>
+        <span class="brand-subtitle">PERFUMES</span>
+      </a>
+
+      <!-- Navigation Links -->
+      <nav class="header-nav" aria-label="Main Navigation">
+        <a href="#custom-builder" class="nav-link">Build your atar box</a>
+        <a href="#combos" class="nav-link">Curated Sets</a>
+        <a href="#catalog" class="nav-link">The Collection</a>
+        <a href="#guide" class="nav-link">How to Apply</a>
+        <a href="#about" class="nav-link">Heritage & Story</a>
+        <button type="button" class="nav-link nav-order-list-btn" onclick="openSelectionDrawer()" style="background: none; border: none; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; font-weight: 700; color: var(--color-text-main);">
+          <span>🛍️ Order List</span>
+          <span class="pill-count-badge" id="header-selection-badge" style="display: none; width: 20px; height: 20px; font-size: 0.7rem; background: var(--accent-gold); color: #fff; border-radius: 50%; align-items: center; justify-content: center;">0</span>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- 3. HERO SECTION -->
+  <section class="hero-section" id="hero">
+    <div class="container">
+      <div class="hero-ornament">✦ ✦ ✦</div>
+      <h1 class="hero-headline">The Sublime Art of <em>Pure Concentrated</em> Fragrance</h1>
+      <p class="hero-subhead">
+        Crafted without alcohol or shortcuts. Experience our signature attars distilled from aged Assam agarwood, 
+        Mysore sandalwood, crimson Taif rose, and solar ambergris—bottled in precision roll-on flacons.
+      </p>
+
+      <div class="hero-cta-group">
+        <a href="#custom-builder" class="btn-primary-brass">
+          <span>🎁 Build your atar box</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+        <a href="#combos" class="btn-secondary-outline">
+          <span>👑 Curated Sets</span>
+        </a>
+        <a href="#catalog" class="btn-secondary-outline">
+          <span>Explore All Attars</span>
+        </a>
+      </div>
+
+      <!-- Trust Pillars -->
+      <div class="trust-pillars">
+        <div class="pillar-item">
+          <div class="pillar-icon">💧</div>
+          <div>
+            <span class="pillar-title">100% Alcohol-Free</span>
+            <span class="pillar-desc">Pure concentrated perfume oil</span>
+          </div>
+        </div>
+        <div class="pillar-item">
+          <div class="pillar-icon">👑</div>
+          <div>
+            <span class="pillar-title">Precision Roll-On</span>
+            <span class="pillar-desc">Effortless pulse-point application</span>
+          </div>
+        </div>
+        <div class="pillar-item">
+          <div class="pillar-icon">⏳</div>
+          <div>
+            <span class="pillar-title">14+ Hours Longevity</span>
+            <span class="pillar-desc">Deep sillage that lingers on skin</span>
+          </div>
+        </div>
+        <div class="pillar-item">
+          <div class="pillar-icon">📦</div>
+          <div>
+            <span class="pillar-title">Free All-India Dispatch</span>
+            <span class="pillar-desc">Discreet & secure packaging</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. BESPOKE "BUILD YOUR ATAR BOX" SECTION (MOVED HIGH UP FOR INSTANT MOBILE ACCESS) -->
+  <section class="custom-builder-section" id="custom-builder">
+    <div class="container">
+      <div class="section-header-block">
+        <span class="section-kicker">Bespoke Discovery Set</span>
+        <h2 class="section-title">Build your atar box</h2>
+        <p class="section-subtitle">
+          Curate a bespoke wardrobe of up to six signature attars. Select your bottle size (3ml or 12ml roll-on) 
+          and pick your favorite fragrances from the tray below.
+        </p>
+      </div>
+
+      <div class="builder-container">
+        <!-- Step 1: Size Selector -->
+        <div class="builder-header">
+          <span style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-text-muted); font-weight: 700; display: block; margin-bottom: 12px;">Step 1: Choose Your Box Size</span>
+          <div class="builder-size-selector">
+            <button 
+              type="button" 
+              class="builder-size-btn active" 
+              id="btn-custom-size-3ml" 
+              onclick="setCustomBoxSize('3ml')"
+            >
+              <span>3ml Roll-on Box</span>
+              <span class="builder-size-price-tag" id="tag-custom-size-3ml">₹1,399</span>
+            </button>
+            <button 
+              type="button" 
+              class="builder-size-btn" 
+              id="btn-custom-size-12ml" 
+              onclick="setCustomBoxSize('12ml')"
+            >
+              <span>12ml Roll-on Box</span>
+              <span class="builder-size-price-tag" id="tag-custom-size-12ml">₹3,999</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Step 2: 6 Interactive Slots -->
+        <span style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-text-muted); font-weight: 700; display: block; margin-bottom: 12px; text-align: center;">Step 2: Selected Attars (Up to 6)</span>
+        <div class="slots-grid" id="custom-box-slots">
+          <!-- Populated dynamically by scripts/app.js -->
+        </div>
+
+        <!-- Step 3: Attar Selection Tray -->
+        <div class="builder-tray-wrapper">
+          <div class="builder-tray-header">
+            <span class="tray-title">Step 3: Tap to Add or Remove Attars</span>
+            <span class="tray-count-indicator" id="custom-box-count-indicator">0 of 6 Attars Selected</span>
+          </div>
+          <div class="builder-attar-pills" id="custom-box-attar-pills">
+            <!-- Populated dynamically by scripts/app.js -->
+          </div>
+        </div>
+
+        <!-- Step 4: Actions & Checkout Bar -->
+        <div class="builder-actions-bar">
+          <div class="builder-total-display">
+            <span class="builder-total-label">Total Custom Set Price (<span id="custom-format-notice">3ml Precision Roll-on Flacons</span>)</span>
+            <span class="builder-total-val" id="custom-box-total">₹1,399</span>
+            <span style="font-size: 0.72rem; color: var(--color-text-muted); margin-top: 4px;">Includes Luxury Presentation Box & Free All-India Express Dispatch</span>
+          </div>
+
+          <div class="builder-cta-group">
+            <button type="button" class="btn-secondary-outline" onclick="clearCustomBox()" style="padding: 12px 18px; font-size: 0.82rem;">
+              <span>Reset</span>
+            </button>
+            <button type="button" class="btn-order-wa" onclick="triggerCustomBoxWhatsApp()">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+              <span>Order Atar Box on WhatsApp</span>
+            </button>
+            <button type="button" class="btn-inquire-ig" onclick="triggerCustomBoxInstagram()">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+              <span>Order Atar Box on Instagram</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. CURATED DISCOVERY BOXES SECTION (Nuraan's Picks) -->
+  <section class="combos-section" id="combos">
+    <div class="container">
+      <div class="section-header-block">
+        <span class="section-kicker">Nuraan's Picks</span>
+        <h2 class="section-title">Curated Discovery Boxes</h2>
+        <p class="section-subtitle">
+          Six handcrafted precision roll-on attars curated in our luxury gift box sets. 
+          Explore the distinct French, Arabic, Women, and Oud wardrobes.
+        </p>
+      </div>
+
+      <div class="combos-grid" id="combos-grid">
+        <!-- Rendered via scripts/app.js -->
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. THE SIGNATURE COLLECTION (DIVIDED BY OLFACTORY FAMILIES) -->
+  <main class="catalog-section" id="catalog">
+    <div class="container">
+      
+      <!-- Section Header -->
+      <div class="section-header-block">
+        <span class="section-kicker">Olfactory Collection</span>
+        <h2 class="section-title">The Signature Collection</h2>
+        <p class="section-subtitle">
+          Choose a 12ml single roll-on flacon or select the 3ml discovery option. 
+          Filter by your preferred fragrance family or tap "Click here to see the ingredients" to view the living botanicals.
+        </p>
+      </div>
+
+      <!-- Search & Filters -->
+      <div class="catalog-controls" id="catalog-controls">
+        <div class="search-wrapper">
+          <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+          <input 
+            type="text" 
+            id="search-input" 
+            class="search-input" 
+            placeholder="Search by scent name, notes (e.g. Oud, Saffron, Rose, Amber)..." 
+            aria-label="Search Fragrances"
+          />
+        </div>
+
+        <!-- Filter Tabs: Divided by Parts/Families -->
+        <div class="filter-tabs" role="tablist">
+          <button type="button" class="filter-btn active" data-category="all">✨ All Highlights</button>
+          <button type="button" class="filter-btn" data-category="Arabic">👑 Arabic & Royal</button>
+          <button type="button" class="filter-btn" data-category="French">🌿 French & Fresh</button>
+          <button type="button" class="filter-btn" data-category="Women">🌹 Floral & Feminine</button>
+          <button type="button" class="filter-btn" data-category="Oud">🔥 Woody & Oud</button>
+        </div>
+      </div>
+
+      <!-- Fragrance Cards Grid (Rendered Dynamically via scripts/app.js) -->
+      <div class="fragrance-grid" id="fragrance-grid"></div>
+
+      <!-- Expand/Collapse Control for All Category -->
+      <div class="catalog-expand-wrapper" id="catalog-expand-wrapper" style="text-align: center; margin-top: 36px;"></div>
+
+    </div>
+  </main>
+
+  <!-- 6. APPLICATION & LONGEVITY GUIDE -->
+  <section class="guide-section" id="guide">
+    <div class="container">
+      <div class="section-header-block">
+        <span class="section-kicker">The Ritual of Scent</span>
+        <h2 class="section-title">How to Apply Pure Concentrated Attar</h2>
+        <p class="section-subtitle">
+          Unlike alcohol-based spray perfumes that dissipate quickly into the air, pure attar oils are intimate, 
+          heat-activated, and bloom slowly over many hours.
+        </p>
+      </div>
+
+      <div class="guide-grid">
+        <div class="guide-card">
+          <span class="guide-num">01</span>
+          <h3 class="guide-title">Glide Over Warm Pulse Points</h3>
+          <p class="guide-text">
+            Roll the applicator gently over the wrists, inner elbows, and the sides of your neck. 
+            Do not vigorously rub the oil—allow your natural body warmth to awaken the top and heart notes.
+          </p>
+        </div>
+
+        <div class="guide-card">
+          <span class="guide-num">02</span>
+          <h3 class="guide-title">Beard & Hair Scenting</h3>
+          <p class="guide-text">
+            Pure alcohol-free oils condition hair and beards naturally. Roll a drop onto your palms, rub gently together, 
+            and stroke lightly through your beard or hair ends for a lingering aura that lasts all day.
+          </p>
+        </div>
+
+        <div class="guide-card">
+          <span class="guide-num">03</span>
+          <h3 class="guide-title">Fabric Longevity (3+ Days)</h3>
+          <p class="guide-text">
+            Because our attars contain zero harsh chemical solvents, applying a light glide to the collar or cuffs of 
+            cotton, wool, or linen garments allows the base notes of oud and amber to persist for 48 to 72 hours.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. INSTAGRAM & SOCIAL PROOF -->
+  <section class="instagram-section">
+    <div class="container">
+      <div class="section-header-block">
+        <span class="section-kicker">Community & Connoisseurs</span>
+        <h2 class="section-title">Connect with @Nuraanperfumes</h2>
+        <p class="section-subtitle">
+          Join our growing circle of fragrance collectors. Follow us on Instagram for bottle reveals, 
+          distillation reels, and customer unboxings.
+        </p>
+      </div>
+
+      <div class="ig-feed-mockup">
+        <div class="ig-post-card">
+          <div class="ig-post-icon">🌹</div>
+          <p class="ig-post-caption">"Surkh Oud is pure royalty. The Taif rose with Indian agarwood lasted through my entire family wedding!"</p>
+          <span class="ig-post-author">— Zaid M., Mumbai</span>
+        </div>
+        <div class="ig-post-card">
+          <div class="ig-post-icon">👑</div>
+          <p class="ig-post-caption">"Malik and Monarch are incredible. True connoisseur grade oud with zero synthetic alcohol sharpness."</p>
+          <span class="ig-post-author">— Dr. Faizan, Hyderabad</span>
+        </div>
+        <div class="ig-post-card">
+          <div class="ig-post-icon">✨</div>
+          <p class="ig-post-caption">"The 6-bottle discovery box arrived in 2 days. Garnet 540 and Bayan are now my daily signature scents."</p>
+          <span class="ig-post-author">— Sneha K., Bengaluru</span>
+        </div>
+        <div class="ig-post-card">
+          <div class="ig-post-icon">🤍</div>
+          <p class="ig-post-caption">"Musk Safa is the cleanest Tahara musk I have ever tried. Silky, non-sticky and smells like heavenly purity."</p>
+          <span class="ig-post-author">— Ayesha R., Delhi</span>
+        </div>
+      </div>
+
+      <a href="https://instagram.com/Nuraanperfumes" target="_blank" class="btn-primary-brass">
+        <span>Follow @Nuraanperfumes on Instagram</span>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      </a>
+    </div>
+  </section>
+
+  <!-- 8. OLFACTORY NOTES MODAL -->
+  <div class="modal-overlay" id="notes-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal-window">
+      <button class="modal-close-btn" onclick="closeNotesModal()" aria-label="Close dialog">✕</button>
+      
+      <div class="modal-content-grid">
+        <div class="modal-left-col">
+          <div id="modal-bottle-container" class="bottle-visual-container"></div>
+        </div>
+
+        <div class="modal-right-col">
+          <h3 class="modal-title" id="modal-title">Fragrance Title</h3>
+          <span class="modal-category" id="modal-category">COLLECTION • 100% ALCOHOL FREE</span>
+          
+          <p class="modal-tagline" id="modal-tagline">"Tagline"</p>
+          <p class="modal-story" id="modal-story">Story and character description.</p>
+
+          <div class="pyramid-container">
+            <div class="pyramid-tier">
+              <div class="tier-label">
+                <span>Top Notes</span>
+                <span class="tier-time">First 15–30 Mins</span>
+              </div>
+              <div class="notes-pill-group" id="modal-top-notes"></div>
+            </div>
+
+            <div class="pyramid-tier">
+              <div class="tier-label">
+                <span>Heart Notes</span>
+                <span class="tier-time">2 to 6 Hours</span>
+              </div>
+              <div class="notes-pill-group" id="modal-heart-notes"></div>
+            </div>
+
+            <div class="pyramid-tier">
+              <div class="tier-label">
+                <span>Base Notes</span>
+                <span class="tier-time">8 to 24+ Hours</span>
+              </div>
+              <div class="notes-pill-group" id="modal-base-notes"></div>
+            </div>
+          </div>
+
+          <div class="modal-metrics-bar">
+            <div>
+              <span class="metric-label">Longevity</span>
+              <span class="metric-val" id="modal-longevity">14+ Hours</span>
+            </div>
+            <div>
+              <span class="metric-label">Sillage</span>
+              <span class="metric-val" id="modal-sillage">Regal</span>
+            </div>
+            <div>
+              <span class="metric-label">Best Season</span>
+              <span class="metric-val" id="modal-season">All Year</span>
+            </div>
+          </div>
+
+          <div class="modal-pricing-row">
+            <div>
+              <span class="modal-price" id="modal-price">₹1,299</span>
+              <span class="modal-format" id="modal-format">12ml Roll-On Single</span>
+            </div>
+          </div>
+
+          <div class="card-order-controls" style="margin-top: 14px;">
+            <button type="button" class="btn-add-selection" id="modal-sel-btn" onclick="if(currentModalProductId) toggleSelection(currentModalProductId)">
+              <span class="selection-icon">+</span>
+              <span class="selection-label">Add to Order List</span>
+            </button>
+            <div class="dual-action-buttons">
+              <button type="button" class="btn-order-wa" id="modal-wa-btn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+                <span>Order on WhatsApp</span>
+              </button>
+              <button type="button" class="btn-inquire-ig" id="modal-ig-btn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                <span>Order on Instagram</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 9B. FLOATING MULTI-ITEM ORDER SELECTION PILL (CENTERED HORIZONTALLY) -->
+  <button type="button" class="floating-selection-pill" id="floating-selection-pill" onclick="openSelectionDrawer()" aria-label="Open Order List">
+    <span class="pill-count-badge" id="pill-selection-count">0</span>
+    <span class="pill-text">My Scent Selection</span>
+    <span class="pill-total" id="pill-selection-total">₹0</span>
+    <span style="font-size: 0.85rem; margin-left: 2px;">➔</span>
+  </button>
+
+  <!-- 9C. SLIDE-OUT MULTI-ITEM SCENT SELECTION DRAWER -->
+  <div class="selection-drawer-overlay" id="selection-drawer-overlay" onclick="if(event.target === this) closeSelectionDrawer()">
+    <div class="selection-drawer" role="dialog" aria-modal="true" aria-labelledby="drawer-title">
+      <div class="drawer-header">
+        <div class="drawer-title-group">
+          <h3 class="drawer-title" id="drawer-title">Your Scent Selection</h3>
+          <span class="drawer-subtitle">Dispatch together in one luxury gift parcel</span>
+        </div>
+        <button type="button" class="drawer-close-btn" onclick="closeSelectionDrawer()" aria-label="Close drawer">✕</button>
+      </div>
+
+      <div class="drawer-body">
+        <div class="drawer-items-list" id="drawer-items-list">
+          <!-- Populated by scripts/app.js -->
+        </div>
+      </div>
+
+      <div class="drawer-footer">
+        <div class="drawer-summary-row">
+          <span>Items Subtotal:</span>
+          <span id="drawer-subtotal">₹0</span>
+        </div>
+        <div class="drawer-summary-row">
+          <span>All-India Shipping:</span>
+          <span style="color: var(--wa-green); font-weight: 700;">FREE</span>
+        </div>
+        <div class="drawer-total-row">
+          <span>Estimated Total:</span>
+          <span id="drawer-total-amount">₹0</span>
+        </div>
+
+        <div class="drawer-actions-col">
+          <button type="button" class="btn-order-wa" id="drawer-wa-btn" onclick="triggerSelectionWhatsApp()">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
+            </svg>
+            <span>Order Selected Attars on WhatsApp</span>
+          </button>
+          <button type="button" class="btn-inquire-ig" id="drawer-ig-btn" onclick="triggerSelectionInstagram()">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+            </svg>
+            <span>Order Selected Attars on Instagram</span>
+          </button>
+          <button type="button" onclick="clearSelection()" style="background: none; border: none; color: var(--color-text-muted); font-size: 0.78rem; text-decoration: underline; cursor: pointer; padding: 6px; text-align: center;">
+            Clear Selection
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 10. FLOATING SOCIAL CTAs (WHATSAPP ON LEFT, INSTAGRAM ON RIGHT) -->
+  <!-- Floating WhatsApp CTA (LEFT) -->
+  <a href="https://wa.me/918591059608" target="_blank" class="floating-cta-btn floating-btn-wa" aria-label="Order on WhatsApp" id="floating-btn-wa">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
+    </svg>
+    <span class="floating-btn-tooltip tooltip-right">Order on WhatsApp</span>
+  </a>
+
+  <!-- Floating Instagram CTA (RIGHT) -->
+  <a href="https://instagram.com/Nuraanperfumes" target="_blank" class="floating-cta-btn floating-btn-ig" aria-label="Order on Instagram" id="floating-btn-ig">
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+    </svg>
+    <span class="floating-btn-tooltip tooltip-left">Order on Instagram</span>
+  </a>
+
+  <!-- 11. FOOTER -->
+  <footer class="site-footer" id="about">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand-col">
+          <h4 class="brand-title">NURAAN PERFUMES</h4>
+          <p class="footer-story">
+            Nuraan represents radiance, purity, and supreme quality. We are an independent artisanal perfume house 
+            dedicated to preserving the centuries-old heritage of pure, concentrated alcohol-free attars. 
+            Each creation is formulated using genuine natural agarwoods, precious flowers, and timeless resins.
+          </p>
+        </div>
+
+        <div>
+          <h5 class="footer-col-title">Collections</h5>
+          <ul class="footer-links-list">
+            <li><a href="#catalog" onclick="resetFilters()">The Full Collection</a></li>
+            <li><a href="#combos">French Discovery Box</a></li>
+            <li><a href="#combos">Arabic Discovery Box</a></li>
+            <li><a href="#combos">Women's Discovery Box</a></li>
+            <li><a href="#combos">Oud Connoisseur Box</a></li>
+            <li><a href="#custom-builder">Build your atar box</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h5 class="footer-col-title">Order & Dispatch</h5>
+          <ul class="footer-links-list">
+            <li><a href="#guide">How to Apply Attar</a></li>
+            <li><a href="javascript:void(0)" onclick="SocialCheckout.openConciergeWhatsApp('Hello Nuraan Perfumes, can you share payment options (UPI/Bank Transfer)?')">Payment via UPI / Bank</a></li>
+            <li><a href="javascript:void(0)" onclick="SocialCheckout.openConciergeWhatsApp('Hello Nuraan Perfumes, what is the dispatch time to my city?')">Shipping & Delivery Times</a></li>
+            <li><a href="javascript:void(0)" onclick="SocialCheckout.openConciergeWhatsApp('Hello Nuraan Perfumes, I would like customized wedding/corporate gift boxes.')">Gift & Wedding Orders</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h5 class="footer-col-title">Direct Inquiries</h5>
+          <div class="footer-contact-box">
+            <p>
+              <strong>WhatsApp Business:</strong><br>
+              <a href="https://wa.me/918591059608" target="_blank" style="color: var(--accent-gold-light);" id="footer-wa-number">
+                +91 85910 59608
+              </a>
+            </p>
+            <p>
+              <strong>Instagram:</strong><br>
+              <a href="https://instagram.com/Nuraanperfumes" target="_blank" style="color: var(--accent-gold-light);" id="footer-ig-handle">
+                @Nuraanperfumes
+              </a>
+            </p>
+            <p style="font-size: 0.78rem; color: #718096;">
+              ✦ Quick response within 15–30 minutes for orders and custom fragrance consultations.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom-bar">
+        <span>&copy; <script>document.write(new Date().getFullYear())</script> Nuraan Perfumes. All Rights Reserved.</span>
+        <span>100% Pure Alcohol-Free Attars • Precision Roll-on Flacons</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Application Scripts -->
+  <script src="scripts/config.js"></script>
+  <script src="scripts/catalog-data.js"></script>
+  <script src="scripts/social-checkout.js"></script>
+  <script src="scripts/app.js"></script>
+  <script src="scripts/sheets-sync.js"></script>
+</body>
+</html>

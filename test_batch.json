@@ -1,0 +1,10 @@
+[
+  {
+    "op": "write",
+    "range": "'Pricing Structure'!A1:B2",
+    "data": [
+      ["Number", "Doubled"],
+      [5, "=A2*2"]
+    ]
+  }
+]
