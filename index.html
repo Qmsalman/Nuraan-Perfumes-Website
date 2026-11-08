@@ -34,11 +34,10 @@
 
       <!-- Navigation Links -->
       <nav class="header-nav" aria-label="Main Navigation">
-        <a href="#custom-builder" class="nav-link">Build your atar box</a>
         <a href="#combos" class="nav-link">Curated Sets</a>
+        <a href="#custom-builder" class="nav-link">Build your atar box</a>
         <a href="#catalog" class="nav-link">The Collection</a>
         <a href="#guide" class="nav-link">How to Apply</a>
-        <a href="#about" class="nav-link">Heritage & Story</a>
         <button type="button" class="nav-link nav-order-list-btn" onclick="openSelectionDrawer()" style="background: none; border: none; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; font-weight: 700; color: var(--color-text-main);">
           <span>🛍️ Order List</span>
           <span class="pill-count-badge" id="header-selection-badge" style="display: none; width: 20px; height: 20px; font-size: 0.7rem; background: var(--accent-gold); color: #fff; border-radius: 50%; align-items: center; justify-content: center;">0</span>
@@ -58,12 +57,12 @@
       </p>
 
       <div class="hero-cta-group">
-        <a href="#custom-builder" class="btn-primary-brass">
-          <span>🎁 Build your atar box</span>
+        <a href="#combos" class="btn-primary-brass">
+          <span>👑 Curated Discovery Sets</span>
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </a>
-        <a href="#combos" class="btn-secondary-outline">
-          <span>👑 Curated Sets</span>
+        <a href="#custom-builder" class="btn-secondary-outline">
+          <span>🎁 Build your atar box</span>
         </a>
         <a href="#catalog" class="btn-secondary-outline">
           <span>Explore All Attars</span>
@@ -104,14 +103,46 @@
     </div>
   </section>
 
-  <!-- 4. BESPOKE "BUILD YOUR ATAR BOX" SECTION (MOVED HIGH UP FOR INSTANT MOBILE ACCESS) -->
+  <!-- 4. CURATED DISCOVERY BOXES SECTION (Nuraan's Picks) -->
+  <section class="combos-section" id="combos">
+    <div class="container">
+      <div class="section-header-block">
+        <span class="section-kicker">Nuraan's Picks</span>
+        <h2 class="section-title">Curated Discovery Boxes</h2>
+        <p class="section-subtitle">
+          Six handcrafted precision roll-on attars curated in our luxury gift box sets. 
+          Explore the distinct French, Arabic, Women, and Oud wardrobes.
+        </p>
+      </div>
+
+      <!-- Moving Discovery Carousel -->
+      <div class="combo-carousel-wrapper" id="combo-carousel-wrapper" aria-label="Curated Discovery Boxes Carousel">
+        <button type="button" class="carousel-nav-btn prev" id="combo-prev-btn" aria-label="Previous Discovery Box" onclick="moveComboCarousel(-1)">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        </button>
+
+        <div class="combos-grid combo-carousel-track" id="combos-grid" role="region" aria-live="polite">
+          <!-- Rendered via scripts/app.js -->
+        </div>
+
+        <button type="button" class="carousel-nav-btn next" id="combo-next-btn" aria-label="Next Discovery Box" onclick="moveComboCarousel(1)">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </button>
+      </div>
+
+      <!-- Carousel Pagination Dots -->
+      <div class="combo-carousel-dots" id="combo-carousel-dots" role="tablist" aria-label="Discovery Box Navigation Dots"></div>
+    </div>
+  </section>
+
+  <!-- 5. BESPOKE "BUILD YOUR ATAR BOX" SECTION -->
   <section class="custom-builder-section" id="custom-builder">
     <div class="container">
       <div class="section-header-block">
-        <span class="section-kicker">Bespoke Discovery Set</span>
+        <span class="section-kicker">Create Your Own Wardrobe</span>
         <h2 class="section-title">Build your atar box</h2>
         <p class="section-subtitle">
-          Curate a bespoke wardrobe of up to six signature attars. Select your bottle size (3ml or 12ml roll-on) 
+          Prefer your own custom selection? Curate a bespoke box of up to six signature attars. Select your bottle size (3ml or 12ml roll-on) 
           and pick your favorite fragrances from the tray below.
         </p>
       </div>
@@ -168,8 +199,8 @@
           </div>
 
           <div class="builder-cta-group">
-            <button type="button" class="btn-secondary-outline" onclick="clearCustomBox()" style="padding: 12px 18px; font-size: 0.82rem;">
-              <span>Reset</span>
+            <button type="button" class="btn-secondary-outline" onclick="clearCustomBox()">
+              <span>↺ Reset Box</span>
             </button>
             <button type="button" class="btn-order-wa" onclick="triggerCustomBoxWhatsApp()">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
@@ -181,24 +212,6 @@
             </button>
           </div>
         </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 5. CURATED DISCOVERY BOXES SECTION (Nuraan's Picks) -->
-  <section class="combos-section" id="combos">
-    <div class="container">
-      <div class="section-header-block">
-        <span class="section-kicker">Nuraan's Picks</span>
-        <h2 class="section-title">Curated Discovery Boxes</h2>
-        <p class="section-subtitle">
-          Six handcrafted precision roll-on attars curated in our luxury gift box sets. 
-          Explore the distinct French, Arabic, Women, and Oud wardrobes.
-        </p>
-      </div>
-
-      <div class="combos-grid" id="combos-grid">
-        <!-- Rendered via scripts/app.js -->
       </div>
     </div>
   </section>
@@ -235,10 +248,77 @@
         <!-- Filter Tabs: Divided by Parts/Families -->
         <div class="filter-tabs" role="tablist">
           <button type="button" class="filter-btn active" data-category="all">✨ All Highlights</button>
-          <button type="button" class="filter-btn" data-category="Arabic">👑 Arabic & Royal</button>
-          <button type="button" class="filter-btn" data-category="French">🌿 French & Fresh</button>
-          <button type="button" class="filter-btn" data-category="Women">🌹 Floral & Feminine</button>
-          <button type="button" class="filter-btn" data-category="Oud">🔥 Woody & Oud</button>
+          <button type="button" class="filter-btn" data-category="Arabic">👑 Arabic<span class="tab-suffix"> & Royal</span></button>
+          <button type="button" class="filter-btn" data-category="French">🌿 French<span class="tab-suffix"> & Fresh</span></button>
+          <button type="button" class="filter-btn" data-category="Women">🌹 Floral<span class="tab-suffix"> & Feminine</span></button>
+          <button type="button" class="filter-btn" data-category="Oud">🔥 Woody<span class="tab-suffix"> & Oud</span></button>
+        </div>
+
+        <!-- Indian Fragrance Buyer's Compass: Occasion & Season Mood Filters -->
+        <div class="fragrance-compass-panel" aria-label="Scent Occasion and Season Filters">
+          <!-- Occasion Wear Section -->
+          <div class="compass-filter-row">
+            <div class="compass-row-label">
+              <span class="compass-icon">🎯</span>
+              <span class="compass-title">Occasion:</span>
+            </div>
+            <div class="compass-chips-group" id="occasion-filter-group" role="group" aria-label="Filter by Occasion">
+              <button type="button" class="compass-chip active" data-occasion="all">
+                <span class="chip-label">All<span class="chip-suffix"> Occasions</span></span>
+              </button>
+              <button type="button" class="compass-chip" data-occasion="casual">
+                <span class="chip-emoji">👕</span>
+                <span class="chip-label">Casual<span class="chip-suffix"> Wear</span></span>
+              </button>
+              <button type="button" class="compass-chip" data-occasion="office">
+                <span class="chip-emoji">👔</span>
+                <span class="chip-label">Office<span class="chip-suffix"> Wear</span></span>
+              </button>
+              <button type="button" class="compass-chip" data-occasion="party">
+                <span class="chip-emoji">🎉</span>
+                <span class="chip-label">Party<span class="chip-suffix"> Wear</span></span>
+              </button>
+              <button type="button" class="compass-chip" data-occasion="travelling">
+                <span class="chip-emoji">✈️</span>
+                <span class="chip-label">Travel<span class="chip-suffix">ling</span></span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Season Wear Section -->
+          <div class="compass-filter-row">
+            <div class="compass-row-label">
+              <span class="compass-icon">🌤️</span>
+              <span class="compass-title">Season:</span>
+            </div>
+            <div class="compass-chips-group" id="season-filter-group" role="group" aria-label="Filter by Season">
+              <button type="button" class="compass-chip active" data-season="all">
+                <span class="chip-label">All<span class="chip-suffix"> Seasons</span></span>
+              </button>
+              <button type="button" class="compass-chip" data-season="summer">
+                <span class="chip-emoji">☀️</span>
+                <span class="chip-label">Summer<span class="chip-suffix"> Wear</span></span>
+              </button>
+              <button type="button" class="compass-chip" data-season="winter">
+                <span class="chip-emoji">❄️</span>
+                <span class="chip-label">Winter<span class="chip-suffix"> Wear</span></span>
+              </button>
+              <button type="button" class="compass-chip" data-season="rainy">
+                <span class="chip-emoji">🌧️</span>
+                <span class="chip-label">Rainy<span class="chip-suffix"> Season</span></span>
+              </button>
+              <button type="button" class="compass-chip" data-season="all-season">
+                <span class="chip-emoji">⛅</span>
+                <span class="chip-label">All<span class="chip-suffix"> Season</span></span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Compass Active Filter Bar / Reset -->
+          <div class="compass-active-bar" id="compass-active-bar" style="display: none;">
+            <span class="compass-match-count" id="compass-match-count">22 Attars Found</span>
+            <button type="button" class="compass-clear-btn" onclick="resetCompassFilters()">Clear Filters ✕</button>
+          </div>
         </div>
       </div>
 
@@ -256,39 +336,435 @@
     <div class="container">
       <div class="section-header-block">
         <span class="section-kicker">The Ritual of Scent</span>
-        <h2 class="section-title">How to Apply Pure Concentrated Attar</h2>
+        <h2 class="section-title">The 5 Sacred Attar Application Rituals</h2>
         <p class="section-subtitle">
           Unlike alcohol-based spray perfumes that dissipate quickly into the air, pure attar oils are intimate, 
-          heat-activated, and bloom slowly over many hours.
+          heat-activated, and bloom slowly over many hours across specific heat and fiber zones.
         </p>
       </div>
 
       <div class="guide-grid">
-        <div class="guide-card">
+        <!-- ==========================================
+             CARD 1: DEFINITIVE INNER WRIST & HAND
+             ========================================== -->
+        <div class="guide-card" onclick="openRitualModal(1)" title="Tap to inspect Ritual 01 details">
+          <div class="guide-visual-container">
+            <svg viewBox="0 0 250 160" class="guide-anim-svg" xmlns="http://www.w3.org/2000/svg" aria-label="Inner Wrist Application Animation">
+              <defs>
+                <linearGradient id="dSkin1" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#FBF4EC" />
+                  <stop offset="50%" stop-color="#EEDAC5" />
+                  <stop offset="100%" stop-color="#DDC4AD" />
+                </linearGradient>
+                <radialGradient id="dPulseGlow1" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stop-color="#FFD54F" stop-opacity="0.9" />
+                  <stop offset="45%" stop-color="#D4AF37" stop-opacity="0.4" />
+                  <stop offset="100%" stop-color="#D4AF37" stop-opacity="0" />
+                </radialGradient>
+                <linearGradient id="dGoldCap1" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#FFF3C4" />
+                  <stop offset="50%" stop-color="#D4AF37" />
+                  <stop offset="100%" stop-color="#8C6A18" />
+                </linearGradient>
+                <linearGradient id="dFlaconBody1" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stop-color="#8C2D19" />
+                  <stop offset="50%" stop-color="#C59B27" />
+                  <stop offset="100%" stop-color="#4A150D" />
+                </linearGradient>
+              </defs>
+
+              <!-- Circular Frame -->
+              <circle cx="125" cy="80" r="70" fill="#FAF6EE" stroke="#E2D6C5" stroke-width="1.2" />
+              <circle cx="125" cy="80" r="64" fill="none" stroke="#D4AF37" stroke-width="0.8" stroke-dasharray="3 3" opacity="0.6" />
+
+              <!-- DEFINITIVE OPEN PALM & INNER WRIST -->
+              <g transform="translate(15, -4)">
+                <!-- Solid Hand Silhouette -->
+                <path d="M 55 155 
+                         L 55 125 
+                         C 52 118 45 108 38 100 
+                         C 34 94 36 88 42 86 
+                         C 48 84 54 90 60 98 
+                         L 64 70 
+                         C 65 62 74 62 76 70 
+                         L 78 85 
+                         L 80 55 
+                         C 81 46 91 46 92 55 
+                         L 94 84 
+                         L 96 62 
+                         C 97 54 106 54 107 62 
+                         L 108 86 
+                         L 111 72 
+                         C 112 65 120 66 120 73 
+                         L 118 100 
+                         C 116 114 110 124 95 130 
+                         L 90 155 Z" 
+                      fill="url(#dSkin1)" stroke="#8C6A18" stroke-width="1.5" stroke-linejoin="round" />
+
+                <!-- Palm Crease Details -->
+                <path d="M 52 102 C 65 106 80 114 86 125" stroke="#C5A88D" stroke-width="1.2" fill="none" />
+                <path d="M 62 96 C 75 98 90 106 102 112" stroke="#C5A88D" stroke-width="1.2" fill="none" />
+                <!-- Wrist Line -->
+                <path d="M 56 130 Q 72 134 89 130" stroke="#C5A88D" stroke-width="1.2" fill="none" />
+
+                <!-- RADIAL ARTERY PULSE POINT (Inner Wrist) -->
+                <g transform="translate(68, 130)">
+                  <circle cx="0" cy="0" r="18" fill="url(#dPulseGlow1)" class="pulse-beacon-glow" />
+                  <circle cx="0" cy="0" r="5" fill="none" stroke="#D4AF37" stroke-width="1.6" class="beacon-wave-1" />
+                  <circle cx="0" cy="0" r="5" fill="none" stroke="#D4AF37" stroke-width="1.6" class="beacon-wave-2" />
+                  <circle cx="0" cy="0" r="3.2" fill="#FFD54F" stroke="#8C6A18" stroke-width="0.8" />
+                </g>
+
+                <!-- Precision Roll-on Flacon Gliding to Touch Inner Wrist Pulse -->
+                <g class="flacon-wrist-touch">
+                  <rect x="-6" y="-32" width="12" height="25" rx="2" fill="url(#dFlaconBody1)" stroke="#8C6A18" stroke-width="0.8" />
+                  <rect x="-4.5" y="-26" width="9" height="14" rx="1.2" fill="#FFFDF9" />
+                  <rect x="-5" y="-39" width="10" height="7" rx="1" fill="url(#dGoldCap1)" />
+                  <circle cx="0" cy="0" r="2.8" fill="#EAD7C2" stroke="#B38F4D" stroke-width="0.8" />
+                  <circle cx="0.6" cy="1" r="1" fill="#FFF9C4" />
+                </g>
+              </g>
+
+              <!-- Bottom Badge: Radial Pulse -->
+              <rect x="50" y="138" width="150" height="18" rx="9" fill="#14171E" stroke="#D4AF37" stroke-width="0.8" />
+              <text x="125" y="150" font-family="'Cinzel', serif" font-size="7.5" font-weight="700" fill="#F3E5AB" text-anchor="middle" letter-spacing="0.08em">TOUCH • DO NOT RUB</text>
+            </svg>
+          </div>
+
           <span class="guide-num">01</span>
-          <h3 class="guide-title">Glide Over Warm Pulse Points</h3>
+          <h3 class="guide-title">Inner Wrists</h3>
+          <span class="guide-subtitle">The Radial Pulse Point</span>
           <p class="guide-text">
-            Roll the applicator gently over the wrists, inner elbows, and the sides of your neck. 
-            Do not vigorously rub the oil—allow your natural body warmth to awaken the top and heart notes.
+            Roll the applicator gently onto your inner wrists. Allow body warmth to awaken the delicate top notes. 
+            <strong>Strict master rule:</strong> Never rub wrists together—frictional shear crushes and bruises fragile top notes (rose, jasmine, citrus), cutting longevity in half.
           </p>
+
+          <div class="feature-tag-list">
+            <span class="feature-tag">✋ Radial Artery</span>
+            <span class="feature-tag">🚫 Never Rub (Preserves Notes)</span>
+          </div>
         </div>
 
-        <div class="guide-card">
+        <!-- ==========================================
+             CARD 2: DEFINITIVE EAR & NECK PROFILE
+             ========================================== -->
+        <div class="guide-card" onclick="openRitualModal(2)" title="Tap to inspect Ritual 02 details">
+          <div class="guide-visual-container">
+            <svg viewBox="0 0 250 160" class="guide-anim-svg" xmlns="http://www.w3.org/2000/svg" aria-label="Neck and Ear Sillage Animation">
+              <defs>
+                <linearGradient id="dSkin2" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#FBF4EC" />
+                  <stop offset="50%" stop-color="#EEDAC5" />
+                  <stop offset="100%" stop-color="#DDC4AD" />
+                </linearGradient>
+                <radialGradient id="dPulseGlow2" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stop-color="#FFD54F" stop-opacity="0.85" />
+                  <stop offset="45%" stop-color="#D4AF37" stop-opacity="0.35" />
+                  <stop offset="100%" stop-color="#D4AF37" stop-opacity="0" />
+                </radialGradient>
+              </defs>
+
+              <!-- Circular Frame -->
+              <circle cx="125" cy="80" r="70" fill="#FAF6EE" stroke="#E2D6C5" stroke-width="1.2" />
+              <circle cx="125" cy="80" r="64" fill="none" stroke="#D4AF37" stroke-width="0.8" stroke-dasharray="3 3" opacity="0.6" />
+
+              <!-- DEFINITIVE EAR & NECK -->
+              <g transform="translate(10, -5)">
+                <!-- Head & Neck Column Silhouette -->
+                <path d="M 148 20 
+                         C 142 35 144 55 146 80 
+                         L 148 140 
+                         L 92 140 
+                         L 88 112 
+                         C 80 110 70 106 65 102 
+                         L 68 85 
+                         C 80 82 92 78 98 65 
+                         C 104 50 112 30 135 20 Z" 
+                      fill="url(#dSkin2)" opacity="0.4" stroke="#C5A88D" stroke-width="1.2" />
+
+                <!-- Hair at the crown / nape -->
+                <path d="M 135 20 C 145 25 152 38 148 55 C 142 50 138 45 132 40 Z" fill="#221814" />
+
+                <!-- THE EAR (Outer Helix, Antihelix, Concha, Lobe, Tragus) -->
+                <path d="M 104 52 
+                         C 108 34 134 32 140 48 
+                         C 144 58 142 74 138 90 
+                         C 134 102 122 108 114 106 
+                         C 106 104 102 96 104 90 
+                         C 107 88 112 90 114 86 
+                         C 112 80 106 82 102 78 
+                         C 99 75 100 70 104 68 
+                         L 104 52 Z" 
+                      fill="url(#dSkin2)" stroke="#8C6A18" stroke-width="1.6" stroke-linejoin="round" />
+
+                <!-- Inner Ear Cartilage Lines -->
+                <path d="M 112 50 C 122 45 130 52 130 64 C 130 78 126 90 120 95" stroke="#8C6A18" stroke-width="1.2" fill="none" />
+                <path d="M 118 64 C 124 64 125 72 122 78 C 118 84 114 82 112 78" stroke="#8C6A18" stroke-width="1" fill="#E2C9B2" opacity="0.8" />
+                <path d="M 102 72 Q 107 75 103 78" stroke="#8C6A18" stroke-width="1.2" fill="none" />
+
+                <!-- CAROTID / BEHIND-EAR PULSE POINT -->
+                <g transform="translate(120, 102)">
+                  <circle cx="0" cy="0" r="18" fill="url(#dPulseGlow2)" class="pulse-beacon-glow" />
+                  <circle cx="0" cy="0" r="5" fill="none" stroke="#D4AF37" stroke-width="1.6" class="beacon-wave-1" />
+                  <circle cx="0" cy="0" r="5" fill="none" stroke="#D4AF37" stroke-width="1.6" class="beacon-wave-2" />
+                  <circle cx="0" cy="0" r="3.2" fill="#FFD54F" stroke="#8C6A18" stroke-width="0.8" />
+                </g>
+
+                <!-- Roll-on Touching Behind Earlobe -->
+                <g class="neck-touch-glide">
+                  <rect x="-6" y="-32" width="12" height="25" rx="2" fill="url(#dFlaconBody1)" stroke="#8C6A18" stroke-width="0.8" />
+                  <rect x="-4.5" y="-26" width="9" height="14" rx="1.2" fill="#FFFDF9" />
+                  <rect x="-5" y="-39" width="10" height="7" rx="1" fill="url(#dGoldCap1)" />
+                  <circle cx="0" cy="0" r="2.8" fill="#EAD7C2" stroke="#B38F4D" stroke-width="0.8" />
+                  <circle cx="0.6" cy="1" r="1" fill="#FFF9C4" />
+                </g>
+
+                <!-- Upward Sillage Ribbon -->
+                <path d="M 132 95 C 142 80 156 68 152 48 C 148 32 156 20 152 6" fill="none" stroke="#D4AF37" stroke-width="2" stroke-linecap="round" class="sillage-swirl-1" />
+              </g>
+
+              <!-- Bottom Badge -->
+              <rect x="50" y="138" width="150" height="18" rx="9" fill="#14171E" stroke="#D4AF37" stroke-width="0.8" />
+              <text x="125" y="150" font-family="'Cinzel', serif" font-size="7.5" font-weight="700" fill="#F3E5AB" text-anchor="middle" letter-spacing="0.08em">CAROTID SILLAGE CHIMNEY</text>
+            </svg>
+          </div>
+
           <span class="guide-num">02</span>
-          <h3 class="guide-title">Beard & Hair Scenting</h3>
+          <h3 class="guide-title">Neck & Behind Ears</h3>
+          <span class="guide-subtitle">Intimate Convection Sillage</span>
           <p class="guide-text">
-            Pure alcohol-free oils condition hair and beards naturally. Roll a drop onto your palms, rub gently together, 
-            and stroke lightly through your beard or hair ends for a lingering aura that lasts all day.
+            Touch the applicator behind your earlobes and along the carotid pulse point. Because warm air naturally rises, 
+            it creates a personal <strong>convection chimney</strong>—diffusing an intimate 2–3 foot scent aura whenever you speak, turn your head, or move.
           </p>
+
+          <div class="feature-tag-list">
+            <span class="feature-tag">👂 Carotid Pulse</span>
+            <span class="feature-tag">💨 Upward Convection Aura</span>
+          </div>
         </div>
 
-        <div class="guide-card">
+        <!-- ==========================================
+             CARD 3: DEFINITIVE BENT ARM & INNER ELBOW
+             ========================================== -->
+        <div class="guide-card" onclick="openRitualModal(3)" title="Tap to inspect Ritual 03 details">
+          <div class="guide-visual-container">
+            <svg viewBox="0 0 250 160" class="guide-anim-svg" xmlns="http://www.w3.org/2000/svg" aria-label="Inner Elbow Crease Application Animation">
+              <defs>
+                <linearGradient id="dSkin3" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#FBF4EC" />
+                  <stop offset="50%" stop-color="#EEDAC5" />
+                  <stop offset="100%" stop-color="#DDC4AD" />
+                </linearGradient>
+                <radialGradient id="dPulseGlow3" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stop-color="#FFD54F" stop-opacity="0.85" />
+                  <stop offset="45%" stop-color="#D4AF37" stop-opacity="0.35" />
+                  <stop offset="100%" stop-color="#D4AF37" stop-opacity="0" />
+                </radialGradient>
+              </defs>
+
+              <!-- Circular Frame -->
+              <circle cx="125" cy="80" r="70" fill="#FAF6EE" stroke="#E2D6C5" stroke-width="1.2" />
+              <circle cx="125" cy="80" r="64" fill="none" stroke="#D4AF37" stroke-width="0.8" stroke-dasharray="3 3" opacity="0.6" />
+
+              <!-- DEFINITIVE BENT ARM & INNER ELBOW CREASE -->
+              <g transform="translate(10, -5)">
+                <path d="M 50 30 
+                         L 76 30 
+                         C 86 48 95 62 108 72 
+                         L 165 110 
+                         L 152 135 
+                         L 92 98 
+                         C 78 88 65 72 50 50 Z" 
+                      fill="url(#dSkin3)" stroke="#8C6A18" stroke-width="1.6" stroke-linejoin="round" />
+
+                <path d="M 50 50 C 65 72 78 88 92 98 L 152 135" stroke="#8C6A18" stroke-width="1.6" fill="none" />
+
+                <!-- Inner Elbow Crease Lines -->
+                <path d="M 88 64 C 98 72 106 78 114 86" stroke="#8C6A18" stroke-width="1.4" fill="none" />
+                <path d="M 94 68 C 102 75 108 80 116 88" stroke="#C5A88D" stroke-width="1.2" fill="none" opacity="0.7" />
+
+                <!-- INNER ELBOW PULSE BEACON -->
+                <g transform="translate(100, 75)">
+                  <circle cx="0" cy="0" r="18" fill="url(#dPulseGlow3)" class="pulse-beacon-glow" />
+                  <circle cx="0" cy="0" r="5" fill="none" stroke="#D4AF37" stroke-width="1.6" class="beacon-wave-1" />
+                  <circle cx="0" cy="0" r="5" fill="none" stroke="#D4AF37" stroke-width="1.6" class="beacon-wave-2" />
+                  <circle cx="0" cy="0" r="3.2" fill="#FFD54F" stroke="#8C6A18" stroke-width="0.8" />
+                </g>
+
+                <!-- Roll-On Flacon Touching Inner Elbow Crease -->
+                <g class="elbow-dab-glide">
+                  <rect x="-6" y="-32" width="12" height="25" rx="2" fill="url(#dFlaconBody1)" stroke="#8C6A18" stroke-width="0.8" />
+                  <rect x="-4.5" y="-26" width="9" height="14" rx="1.2" fill="#FFFDF9" />
+                  <rect x="-5" y="-39" width="10" height="7" rx="1" fill="url(#dGoldCap1)" />
+                  <circle cx="0" cy="0" r="2.8" fill="#EAD7C2" stroke="#B38F4D" stroke-width="0.8" />
+                  <circle cx="0.6" cy="1" r="1" fill="#FFF9C4" />
+                </g>
+              </g>
+
+              <!-- Bottom Badge -->
+              <rect x="50" y="138" width="150" height="18" rx="9" fill="#14171E" stroke="#D4AF37" stroke-width="0.8" />
+              <text x="125" y="150" font-family="'Cinzel', serif" font-size="7.5" font-weight="700" fill="#F3E5AB" text-anchor="middle" letter-spacing="0.08em">BODY HEAT POCKET</text>
+            </svg>
+          </div>
+
           <span class="guide-num">03</span>
-          <h3 class="guide-title">Fabric Longevity (3+ Days)</h3>
+          <h3 class="guide-title">Inner Elbows</h3>
+          <span class="guide-subtitle">Protected Warmth Trap</span>
           <p class="guide-text">
-            Because our attars contain zero harsh chemical solvents, applying a light glide to the collar or cuffs of 
-            cotton, wool, or linen garments allows the base notes of oud and amber to persist for 48 to 72 hours.
+            The inner elbow fold (<em>antecubital fossa</em>) is a natural body-heat pocket shielded from open air and washing. 
+            Applying here anchors heavier heart & base notes (oud, amber, resins) for sustained, continuous 14+ hour diffusion.
           </p>
+
+          <div class="feature-tag-list">
+            <span class="feature-tag">💪 Antecubital Fold</span>
+            <span class="feature-tag">⏳ Anchors Oud & Resins</span>
+          </div>
+        </div>
+
+        <!-- ==========================================
+             CARD 4: BEARD & HAIR CONDITIONING
+             ========================================== -->
+        <div class="guide-card" onclick="openRitualModal(4)" title="Tap to inspect Ritual 04 details">
+          <div class="guide-visual-container">
+            <svg viewBox="0 0 250 160" class="guide-anim-svg" xmlns="http://www.w3.org/2000/svg" aria-label="Beard and Palm Application Animation">
+              <circle cx="125" cy="80" r="70" fill="#FAF6EE" stroke="#E2D6C5" stroke-width="1.2" />
+              <circle cx="125" cy="80" r="64" fill="none" stroke="#D4AF37" stroke-width="0.8" stroke-dasharray="3 3" opacity="0.6" />
+
+              <!-- PART 1: LASER-SHARP SCULPTED LUXURY BEARD & MUSTACHE EMBLEM -->
+              <g transform="translate(125, 54)">
+                <!-- Sharp Mustache Silhouette -->
+                <path d="M0 -12 C6 -12 15 -15 24 -20 C28 -24 32 -22 30 -17 C26 -10 16 -6 0 -3 C-16 -6 -26 -10 -30 -17 C-32 -22 -28 -24 -24 -20 C-15 -15 -6 -12 0 -12 Z" 
+                      fill="#140E0B" stroke="#D4AF37" stroke-width="0.8" />
+                
+                <!-- Sculpted Full Beard -->
+                <path d="M-28 -15 C-26 -5 -22 6 -18 14 C-14 22 -8 28 0 30 C8 28 14 22 18 14 C22 6 26 -5 28 -15 C24 -12 18 -10 10 -10 C3 -10 0 -13 0 -13 C0 -13 -3 -10 -10 -10 C-18 -10 -24 -12 -28 -15 Z" 
+                      fill="#221915" stroke="#D4AF37" stroke-width="1.1" />
+
+                <!-- Gold Beard Grain Highlights -->
+                <path d="-12 5 Q0 15 12 5" stroke="#C59B27" stroke-width="0.9" fill="none" opacity="0.85" />
+                <path d="-8 13 Q0 21 8 13" stroke="#C59B27" stroke-width="0.8" fill="none" opacity="0.85" />
+              </g>
+
+              <!-- PART 2: THE 2 CUPPED PALMS WARMING ATTAR DROPLET -->
+              <g class="palms-warming-sway">
+                <path d="M98 122 C104 116 110 110 120 108 C123 107 124 110 122 113 C116 120 110 126 104 132 C98 136 94 134 92 130 C90 125 94 125 98 122 Z" 
+                      fill="#EAD7C2" stroke="#8C7A6B" stroke-width="1.2" />
+
+                <path d="M152 122 C146 116 140 110 130 108 C127 107 126 110 128 113 C134 120 140 126 146 132 C152 136 156 134 158 130 C160 125 156 125 152 122 Z" 
+                      fill="#DFCAAD" stroke="#8C7A6B" stroke-width="1.2" />
+
+                <!-- Warmth Glow & Drop -->
+                <circle cx="125" cy="115" r="14" fill="url(#dPulseGlow1)" class="oil-warmth-pulse" />
+                <circle cx="125" cy="115" r="3.2" fill="#FFD54F" stroke="#8C6A18" stroke-width="0.9" />
+              </g>
+
+              <!-- PART 3: AROMA RIBBONS WAFTING UPWARD -->
+              <path d="M120 110 C114 94 112 80 116 62 C118 48 114 36 118 18" fill="none" stroke="#D4AF37" stroke-width="1.8" stroke-linecap="round" class="beard-aroma-ribbon-1" />
+              <path d="M130 110 C136 94 138 80 134 62 C132 48 136 36 132 18" fill="none" stroke="#A63D40" stroke-width="1.8" stroke-linecap="round" class="beard-aroma-ribbon-2" />
+
+              <circle cx="120" cy="52" r="1.8" fill="#FFD54F" class="sparkle-particle" />
+              <circle cx="132" cy="40" r="2" fill="#D4AF37" class="sparkle-particle sparkle-p2" />
+
+              <rect x="50" y="138" width="150" height="18" rx="9" fill="#14171E" stroke="#D4AF37" stroke-width="0.8" />
+              <text x="125" y="150" font-family="'Cinzel', serif" font-size="7.5" font-weight="700" fill="#F3E5AB" text-anchor="middle" letter-spacing="0.08em">WARM IN PALMS → STROKE BEARD</text>
+            </svg>
+          </div>
+
+          <span class="guide-num">04</span>
+          <h3 class="guide-title">Beard & Hair</h3>
+          <span class="guide-subtitle">Palm-Warmed Conditioning Aura</span>
+          <p class="guide-text">
+            With 0% alcohol, pure attar nourishes hair cuticles naturally without drying. 
+            <strong>Critical technique:</strong> Never apply heavy oil directly to beard roots. Warm 1 drop between your palms for 3 seconds, then lightly stroke through the outer beard and hair ends for a 24–48h aura.
+          </p>
+
+          <div class="feature-tag-list">
+            <span class="feature-tag">🧔 0% Alcohol (Non-Drying)</span>
+            <span class="feature-tag">🤲 Warm in Palms First</span>
+          </div>
+        </div>
+
+        <!-- ==========================================
+             CARD 5: FABRIC & COLLAR LONGEVITY (FAHA)
+             ========================================== -->
+        <div class="guide-card" onclick="openRitualModal(5)" title="Tap to inspect Ritual 05 details">
+          <div class="guide-visual-container">
+            <svg viewBox="0 0 250 160" class="guide-anim-svg" xmlns="http://www.w3.org/2000/svg" aria-label="Fabric Longevity and Faha Animation">
+              <circle cx="125" cy="80" r="70" fill="#FAF6EE" stroke="#E2D6C5" stroke-width="1.2" />
+              <circle cx="125" cy="80" r="64" fill="none" stroke="#D4AF37" stroke-width="0.8" stroke-dasharray="3 3" opacity="0.6" />
+
+              <!-- TAILORED SHIRT COLLAR & CUFF COMPOSITION -->
+              <g transform="translate(10, -5)">
+                <path d="M70 38 Q115 28 160 38 L155 48 Q115 38 75 48 Z" fill="#EAE3D5" stroke="#B8AA96" stroke-width="1" />
+
+                <!-- Placket & Buttons -->
+                <path d="M106 50 L124 50 L122 120 L108 120 Z" fill="#FAF8F5" stroke="#B8AA96" stroke-width="1.2" />
+                <line x1="109" y1="52" x2="109" y2="118" stroke="#C5B8A5" stroke-width="0.7" stroke-dasharray="2 2" />
+                <line x1="121" y1="52" x2="121" y2="118" stroke="#C5B8A5" stroke-width="0.7" stroke-dasharray="2 2" />
+                
+                <circle cx="115" cy="66" r="3.5" fill="#FFFFFF" stroke="#B8AA96" stroke-width="0.8" />
+                <circle cx="115" cy="95" r="3.5" fill="#FFFFFF" stroke="#B8AA96" stroke-width="0.8" />
+
+                <!-- Left Spread Collar Leaf -->
+                <path d="M74 44 L44 76 L92 70 L94 52 Z" fill="#FFFFFF" stroke="#A89882" stroke-width="1.3" />
+                <path d="M72 47 L47 74 L89 69" fill="none" stroke="#C5B8A5" stroke-width="0.7" stroke-dasharray="2 2" />
+
+                <!-- Right Spread Collar Leaf -->
+                <path d="M156 44 L186 76 L138 70 L136 52 Z" fill="#FFFFFF" stroke="#A89882" stroke-width="1.3" />
+                <path d="M158 47 L183 74 L141 69" fill="none" stroke="#C5B8A5" stroke-width="0.7" stroke-dasharray="2 2" />
+
+                <!-- French Cuff -->
+                <g transform="translate(36, 88)">
+                  <rect x="0" y="0" width="38" height="22" rx="3" fill="#FFFFFF" stroke="#A89882" stroke-width="1.1" />
+                  <rect x="14" y="8" width="10" height="5" rx="2" fill="#D4AF37" stroke="#8C6A18" stroke-width="0.6" />
+                  <circle cx="19" cy="10.5" r="1" fill="#FFF" />
+                </g>
+
+                <!-- Oil Absorption Glow -->
+                <g transform="translate(68, 64)">
+                  <circle cx="0" cy="0" r="14" fill="url(#dPulseGlow1)" class="fabric-absorb-pulse" />
+                  <circle cx="0" cy="0" r="2.5" fill="#FFD54F" stroke="#8C6A18" stroke-width="0.7" />
+                </g>
+
+                <!-- Flacon Touching Collar Fold -->
+                <g class="fabric-flacon-dab">
+                  <rect x="-5" y="-24" width="10" height="20" rx="1.5" fill="url(#dFlaconBody1)" stroke="#8C6A18" stroke-width="0.7" />
+                  <rect x="-4" y="-19" width="8" height="10" rx="1" fill="#FFFDF9" />
+                  <rect x="-4.5" y="-29" width="9" height="5" rx="0.8" fill="#D4AF37" />
+                  <circle cx="0" cy="-1.5" r="2.2" fill="#EAD7C2" stroke="#B38F4D" stroke-width="0.7" />
+                </g>
+
+                <!-- 72H+ Longevity Orbital Ring -->
+                <g transform="translate(168, 86)">
+                  <circle cx="0" cy="0" r="18" fill="none" stroke="#D4AF37" stroke-width="1" stroke-dasharray="4 2" class="longevity-orbit-ring" />
+                  <circle cx="0" cy="0" r="24" fill="none" stroke="#D4AF37" stroke-width="0.6" stroke-dasharray="2 3" opacity="0.4" />
+                  <circle cx="0" cy="-18" r="1.5" fill="#D4AF37" />
+                  <circle cx="18" cy="0" r="1.5" fill="#D4AF37" />
+                  <g class="longevity-badge-pulse">
+                    <rect x="-16" y="-9" width="32" height="18" rx="9" fill="#14171E" stroke="#D4AF37" stroke-width="1.1" />
+                    <text x="0" y="3" font-family="'Cinzel', serif" font-size="7.5" font-weight="800" fill="#F3E5AB" text-anchor="middle" letter-spacing="0.06em">72H+</text>
+                  </g>
+                </g>
+              </g>
+
+              <!-- Bottom Badge -->
+              <rect x="50" y="138" width="150" height="18" rx="9" fill="#14171E" stroke="#D4AF37" stroke-width="0.8" />
+              <text x="125" y="150" font-family="'Cinzel', serif" font-size="7.5" font-weight="700" fill="#F3E5AB" text-anchor="middle" letter-spacing="0.08em">INNER SEAMS • ZERO EXTERNAL STAINS</text>
+            </svg>
+          </div>
+
+          <span class="guide-num">05</span>
+          <h3 class="guide-title">Collars & "Faha" Secret</h3>
+          <span class="guide-subtitle">72H+ Longevity Without Staining</span>
+          <p class="guide-text">
+            Natural fabrics (cotton, linen, wool) hold pure oils for 72+ hours. 
+            <strong>Critical caution:</strong> Dark botanical oils can stain white silks. Apply strictly to <strong>inner collar folds or cuff seams</strong>—or use the royal Awadhi <strong>Faha (फाहा)</strong> method: tucking an attar-scented wisp of raw cotton into an inner pocket.
+          </p>
+
+          <div class="feature-tag-list">
+            <span class="feature-tag">👔 Inner Collar Seams</span>
+            <span class="feature-tag">🪙 Awadhi Cotton Faha (फाहा)</span>
+          </div>
         </div>
       </div>
     </div>
@@ -389,7 +865,11 @@
               <span class="metric-val" id="modal-sillage">Regal</span>
             </div>
             <div>
-              <span class="metric-label">Best Season</span>
+              <span class="metric-label">Occasion</span>
+              <span class="metric-val" id="modal-occasion">Office / Casual</span>
+            </div>
+            <div>
+              <span class="metric-label">Season</span>
               <span class="metric-val" id="modal-season">All Year</span>
             </div>
           </div>
@@ -482,6 +962,50 @@
     </div>
   </div>
 
+  <!-- 9D. RITUAL MASTER SUITE POP-UP MODAL (HOW TO APPLY) -->
+  <div class="ritual-modal" id="ritual-modal" role="dialog" aria-modal="true" aria-labelledby="ritual-modal-title">
+    <div class="ritual-modal-backdrop" onclick="closeRitualModal()"></div>
+    <div class="ritual-modal-dialog">
+      <button type="button" class="ritual-modal-close-btn" onclick="closeRitualModal()" aria-label="Close Ritual Details">✕</button>
+      
+      <div class="ritual-modal-header">
+        <span class="ritual-modal-kicker" id="ritual-modal-kicker">RITUAL 01 • THE RADIAL PULSE POINT</span>
+        <h2 class="ritual-modal-title" id="ritual-modal-title">Inner Wrists</h2>
+        <span class="ritual-modal-badge" id="ritual-modal-badge">TOUCH • STRICTLY NEVER RUB</span>
+      </div>
+
+      <div class="ritual-modal-visual" id="ritual-modal-visual">
+        <!-- Injected dynamically from source SVG -->
+      </div>
+
+      <div class="ritual-modal-body">
+        <div class="ritual-master-rule-box">
+          <span class="rule-icon">⚠️</span>
+          <div>
+            <strong class="rule-title">Strict Kannauj Master Rule:</strong>
+            <p class="rule-desc" id="ritual-modal-rule"></p>
+          </div>
+        </div>
+
+        <div class="ritual-science-box">
+          <h4 class="science-heading">The Olfactory Science:</h4>
+          <p class="science-text" id="ritual-modal-science"></p>
+        </div>
+
+        <div class="ritual-steps-box">
+          <h4 class="science-heading">Step-by-Step Technique:</h4>
+          <ol class="ritual-steps" id="ritual-modal-steps"></ol>
+        </div>
+      </div>
+
+      <div class="ritual-modal-footer">
+        <button type="button" class="btn-primary-brass" onclick="closeRitualModal()" style="width: 100%; justify-content: center;">
+          <span>✓ Understood • Explore Signature Attars</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- 10. FLOATING SOCIAL CTAs (WHATSAPP ON LEFT, INSTAGRAM ON RIGHT) -->
   <!-- Floating WhatsApp CTA (LEFT) -->
   <a href="https://wa.me/918591059608" target="_blank" class="floating-cta-btn floating-btn-wa" aria-label="Order on WhatsApp" id="floating-btn-wa">
@@ -500,7 +1024,7 @@
   </a>
 
   <!-- 11. FOOTER -->
-  <footer class="site-footer" id="about">
+  <footer class="site-footer" id="footer">
     <div class="container">
       <div class="footer-grid">
         <div class="footer-brand-col">
@@ -563,11 +1087,15 @@
     </div>
   </footer>
 
+  <!-- Three.js (r128) for High-Performance 3D Web Experience -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
   <!-- Application Scripts -->
   <script src="scripts/config.js"></script>
   <script src="scripts/catalog-data.js"></script>
   <script src="scripts/social-checkout.js"></script>
   <script src="scripts/app.js"></script>
+  <script src="scripts/3d-experience.js"></script>
   <script src="scripts/sheets-sync.js"></script>
 </body>
 </html>
