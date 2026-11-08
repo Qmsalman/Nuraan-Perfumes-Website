@@ -52,7 +52,7 @@ Thank you!`;
    */
   inquireOnInstagram: function(product, sizeType = '12ml') {
     const config = window.NURAAN_CONFIG || {};
-    const igHandle = config.instagramHandle || "Nuraanperfumes";
+    const igHandle = config.instagramHandle || "nuraan_perfumes";
     const is12ml = sizeType === '12ml';
     const sizeLabel = is12ml ? "12ml Single Roll-on" : "3ml Discovery Option";
     const price = is12ml ? product.price12ml : product.price3mlOption;
@@ -115,7 +115,7 @@ Thank you!`;
    */
   inquireComboOnInstagram: function(combo, size) {
     const config = window.NURAAN_CONFIG || {};
-    const igHandle = config.instagramHandle || "Nuraanperfumes";
+    const igHandle = config.instagramHandle || "nuraan_perfumes";
     const currency = config.currencySymbol || "₹";
 
     const is12ml = size === '12ml';
@@ -182,7 +182,7 @@ Thank you!`;
    */
   inquireCustomBoxOnInstagram: function(size, selectedAttars, price) {
     const config = window.NURAAN_CONFIG || {};
-    const igHandle = config.instagramHandle || "Nuraanperfumes";
+    const igHandle = config.instagramHandle || "nuraan_perfumes";
     const currency = config.currencySymbol || "₹";
 
     if (!selectedAttars || selectedAttars.length === 0) {
@@ -251,7 +251,7 @@ Thank you!`;
    */
   inquireSelectionListOnInstagram: function(items, totalAmount) {
     const config = window.NURAAN_CONFIG || {};
-    const igHandle = config.instagramHandle || "Nuraanperfumes";
+    const igHandle = config.instagramHandle || "nuraan_perfumes";
     const currency = config.currencySymbol || "₹";
 
     if (!items || items.length === 0) {

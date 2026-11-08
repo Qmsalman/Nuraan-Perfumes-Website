@@ -123,13 +123,21 @@
     init: function() {
       this.attachAll();
 
-      // Mutation observer on catalog grid to bind freshly rendered or filtered products
-      const catalogGrid = document.getElementById('catalog-grid');
+      // Mutation observer on catalog grid and modal to bind freshly rendered or filtered products
+      const catalogGrid = document.getElementById('fragrance-grid') || document.getElementById('catalog-grid');
       if (catalogGrid && window.MutationObserver) {
         const observer = new MutationObserver(() => {
           this.attachAll();
         });
         observer.observe(catalogGrid, { childList: true });
+      }
+
+      const modalContainer = document.getElementById('modal-bottle-container');
+      if (modalContainer && window.MutationObserver) {
+        const modalObs = new MutationObserver(() => {
+          this.attachAll();
+        });
+        modalObs.observe(modalContainer, { childList: true });
       }
     },
 

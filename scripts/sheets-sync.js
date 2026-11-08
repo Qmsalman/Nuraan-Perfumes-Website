@@ -67,6 +67,9 @@ const NuraanSheetsSync = {
       await NuraanSheetsSync.fetchTab(sheetCfg.gid, 'pricing');
     }
 
+    // 4. Fetch Orders & Shipment Tracking Tab (GID: 1607572912)
+    await NuraanSheetsSync.fetchOrdersAndTracking();
+
     // Re-render UI components once data is merged
     NuraanSheetsSync.triggerUIRefresh();
   },
@@ -248,11 +251,19 @@ const NuraanSheetsSync = {
           config.whatsappDisplayNumber = val;
           break;
         case 'instagram_handle':
-          config.instagramHandle = val.replace(/^@/, '');
+          config.instagramHandle = val.replace(/^@/, '').trim();
+          if (!config.instagramUrl) {
+            config.instagramUrl = `https://www.instagram.com/${config.instagramHandle}/`;
+          }
           break;
-        case 'instagram_url':
-          config.instagramUrl = val;
+        case 'instagram_url': {
+          config.instagramUrl = val.trim();
+          const match = val.match(/instagram\.com\/([a-zA-Z0-9_\.]+)/i);
+          if (match && match[1]) {
+            config.instagramHandle = match[1];
+          }
           break;
+        }
         case 'curated_box_3ml_price': {
           const num = parseInt(val.replace(/[^0-9]/g, ''), 10);
           if (num && !isNaN(num)) {
@@ -319,8 +330,18 @@ const NuraanSheetsSync = {
           if (val) config.presentationBoxPhoto = NuraanSheetsSync.convertGoogleDriveUrl(val);
           break;
         }
-        case 'hero_image_override': {
-          if (val) config.heroImageOverride = NuraanSheetsSync.convertGoogleDriveUrl(val);
+        case 'hero_image_override':
+        case 'hero_banner':
+        case 'hero_banner_url':
+        case 'hero_image': {
+          if (val) {
+            const converted = NuraanSheetsSync.convertGoogleDriveUrl(val);
+            config.heroBannerUrl = converted;
+            config.heroImageOverride = converted;
+            if (window.updateHeroBanner) {
+              window.updateHeroBanner(converted);
+            }
+          }
           break;
         }
         case 'enable_3d_hero': {
@@ -363,12 +384,12 @@ const NuraanSheetsSync = {
 
     if (trimmed.includes('drive.google.com') || trimmed.includes('docs.google.com')) {
       // Pattern 1: /file/d/{FILE_ID}/
-      const fileIdMatch = trimmed.match(/\/d\/([-\w]{25,})/);
+      const fileIdMatch = trimmed.match(/\/d\/([a-zA-Z0-9_-]+)/);
       if (fileIdMatch && fileIdMatch[1]) {
         return `https://lh3.googleusercontent.com/d/${fileIdMatch[1]}`;
       }
       // Pattern 2: id={FILE_ID}
-      const idParamMatch = trimmed.match(/[?&]id=([-\w]{25,})/);
+      const idParamMatch = trimmed.match(/[?&]id=([a-zA-Z0-9_-]+)/);
       if (idParamMatch && idParamMatch[1]) {
         return `https://lh3.googleusercontent.com/d/${idParamMatch[1]}`;
       }
@@ -460,6 +481,112 @@ const NuraanSheetsSync = {
     if (typeof updateSelectionUI === 'function') {
       updateSelectionUI();
     }
+    if (typeof window.updateHeroBanner === 'function' && window.NURAAN_CONFIG) {
+      const heroUrl = window.NURAAN_CONFIG.heroBannerUrl || window.NURAAN_CONFIG.heroImageOverride;
+      if (heroUrl) {
+        window.updateHeroBanner(heroUrl);
+      }
+    }
+  },
+
+  // ==============================================================================
+  // SHIPMENT & CONSIGNMENT TRACKING ENGINE (LIVE FROM GOOGLE SHEET)
+  // Master Sheet Tab: 'Orders & Sales Tracker' (GID: 1607572912)
+  // ==============================================================================
+  orders: [],
+
+  /**
+   * Fetch live orders from 'Orders & Sales Tracker' tab
+   */
+  fetchOrdersAndTracking: async function() {
+    try {
+      const url = NuraanSheetsSync.getCsvUrl("1607572912");
+      const res = await fetch(url);
+      if (!res.ok) return;
+      const csvText = await res.text();
+      if (!csvText || csvText.includes("<!DOCTYPE html>")) return;
+
+      const rows = NuraanSheetsSync.parseCSV(csvText);
+      const parsedOrders = [];
+
+      // Data rows start around row 5
+      for (let i = 4; i < rows.length; i++) {
+        const row = rows[i];
+        if (!row || !row[0]) continue;
+        const rawId = String(row[0]).trim();
+        if (!rawId || rawId.toLowerCase() === 'order id') continue;
+
+        const customerName = String(row[3] || '').trim();
+        const nameParts = customerName.split(' ');
+        const maskedName = nameParts.length > 1 
+          ? `${nameParts[0]} ${nameParts[nameParts.length - 1].charAt(0)}.` 
+          : customerName;
+
+        parsedOrders.push({
+          orderId: rawId,
+          customerName: customerName,
+          maskedName: maskedName,
+          date: String(row[2] || '').trim(),
+          city: String(row[4] || '').trim(),
+          productType: String(row[5] || '').trim(),
+          items: String(row[6] || '').trim(),
+          paymentStatus: String(row[11] || 'Paid').trim(),
+          status: String(row[12] || 'Processing').trim(),
+          phone: String(row[13] || '').trim(),
+          courier: String(row[14] || 'Express Logistics').trim(),
+          awb: String(row[15] || '-').trim(),
+          trackingUrl: String(row[16] || '').trim(),
+          eta: String(row[17] || 'Estimated 2-3 Business Days').trim()
+        });
+      }
+
+      if (parsedOrders.length > 0) {
+        NuraanSheetsSync.orders = parsedOrders;
+        console.log(`[Nuraan Sheets Sync] ✓ Loaded ${parsedOrders.length} live orders from Orders & Sales Tracker.`);
+      }
+    } catch (e) {
+      console.warn("[Nuraan Sheets Sync] Note: Using baseline orders lookup.", e.message);
+    }
+  },
+
+  /**
+   * Lookup an order by Order ID (flexible matching: NP-1003, 1003, np1003)
+   */
+  lookupOrder: function(query) {
+    if (!query) return null;
+    const cleanQ = String(query).toUpperCase().replace(/[^A-Z0-9]/g, '');
+    const pool = (NuraanSheetsSync.orders && NuraanSheetsSync.orders.length > 0)
+      ? NuraanSheetsSync.orders
+      : (window.NURAAN_SAMPLE_ORDERS || []);
+
+    const match = pool.find(o => {
+      const cleanId = String(o.orderId).toUpperCase().replace(/[^A-Z0-9]/g, '');
+      return cleanId === cleanQ || cleanId.endsWith(cleanQ) || cleanQ.endsWith(cleanId);
+    });
+
+    if (!match) return null;
+
+    // Determine current progression step (1 to 4)
+    const normStatus = (match.status || '').toLowerCase();
+    let step = 1;
+    let stepName = 'Order Confirmed';
+
+    if (normStatus.includes('deliver')) {
+      step = 4;
+      stepName = 'Delivered';
+    } else if (normStatus.includes('transit') || normStatus.includes('dispatch') || normStatus.includes('shipped') || normStatus.includes('out for delivery')) {
+      step = 3;
+      stepName = normStatus.includes('out for delivery') ? 'Out for Delivery' : 'In Transit';
+    } else if (normStatus.includes('process') || normStatus.includes('prepar') || normStatus.includes('bottle')) {
+      step = 2;
+      stepName = 'Handcrafting & Bottling';
+    }
+
+    return {
+      ...match,
+      activeStep: step,
+      displayStatus: stepName
+    };
   }
 };
 

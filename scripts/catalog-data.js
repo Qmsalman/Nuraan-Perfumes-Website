@@ -1073,3 +1073,96 @@ const NURAAN_COMBOS = [
 
 window.NURAAN_CATALOG = NURAAN_CATALOG;
 window.NURAAN_COMBOS = NURAAN_COMBOS;
+
+// ==============================================================================
+// BASELINE ORDER & SHIPMENT TRACKING DATA (Synced live from Google Sheet)
+// Master Sheet Tab: 'Orders & Sales Tracker' (GID: 1607572912)
+// ==============================================================================
+const NURAAN_SAMPLE_ORDERS = [
+  {
+    orderId: "NP-1001",
+    customerName: "Zeeshan Khan",
+    maskedName: "Zeeshan K.",
+    date: "2026-11-01",
+    city: "Mumbai",
+    items: "Discovery 6-Pack (3ml Precision Roll-on Box)",
+    paymentStatus: "Paid",
+    status: "Delivered",
+    courier: "Blue Dart",
+    awb: "BLD82910392",
+    trackingUrl: "https://www.bluedart.com",
+    eta: "Delivered on Nov 4"
+  },
+  {
+    orderId: "NP-1002",
+    customerName: "Farhan Ahmed",
+    maskedName: "Farhan A.",
+    date: "2026-11-02",
+    city: "Delhi",
+    items: "Aventus Creed (Single 12ml Luxury Flacon)",
+    paymentStatus: "Paid",
+    status: "Delivered",
+    courier: "Delhivery",
+    awb: "128391823901",
+    trackingUrl: "https://www.delhivery.com",
+    eta: "Delivered on Nov 5"
+  },
+  {
+    orderId: "NP-1003",
+    customerName: "Ayesha Siddiqui",
+    maskedName: "Ayesha S.",
+    date: "2026-11-03",
+    city: "Hyderabad",
+    items: "BR 450 (Single 12ml Luxury Flacon)",
+    paymentStatus: "Paid",
+    status: "In Transit",
+    courier: "Delhivery",
+    awb: "128391823902",
+    trackingUrl: "https://www.delhivery.com",
+    eta: "Expected in 1-2 Days"
+  },
+  {
+    orderId: "NP-1004",
+    customerName: "Imran Hashmi",
+    maskedName: "Imran H.",
+    date: "2026-11-04",
+    city: "Bangalore",
+    items: "Discovery 6-Pack (3ml Precision Roll-on Box)",
+    paymentStatus: "COD",
+    status: "In Transit",
+    courier: "Shiprocket",
+    awb: "SR98210392",
+    trackingUrl: "https://shiprocket.co",
+    eta: "Expected in 2-3 Days"
+  },
+  {
+    orderId: "NP-1005",
+    customerName: "Tariq Mansoor",
+    maskedName: "Tariq M.",
+    date: "2026-11-05",
+    city: "Lucknow",
+    items: "Brazil (Single 12ml Luxury Flacon)",
+    paymentStatus: "Paid",
+    status: "Processing",
+    courier: "Preparing Dispatch",
+    awb: "Pending AWB",
+    trackingUrl: "",
+    eta: "Ships within 24 Hours"
+  },
+  {
+    orderId: "NP-1006",
+    customerName: "Sameer Malik",
+    maskedName: "Sameer M.",
+    date: "2026-11-06",
+    city: "Pune",
+    items: "Discovery 6-Pack (3ml Precision Roll-on Box)",
+    paymentStatus: "Pending",
+    status: "Processing",
+    courier: "Preparing Dispatch",
+    awb: "Pending AWB",
+    trackingUrl: "",
+    eta: "Ships within 24 Hours"
+  }
+];
+
+window.NURAAN_SAMPLE_ORDERS = NURAAN_SAMPLE_ORDERS;

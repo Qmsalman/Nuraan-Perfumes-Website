@@ -11,6 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function initApp() {
   renderBrandHeader();
+  initHeroBanner();
   applyFilters();
   renderCombos(window.NURAAN_COMBOS || []);
   initCustomBoxBuilder();
@@ -20,6 +21,40 @@ function initApp() {
   setupModalEvents();
   setupStickyMobileBar();
   updateSelectionUI();
+}
+
+/**
+ * Update Hero Banner (Custom Image or Built-in Luxury Artwork)
+ */
+window.updateHeroBanner = function(url) {
+  const img = document.getElementById("hero-banner-img");
+  const defaultArt = document.getElementById("hero-art-default");
+  if (!img) return;
+
+  if (url && typeof url === 'string' && url.trim().length > 5) {
+    let cleanUrl = url.trim();
+    // Convert Google Drive links if needed
+    if (cleanUrl.includes('drive.google.com') || cleanUrl.includes('docs.google.com')) {
+      const fileIdMatch = cleanUrl.match(/\/d\/([a-zA-Z0-9_-]+)/) || cleanUrl.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+      if (fileIdMatch && fileIdMatch[1]) {
+        cleanUrl = `https://lh3.googleusercontent.com/d/${fileIdMatch[1]}`;
+      }
+    }
+    img.src = cleanUrl;
+    img.style.display = "block";
+    if (defaultArt) defaultArt.style.display = "none";
+  } else {
+    img.style.display = "none";
+    if (defaultArt) defaultArt.style.display = "flex";
+  }
+};
+
+function initHeroBanner() {
+  const config = window.NURAAN_CONFIG || {};
+  const bannerUrl = config.heroBannerUrl || config.heroImageOverride;
+  if (bannerUrl) {
+    window.updateHeroBanner(bannerUrl);
+  }
 }
 
 /**
@@ -38,9 +73,11 @@ function renderBrandHeader() {
     headerWa.href = `https://wa.me/${config.whatsappNumber}?text=${encodeURIComponent("Hello Nuraan Perfumes, I would like to inquire about your pure attars.")}`;
   }
 
+  const igUrl = config.instagramUrl || (config.instagramHandle ? `https://instagram.com/${config.instagramHandle}` : "https://www.instagram.com/nuraan_perfumes?srtk=MTh1Z241OHdwcm00Yw==");
+
   const headerIg = document.getElementById("header-ig-btn");
-  if (headerIg && config.instagramHandle) {
-    headerIg.href = `https://instagram.com/${config.instagramHandle}`;
+  if (headerIg) {
+    headerIg.href = igUrl;
   }
 
   const footerWaNumber = document.getElementById("footer-wa-number");
@@ -49,8 +86,9 @@ function renderBrandHeader() {
   }
 
   const footerIgHandle = document.getElementById("footer-ig-handle");
-  if (footerIgHandle && config.instagramHandle) {
-    footerIgHandle.textContent = `@${config.instagramHandle}`;
+  if (footerIgHandle) {
+    footerIgHandle.href = igUrl;
+    footerIgHandle.textContent = `@${config.instagramHandle || 'nuraan_perfumes'}`;
   }
 
   // Floating Social Dock & Mobile Sticky Dock
@@ -60,13 +98,13 @@ function renderBrandHeader() {
   }
 
   const dockIg = document.getElementById("floating-dock-ig");
-  if (dockIg && config.instagramHandle) {
-    dockIg.href = `https://instagram.com/${config.instagramHandle}`;
+  if (dockIg) {
+    dockIg.href = igUrl;
   }
 
   const mobileIg = document.getElementById("mobile-sticky-ig");
-  if (mobileIg && config.instagramHandle) {
-    mobileIg.href = `https://instagram.com/${config.instagramHandle}`;
+  if (mobileIg) {
+    mobileIg.href = igUrl;
   }
 }
 
@@ -147,8 +185,14 @@ function renderCatalog(products) {
       `;
     }).join("");
 
+    const signatureNotes = (product.accords && product.accords.length > 0)
+      ? product.accords.slice(0, 3).join(" • ")
+      : ([product.notes && product.notes.top && product.notes.top[0],
+          product.notes && product.notes.heart && product.notes.heart[0],
+          product.notes && product.notes.base && product.notes.base[0]].filter(Boolean).join(" • ") || product.tagline || "");
+
     return `
-      <article class="perfume-card" id="card-${product.id}" data-category="${product.category}">
+      <article class="perfume-card" id="card-${product.id}" data-category="${product.category}" onclick="openNotesModal('${product.id}')" role="button" tabindex="0" aria-label="Inspect ${product.name} details">
         <div class="card-visual-wrapper continuous-sheen">
           
           <div class="card-badges">
@@ -160,34 +204,81 @@ function renderCatalog(products) {
           ${botanicalsHtml}
 
           <!-- Bottle Illustration / Photo -->
-          <div class="bottle-visual-container" onclick="openNotesModal('${product.id}')">
+          <div class="bottle-visual-container">
             ${renderProceduralBottle(product)}
           </div>
 
-          <!-- Mobile / Desktop Nudge Banner Button -->
+          <!-- Olfactory Notes Modal Direct Inspection Trigger -->
           <button 
             type="button" 
             class="nudge-banner-btn" 
             id="nudge-${product.id}"
-            onclick="toggleCardBotanicals('${product.id}')"
-            aria-label="Click here to see the ingredients"
+            onclick="event.stopPropagation(); openNotesModal('${product.id}')"
+            aria-label="Inspect ${product.name} Olfactory Notes & Pyramid"
           >
             <span>✨</span>
-            <span class="nudge-label">Click here to see the ingredients</span>
-            <span>▾</span>
+            <span class="nudge-label">Inspect Olfactory Notes & Pyramid</span>
+            <span>▸</span>
           </button>
         </div>
 
         <!-- Description Below the Image -->
         <div class="card-content">
-          <div class="card-meta">
-            <span class="card-category">${product.category} COLLECTION</span>
-            <span style="font-size: 0.72rem; color: var(--color-text-muted); font-weight: 600;">PRECISION ROLL-ON</span>
+          <!-- Compact Mobile & Desktop Header -->
+          <div class="card-compact-header">
+            <div class="card-meta">
+              <span class="card-category">${product.category} COLLECTION</span>
+              <span class="card-format-tag">PRECISION ROLL-ON</span>
+            </div>
+
+            <h3 class="card-title">${product.name}</h3>
+            
+            <p class="card-signature-notes" title="${signatureNotes}">
+              ${signatureNotes}
+            </p>
           </div>
 
-          <h3 class="card-title" onclick="openNotesModal('${product.id}')">${product.name}</h3>
-          
-          <p class="card-tagline">"${product.tagline}"</p>
+          <!-- Mobile 2-Column Compact Action Bar (Always visible with bottle & title on mobile) -->
+          <div class="card-compact-price-row" onclick="event.stopPropagation()">
+            <div class="compact-price-wrap">
+              <span class="compact-price" id="compact-price-val-${product.id}">${currency}${activePrice.toLocaleString('en-IN')}</span>
+              <span class="compact-size-label" id="compact-size-label-${product.id}">${is12ml ? '12ml' : '3ml'}</span>
+            </div>
+            
+            <div class="card-compact-dual-btns">
+              <button 
+                type="button" 
+                class="btn-order-wa-compact" 
+                onclick="event.stopPropagation(); triggerWhatsAppOrder('${product.id}')"
+                aria-label="Order ${product.name} on WhatsApp"
+                title="Order on WhatsApp"
+              >
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
+                </svg>
+                <span class="wa-full">WhatsApp</span>
+                <span class="wa-short">WA</span>
+              </button>
+
+              <button 
+                type="button" 
+                class="btn-order-ig-compact" 
+                onclick="event.stopPropagation(); triggerInstagramInquiry('${product.id}')"
+                aria-label="Order ${product.name} on Instagram"
+                title="Order on Instagram"
+              >
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                </svg>
+                <span class="ig-full">Instagram</span>
+                <span class="ig-short">Insta</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Extended Sensory & Ordering Details (Desktop Full Face View) -->
+          <div class="card-extended-details" onclick="event.stopPropagation()">
+            <p class="card-tagline">"${product.tagline}"</p>
           
           <!-- Lifestyle Compass Tags: Occasion & Season -->
           <div class="card-lifestyle-tags">
@@ -307,10 +398,17 @@ function renderCatalog(products) {
             </div>
           </div>
         </div>
-      </article>
+      </div>
+    </article>
     `;
   }).join("");
+
+  // Re-attach 3D tilt engine to all newly rendered flacons
+  if (window.Nuraan3D && window.Nuraan3D.SingleBottle3D) {
+    window.Nuraan3D.SingleBottle3D.attachAll();
+  }
 }
+window.renderCatalog = renderCatalog;
 
 /**
  * Toggle Living Botanicals on Mobile / Tap
@@ -1339,6 +1437,17 @@ window.switchProductSize = function(productId, size) {
     priceEl.textContent = priceVal.toLocaleString('en-IN');
   }
 
+  const compactPriceEl = document.getElementById(`compact-price-val-${productId}`);
+  if (compactPriceEl) {
+    const currency = (window.NURAAN_CONFIG && window.NURAAN_CONFIG.currencySymbol) || "₹";
+    compactPriceEl.textContent = `${currency}${priceVal.toLocaleString('en-IN')}`;
+  }
+
+  const compactSizeEl = document.getElementById(`compact-size-label-${productId}`);
+  if (compactSizeEl) {
+    compactSizeEl.textContent = is12ml ? '12ml' : '3ml';
+  }
+
   // Update in selection list if already added
   if (window.selectionList) {
     const existing = window.selectionList.find(item => item.id === productId);
@@ -1650,17 +1759,44 @@ window.closeNotesModal = function() {
 
 function setupModalEvents() {
   const modal = document.getElementById("notes-modal");
-  if (!modal) return;
+  const ritualModal = document.getElementById("ritual-modal");
+  const trackingModal = document.getElementById("tracking-modal");
 
-  modal.addEventListener("click", (e) => {
-    if (e.target === modal || e.target.classList.contains("modal-overlay")) {
-      closeNotesModal();
-    }
-  });
+  if (modal) {
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal || e.target.classList.contains("modal-overlay")) {
+        closeNotesModal();
+      }
+    });
+  }
+
+  if (ritualModal) {
+    ritualModal.addEventListener("click", (e) => {
+      if (e.target === ritualModal || e.target.classList.contains("ritual-modal-backdrop")) {
+        closeRitualModal();
+      }
+    });
+  }
+
+  if (trackingModal) {
+    trackingModal.addEventListener("click", (e) => {
+      if (e.target === trackingModal || e.target.classList.contains("tracking-modal-backdrop")) {
+        closeTrackingModal();
+      }
+    });
+  }
 
   document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && modal.classList.contains("active")) {
-      closeNotesModal();
+    if (e.key === "Escape") {
+      if (modal && modal.classList.contains("active")) {
+        closeNotesModal();
+      }
+      if (ritualModal && ritualModal.classList.contains("active")) {
+        closeRitualModal();
+      }
+      if (trackingModal && trackingModal.classList.contains("active")) {
+        closeTrackingModal();
+      }
     }
   });
 
@@ -1678,21 +1814,6 @@ function setupModalEvents() {
     modalIgBtn.addEventListener("click", () => {
       if (currentModalProductId) {
         triggerInstagramInquiry(currentModalProductId);
-      }
-    });
-  }
-
-  // Setup Ritual Modal Escape and Backdrop handlers
-  const ritualModal = document.getElementById("ritual-modal");
-  if (ritualModal) {
-    ritualModal.addEventListener("click", (e) => {
-      if (e.target === ritualModal || e.target.classList.contains("ritual-modal-backdrop")) {
-        closeRitualModal();
-      }
-    });
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape" && ritualModal.classList.contains("active")) {
-        closeRitualModal();
       }
     });
   }
@@ -1793,7 +1914,8 @@ window.openRitualModal = function(id) {
   }
 
   // Clone visual artwork from corresponding guide card
-  const sourceCard = document.querySelector(`.guide-card:nth-child(${id}) .guide-visual-container`);
+  const guideCards = document.querySelectorAll('.guide-card');
+  const sourceCard = guideCards[id - 1] ? guideCards[id - 1].querySelector('.guide-visual-container') : null;
   const modalVisual = document.getElementById("ritual-modal-visual");
   if (sourceCard && modalVisual) {
     modalVisual.innerHTML = sourceCard.innerHTML;
@@ -1979,3 +2101,173 @@ window.triggerSelectionInstagram = function() {
   const total = window.selectionList.reduce((acc, item) => acc + item.price, 0);
   window.SocialCheckout.inquireSelectionListOnInstagram(window.selectionList, total);
 };
+
+// ==============================================================================
+// 15. CONSIGNMENT & SHIPMENT TRACKING CONCIERGE SYSTEM
+// ==============================================================================
+window.openTrackingModal = function(orderId) {
+  const modal = document.getElementById("tracking-modal");
+  if (!modal) return;
+  modal.classList.add("active");
+  document.body.style.overflow = "hidden";
+
+  const input = document.getElementById("tracking-search-input");
+  if (orderId && input) {
+    input.value = orderId;
+    window.executeOrderSearch();
+  } else if (input) {
+    setTimeout(() => input.focus(), 150);
+  }
+};
+
+window.closeTrackingModal = function() {
+  const modal = document.getElementById("tracking-modal");
+  if (!modal) return;
+  modal.classList.remove("active");
+  document.body.style.overflow = "";
+};
+
+window.quickFillTrack = function(orderId) {
+  const input = document.getElementById("tracking-search-input");
+  if (input) {
+    input.value = orderId;
+    window.executeOrderSearch();
+  }
+};
+
+window.executeOrderSearch = function() {
+  const input = document.getElementById("tracking-search-input");
+  if (!input) return;
+  const query = input.value.trim();
+  if (!query) return;
+
+  const resultBox = document.getElementById("tracking-result-box");
+  const errorBox = document.getElementById("tracking-error-box");
+  if (!resultBox || !errorBox) return;
+
+  const order = window.NuraanSheetsSync ? window.NuraanSheetsSync.lookupOrder(query) : null;
+
+  if (order) {
+    errorBox.style.display = "none";
+    renderTrackingResult(order);
+    resultBox.style.display = "block";
+  } else {
+    resultBox.style.display = "none";
+    const errMsg = document.getElementById("tracking-error-message");
+    if (errMsg) {
+      errMsg.textContent = `Order "${query}" was not found in our live dispatch log. If you placed this order recently via WhatsApp, please allow up to 2-4 hours for your AWB to sync.`;
+    }
+    errorBox.style.display = "block";
+  }
+};
+
+function renderTrackingResult(order) {
+  const container = document.getElementById("tracking-result-box");
+  if (!container) return;
+
+  const step = order.activeStep || 1;
+  const hasCourierUrl = order.trackingUrl && order.trackingUrl.startsWith("http");
+  const courierButton = hasCourierUrl ? `
+    <a href="${order.trackingUrl}" target="_blank" class="btn-primary-brass tracking-courier-btn">
+      <span>Track Live on ${order.courier} Website</span>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+    </a>
+  ` : '';
+
+  const waInquiryUrl = `https://wa.me/${(window.NURAAN_CONFIG && window.NURAAN_CONFIG.whatsappNumber) || '918591059608'}?text=${encodeURIComponent(`Hello Nuraan Perfumes, I am inquiring about tracking for my order #${order.orderId}.`)}`;
+
+  container.innerHTML = `
+    <div class="tracking-card-header">
+      <div class="tracking-id-group">
+        <span class="tracking-kicker">CONSIGNMENT IDENTIFIER</span>
+        <h3 class="tracking-order-id">${order.orderId}</h3>
+        <span class="tracking-recipient">Recipient: ${order.maskedName} (${order.city || 'India'})</span>
+      </div>
+      <div class="tracking-status-badge status-${order.displayStatus.toLowerCase().replace(/[^a-z]/g, '')}">
+        <span class="status-pulse-dot"></span>
+        <span>${order.displayStatus}</span>
+      </div>
+    </div>
+
+    <!-- Stepper Progression Bar -->
+    <div class="tracking-stepper">
+      <div class="stepper-step ${step >= 1 ? 'completed' : ''} ${step === 1 ? 'current' : ''}">
+        <div class="step-circle">${step > 1 ? '✓' : '1'}</div>
+        <span class="step-label">Order Confirmed</span>
+      </div>
+      <div class="stepper-line ${step >= 2 ? 'filled' : ''}"></div>
+      <div class="stepper-step ${step >= 2 ? 'completed' : ''} ${step === 2 ? 'current' : ''}">
+        <div class="step-circle">${step > 2 ? '✓' : '2'}</div>
+        <span class="step-label">Handcrafted & Bottled</span>
+      </div>
+      <div class="stepper-line ${step >= 3 ? 'filled' : ''}"></div>
+      <div class="stepper-step ${step >= 3 ? 'completed' : ''} ${step === 3 ? 'current' : ''}">
+        <div class="step-circle">${step > 3 ? '✓' : '3'}</div>
+        <span class="step-label">In Transit</span>
+      </div>
+      <div class="stepper-line ${step >= 4 ? 'filled' : ''}"></div>
+      <div class="stepper-step ${step >= 4 ? 'completed current' : ''}">
+        <div class="step-circle">${step === 4 ? '✓' : '4'}</div>
+        <span class="step-label">Delivered</span>
+      </div>
+    </div>
+
+    <!-- Consignment Logistics Summary Grid -->
+    <div class="tracking-details-grid">
+      <div class="tracking-detail-item">
+        <span class="td-label">Logistics Partner</span>
+        <span class="td-value">${order.courier || 'Express Air'}</span>
+      </div>
+      <div class="tracking-detail-item">
+        <span class="td-label">Consignment AWB</span>
+        <span class="td-value font-mono">${order.awb || 'Pending AWB'}</span>
+      </div>
+      <div class="tracking-detail-item">
+        <span class="td-label">Fragrance Selection</span>
+        <span class="td-value">${order.items || 'Pure Attar Coffret'}</span>
+      </div>
+      <div class="tracking-detail-item">
+        <span class="td-label">Expected Arrival</span>
+        <span class="td-value text-gold">${order.eta || '2–3 Business Days'}</span>
+      </div>
+    </div>
+
+    <!-- Dual Action Controls -->
+    <div class="tracking-card-actions">
+      ${courierButton}
+      <a href="${waInquiryUrl}" target="_blank" class="btn-order-wa tracking-wa-btn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+        <span>Direct WhatsApp Concierge Inquiries</span>
+      </a>
+    </div>
+  `;
+}
+
+window.inquireMissingOrderWhatsApp = function() {
+  const input = document.getElementById("tracking-search-input");
+  const query = (input && input.value.trim()) || "Unknown";
+  const num = (window.NURAAN_CONFIG && window.NURAAN_CONFIG.whatsappNumber) || '918591059608';
+  window.open(`https://wa.me/${num}?text=${encodeURIComponent(`Hello Nuraan Perfumes, I would like to check the tracking status for my order #${query}.`)}`, '_blank');
+};
+
+function initTrackingDeepLink() {
+  const hash = window.location.hash || '';
+  const search = window.location.search || '';
+
+  let orderId = '';
+  if (hash.startsWith('#track')) {
+    const hashParams = new URLSearchParams(hash.replace('#track', '').replace(/^\?/, ''));
+    orderId = hashParams.get('id') || hashParams.get('order') || '';
+    window.openTrackingModal(orderId);
+  } else if (search) {
+    const urlParams = new URLSearchParams(search);
+    orderId = urlParams.get('order') || urlParams.get('track') || urlParams.get('id') || '';
+    if (orderId) {
+      window.openTrackingModal(orderId);
+    }
+  }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  initTrackingDeepLink();
+});

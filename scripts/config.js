@@ -18,8 +18,11 @@ const NURAAN_CONFIG = {
   // Contact & Social Media
   whatsappNumber: "918591059608",
   whatsappDisplayNumber: "+91 85910 59608",
-  instagramHandle: "Nuraanperfumes",
-  instagramUrl: "https://instagram.com/Nuraanperfumes",
+  instagramHandle: "nuraan_perfumes",
+  instagramUrl: "https://www.instagram.com/nuraan_perfumes?srtk=MTh1Z241OHdwcm00Yw==",
+
+  // Hero Section Custom Banner Image (Leave empty to use built-in luxury artwork, or paste Google Drive / CDN link)
+  heroBannerUrl: "",
   
   // Currency & Region
   currencySymbol: "₹",
