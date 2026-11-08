@@ -702,19 +702,24 @@ function renderProceduralBottle(product) {
   const accent = product.bottleColor || "#C59B27";
   const name = product.name;
 
-  return `
-    <div class="procedural-bottle bottle-3d-stage" data-product-id="${product.id}" title="Tilt / Drag to inspect 3D flacon refraction">
-      <div class="bottle-3d-chassis">
-        <img 
-          src="${product.image}" 
-          alt="${name} by Nuraan Perfumes" 
-          class="real-product-photo"
-          style="max-height: 220px; width: auto; object-fit: contain; border-radius: 6px;"
-          onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
-          loading="lazy"
-        />
+  const hasRealImage = Boolean(product.image && (product.image.startsWith('http://') || product.image.startsWith('https://') || product.image.startsWith('//') || product.image.startsWith('data:')));
 
-        <div class="svg-bottle-wrapper" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+  return `
+    <div class="procedural-bottle bottle-3d-stage" data-product-id="${product.id}" title="${name} by Nuraan Perfumes">
+      <div class="bottle-3d-chassis">
+        ${product.image ? `
+          <img 
+            src="${product.image}" 
+            alt="${name} by Nuraan Perfumes" 
+            class="real-product-photo"
+            style="max-height: 220px; width: auto; object-fit: contain; border-radius: 6px; ${hasRealImage ? 'display: block;' : 'display: none;'}"
+            onload="const s = this.parentElement.querySelector('.svg-bottle-wrapper'); if(s) s.style.display='none'; this.style.display='block';"
+            onerror="this.style.display='none'; const s = this.parentElement.querySelector('.svg-bottle-wrapper'); if(s) s.style.display='flex';"
+            loading="lazy"
+          />
+        ` : ''}
+
+        <div class="svg-bottle-wrapper" style="width: 100%; height: 100%; display: ${hasRealImage ? 'none' : 'flex'}; align-items: center; justify-content: center;">
           <svg viewBox="0 0 200 320" class="svg-bottle" xmlns="http://www.w3.org/2000/svg">
             <defs>
               <linearGradient id="goldCapGrad" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -866,6 +871,8 @@ function renderCombos(combos) {
       .map(item => `<li><span class="bullet">✦</span> <strong>${item}</strong></li>`)
       .join("");
 
+    const hasRealComboImage = Boolean(combo.image && (combo.image.startsWith('http://') || combo.image.startsWith('https://') || combo.image.startsWith('//') || combo.image.startsWith('data:')));
+
     return `
       <div class="combo-card" id="combo-${combo.id}">
         <div class="combo-badge-wrapper">
@@ -875,36 +882,78 @@ function renderCombos(combos) {
 
         <div class="combo-body">
           <div class="combo-visual">
-            <div class="combo-interactive-box is-open ${is12ml ? 'size-12ml' : ''}" id="combo-box-${combo.id}" onclick="window.toggleComboUnbox('${combo.id}')" title="Tap to toggle magnetic unboxing">
-              <!-- 3D Box Lid (Lifts and tilts in 3D perspective) -->
-              <div class="combo-box-lid" id="combo-lid-${combo.id}">
-                <div class="combo-lid-face">
-                  <span class="lid-foil-badge">✦ NURAAN LUXURY COFFRET ✦</span>
-                  <div class="lid-gold-stripe"></div>
-                  <span class="lid-size-tag" id="combo-lid-tag-${combo.id}">${is12ml ? '6 × 12ml LUXURY COFFRET' : '6 × 3ml PRECISION ROLL-ONS'}</span>
+            ${hasRealComboImage ? `
+              <div class="combo-photo-container">
+                <img 
+                  src="${combo.image}" 
+                  alt="${combo.name} by Nuraan Perfumes" 
+                  class="combo-real-photo"
+                  onerror="this.style.display='none'; const b = this.parentElement.querySelector('.combo-interactive-box'); if(b) b.style.display='block';"
+                  loading="lazy"
+                />
+                <div class="combo-interactive-box is-open ${is12ml ? 'size-12ml' : ''}" id="combo-box-${combo.id}" style="display: none;" onclick="window.toggleComboUnbox('${combo.id}')" title="Tap to toggle magnetic unboxing">
+                  <!-- 3D Box Lid (Lifts and tilts in 3D perspective) -->
+                  <div class="combo-box-lid" id="combo-lid-${combo.id}">
+                    <div class="combo-lid-face">
+                      <span class="lid-foil-badge">✦ NURAAN LUXURY COFFRET ✦</span>
+                      <div class="lid-gold-stripe"></div>
+                      <span class="lid-size-tag" id="combo-lid-tag-${combo.id}">${is12ml ? '6 × 12ml LUXURY COFFRET' : '6 × 3ml PRECISION ROLL-ONS'}</span>
+                    </div>
+                  </div>
+
+                  <!-- 3D Box Tray (Velvet cushion with 6 nestled flacons) -->
+                  <div class="combo-box-tray">
+                    <div class="combo-velvet-bed">
+                      <div class="combo-flacons-row" id="combo-flacons-${combo.id}">
+                        <div class="combo-flacon-slot cf-1"><div class="combo-flacon-cap"></div><div class="combo-flacon-body"></div></div>
+                        <div class="combo-flacon-slot cf-2"><div class="combo-flacon-cap"></div><div class="combo-flacon-body"></div></div>
+                        <div class="combo-flacon-slot cf-3"><div class="combo-flacon-cap"></div><div class="combo-flacon-body"></div></div>
+                        <div class="combo-flacon-slot cf-4"><div class="combo-flacon-cap"></div><div class="combo-flacon-body"></div></div>
+                        <div class="combo-flacon-slot cf-5"><div class="combo-flacon-cap"></div><div class="combo-flacon-body"></div></div>
+                        <div class="combo-flacon-slot cf-6"><div class="combo-flacon-cap"></div><div class="combo-flacon-body"></div></div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Micro unbox status badge -->
+                  <button type="button" class="combo-unbox-toggle-pill" id="combo-unbox-pill-${combo.id}" aria-label="Toggle Unboxing">
+                    <span class="unbox-icon">✦</span>
+                    <span class="unbox-text">Lid Open • Tap to Close</span>
+                  </button>
                 </div>
               </div>
-
-              <!-- 3D Box Tray (Velvet cushion with 6 nestled flacons) -->
-              <div class="combo-box-tray">
-                <div class="combo-velvet-bed">
-                  <div class="combo-flacons-row" id="combo-flacons-${combo.id}">
-                    <div class="combo-flacon-slot cf-1"><div class="combo-flacon-cap"></div><div class="combo-flacon-body"></div></div>
-                    <div class="combo-flacon-slot cf-2"><div class="combo-flacon-cap"></div><div class="combo-flacon-body"></div></div>
-                    <div class="combo-flacon-slot cf-3"><div class="combo-flacon-cap"></div><div class="combo-flacon-body"></div></div>
-                    <div class="combo-flacon-slot cf-4"><div class="combo-flacon-cap"></div><div class="combo-flacon-body"></div></div>
-                    <div class="combo-flacon-slot cf-5"><div class="combo-flacon-cap"></div><div class="combo-flacon-body"></div></div>
-                    <div class="combo-flacon-slot cf-6"><div class="combo-flacon-cap"></div><div class="combo-flacon-body"></div></div>
+            ` : `
+              <div class="combo-interactive-box is-open ${is12ml ? 'size-12ml' : ''}" id="combo-box-${combo.id}" onclick="window.toggleComboUnbox('${combo.id}')" title="Tap to toggle magnetic unboxing">
+                <!-- 3D Box Lid (Lifts and tilts in 3D perspective) -->
+                <div class="combo-box-lid" id="combo-lid-${combo.id}">
+                  <div class="combo-lid-face">
+                    <span class="lid-foil-badge">✦ NURAAN LUXURY COFFRET ✦</span>
+                    <div class="lid-gold-stripe"></div>
+                    <span class="lid-size-tag" id="combo-lid-tag-${combo.id}">${is12ml ? '6 × 12ml LUXURY COFFRET' : '6 × 3ml PRECISION ROLL-ONS'}</span>
                   </div>
                 </div>
-              </div>
 
-              <!-- Micro unbox status badge -->
-              <button type="button" class="combo-unbox-toggle-pill" id="combo-unbox-pill-${combo.id}" aria-label="Toggle Unboxing">
-                <span class="unbox-icon">✦</span>
-                <span class="unbox-text">Lid Open • Tap to Close</span>
-              </button>
-            </div>
+                <!-- 3D Box Tray (Velvet cushion with 6 nestled flacons) -->
+                <div class="combo-box-tray">
+                  <div class="combo-velvet-bed">
+                    <div class="combo-flacons-row" id="combo-flacons-${combo.id}">
+                      <div class="combo-flacon-slot cf-1"><div class="combo-flacon-cap"></div><div class="combo-flacon-body"></div></div>
+                      <div class="combo-flacon-slot cf-2"><div class="combo-flacon-cap"></div><div class="combo-flacon-body"></div></div>
+                      <div class="combo-flacon-slot cf-3"><div class="combo-flacon-cap"></div><div class="combo-flacon-body"></div></div>
+                      <div class="combo-flacon-slot cf-4"><div class="combo-flacon-cap"></div><div class="combo-flacon-body"></div></div>
+                      <div class="combo-flacon-slot cf-5"><div class="combo-flacon-cap"></div><div class="combo-flacon-body"></div></div>
+                      <div class="combo-flacon-slot cf-6"><div class="combo-flacon-cap"></div><div class="combo-flacon-body"></div></div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Micro unbox status badge -->
+                <button type="button" class="combo-unbox-toggle-pill" id="combo-unbox-pill-${combo.id}" aria-label="Toggle Unboxing">
+                  <span class="unbox-icon">✦</span>
+                  <span class="unbox-text">Lid Open • Tap to Close</span>
+                </button>
+              </div>
+            `}
           </div>
 
           <h3 class="combo-title">${combo.name}</h3>
