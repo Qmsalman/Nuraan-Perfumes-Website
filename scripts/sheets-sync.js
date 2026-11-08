@@ -220,10 +220,39 @@ const NuraanSheetsSync = {
 
     for (let r = 1; r < rows.length; r++) {
       const row = rows[r];
-      if (!row || row.length < 4) continue;
+      if (!row || row.length < 2) continue;
       const key = (row[1] || '').trim().toLowerCase();
-      const val = (row[3] || '').trim();
-      if (!key || val === '') continue;
+      if (!key) continue;
+
+      // Check both Column D (index 3) and Column E (index 4)
+      const valD = (row[3] || '').trim();
+      const valE = (row[4] || '').trim();
+
+      // Check if Column E contains placeholder/instruction text
+      const isInstructionText = (text) => {
+        const lower = text.toLowerCase();
+        return lower.startsWith('paste ') || 
+               lower.startsWith('image url for') || 
+               lower.startsWith('price for') || 
+               lower.startsWith('true to') || 
+               lower.startsWith('true for') ||
+               lower.includes('auto-convert');
+      };
+
+      // Determine effective value:
+      // If Column E contains a custom URL (http, https, drive) or user override, prioritize Column E!
+      let val = '';
+      if (valE && (valE.startsWith('http://') || valE.startsWith('https://') || valE.startsWith('//') || (!isInstructionText(valE) && valD === ''))) {
+        val = valE;
+      } else if (valD && !valD.startsWith('assets/images/') && valD !== '') {
+        val = valD;
+      } else if (valE && !isInstructionText(valE)) {
+        val = valE;
+      } else {
+        val = valD || valE;
+      }
+
+      if (val === '') continue;
 
       switch (key) {
         case 'brand_name':
