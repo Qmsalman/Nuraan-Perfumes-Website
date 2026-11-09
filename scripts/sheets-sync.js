@@ -175,7 +175,8 @@ const NuraanSheetsSync = {
     const colBase = findCol(["basenotes", "base"]);
     const colAccords = findCol(["mainaccords", "accords"]);
     const colInspiration = headers.findIndex(h => h === "inspiration" || (h.includes("inspiration") && !h.includes("dna")));
-    const colDna = headers.findIndex(h => h.includes("dnainspiration") || h.includes("dna") || h.includes("fragranticareference"));
+    const colDna = headers.findIndex(h => (h.includes("dnainspiration") || h === "dna" || h.startsWith("dna")) && !h.includes("fragrantica"));
+    const colFragrantica = headers.findIndex(h => h.includes("fragranticareference") || h.includes("fragrantica"));
 
     let count = 0;
     for (let r = 1; r < rows.length; r++) {
@@ -203,10 +204,19 @@ const NuraanSheetsSync = {
           product.accords = row[colAccords].split(/[,/•;]+/).map(a => a.trim()).filter(Boolean);
         }
         if (colInspiration !== -1 && row[colInspiration]) {
-          product.inspiration = row[colInspiration].trim();
+          const rawInsp = row[colInspiration].trim();
+          // Auto-fix known typo in sheet: "BR 450" -> "BR 540"
+          product.inspiration = (rawInsp.toUpperCase() === 'BR 450' || rawInsp.toUpperCase() === 'BR450') ? 'BR 540' : rawInsp;
         }
         if (colDna !== -1 && row[colDna]) {
-          product.fragranticaDna = row[colDna].trim();
+          const rawDna = row[colDna].trim();
+          // Guarantee URLs NEVER leak into fragranticaDna
+          if (!rawDna.startsWith('http://') && !rawDna.startsWith('https://') && !rawDna.includes('fragrantica.com')) {
+            product.fragranticaDna = rawDna;
+          }
+        }
+        if (colFragrantica !== -1 && row[colFragrantica]) {
+          product.fragranticaUrl = row[colFragrantica].trim();
         }
         count++;
       }

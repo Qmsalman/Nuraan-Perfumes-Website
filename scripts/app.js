@@ -143,8 +143,21 @@ function formatSeason(sea) {
 function getInspirationInfo(product) {
   if (!product) return { badgeText: '', modalLead: '', modalTitleSubtitle: '' };
 
-  const rawDna = product.fragranticaDna || '';
-  let shortName = product.inspiration || '';
+  let rawDna = (product.fragranticaDna || '').trim();
+  let shortName = (product.inspiration || '').trim();
+
+  // Strip URLs completely — Fragrantica links must never appear in consumer UI
+  if (rawDna.startsWith('http://') || rawDna.startsWith('https://') || rawDna.includes('fragrantica.com')) {
+    rawDna = '';
+  }
+  if (shortName.startsWith('http://') || shortName.startsWith('https://') || shortName.includes('fragrantica.com')) {
+    shortName = '';
+  }
+
+  // Auto-correct sheet typo: "BR 450" -> "BR 540"
+  if (shortName.toUpperCase() === 'BR 450' || shortName.toUpperCase() === 'BR450') {
+    shortName = 'BR 540';
+  }
 
   let brand = '';
   let scent = shortName;
