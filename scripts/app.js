@@ -225,22 +225,6 @@ function renderCatalog(products) {
           </button>
         </div>
 
-        <!-- Mobile Botanical Ingredient Strip (replaces overlapping floating nodes) -->
-        ${(product.botanicals && product.botanicals.length > 0) ? `
-        <div class="card-botanicals-mobile-strip" onclick="event.stopPropagation(); openNotesModal('${product.id}')" title="Inspect olfactory notes">
-          ${product.botanicals.map(bot => `
-            <div class="mobile-botanical-chip">
-              <div class="mobile-botanical-chip-icon">
-                ${renderBotanicalSVG(bot.type)}
-              </div>
-              <div class="mobile-botanical-chip-text">
-                <span class="mobile-botanical-chip-name">${bot.name}</span>
-                <span class="mobile-botanical-chip-role">${bot.role}</span>
-              </div>
-            </div>
-          `).join('')}
-        </div>` : ''}
-
         <!-- Description Below the Image -->
         <div class="card-content">
           <!-- Compact Mobile & Desktop Header -->
@@ -260,13 +244,6 @@ function renderCatalog(products) {
                 <span class="inspired-text">Inspired by <strong>${inspiredShort}</strong></span>
               </div>
             ` : ''}
-            
-            ${(() => {
-              const topNotes = (product.notes && product.notes.top) ? product.notes.top.slice(0, 4) : [];
-              return topNotes.length > 0
-                ? `<div class="card-top-notes-strip">${topNotes.map(n => `<span class="top-note-pill">${n}</span>`).join('')}</div>`
-                : '';
-            })()}
 
             <p class="card-signature-notes" title="${signatureNotes}">
               ${signatureNotes}
