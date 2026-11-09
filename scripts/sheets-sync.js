@@ -174,7 +174,8 @@ const NuraanSheetsSync = {
     const colHeart = findCol(["heartnotes", "heart", "middle"]);
     const colBase = findCol(["basenotes", "base"]);
     const colAccords = findCol(["mainaccords", "accords"]);
-    const colDna = findCol(["dnainspiration", "inspiration", "dna"]);
+    const colInspiration = headers.findIndex(h => h === "inspiration" || (h.includes("inspiration") && !h.includes("dna")));
+    const colDna = headers.findIndex(h => h.includes("dnainspiration") || h.includes("dna") || h.includes("fragranticareference"));
 
     let count = 0;
     for (let r = 1; r < rows.length; r++) {
@@ -201,8 +202,11 @@ const NuraanSheetsSync = {
         if (colAccords !== -1 && row[colAccords]) {
           product.accords = row[colAccords].split(/[,/•;]+/).map(a => a.trim()).filter(Boolean);
         }
+        if (colInspiration !== -1 && row[colInspiration]) {
+          product.inspiration = row[colInspiration].trim();
+        }
         if (colDna !== -1 && row[colDna]) {
-          product.fragranticaDna = row[colDna];
+          product.fragranticaDna = row[colDna].trim();
         }
         count++;
       }

@@ -18,6 +18,8 @@ const NURAAN_CATALOG = [
   {
     id: "garnet-540",
     name: "Garnet 540",
+    inspiration: "Baccarat Rouge 540",
+    fragranticaDna: "Maison Francis Kurkdjian - Baccarat Rouge 540",
     collection: "French",
     category: "French",
     badge: "Bestseller",
@@ -62,6 +64,8 @@ const NURAAN_CATALOG = [
   {
     id: "regent",
     name: "Regent",
+    inspiration: "Dunhill Icon",
+    fragranticaDna: "Alfred Dunhill - Icon",
     collection: "French",
     category: "French",
     badge: "Aristocratic Poise",
@@ -106,6 +110,8 @@ const NURAAN_CATALOG = [
   {
     id: "monarch",
     name: "Monarch",
+    inspiration: "Aventus Creed",
+    fragranticaDna: "Creed - Aventus",
     collection: "French",
     category: "French",
     badge: "Royal Collection",
@@ -150,6 +156,8 @@ const NURAAN_CATALOG = [
   {
     id: "cedar",
     name: "Cedar",
+    inspiration: "Tam Dao",
+    fragranticaDna: "Diptyque - Tam Dao",
     collection: "French",
     category: "French",
     badge: "Woodland Pure",
@@ -194,6 +202,8 @@ const NURAAN_CATALOG = [
   {
     id: "victor",
     name: "Victor",
+    inspiration: "9PM Afnan",
+    fragranticaDna: "Afnan - 9 PM (Ultra Male DNA)",
     collection: "French",
     category: "French",
     badge: "Crowd Favorite",
@@ -238,6 +248,8 @@ const NURAAN_CATALOG = [
   {
     id: "rumo",
     name: "Rumo",
+    inspiration: "Cheirosa 62",
+    fragranticaDna: "Sol de Janeiro - Brazilian Crush Cheirosa 62",
     collection: "French",
     category: "French",
     badge: "Exotic Silk",
@@ -286,6 +298,8 @@ const NURAAN_CATALOG = [
   {
     id: "musk-safa",
     name: "Musk Safa",
+    inspiration: "Musk Rijali",
+    fragranticaDna: "Arabian Oud / Surrati - Musk Rijali (Royal White Musk)",
     collection: "Arabic",
     category: "Arabic",
     badge: "Pure Tahara",
@@ -330,6 +344,8 @@ const NURAAN_CATALOG = [
   {
     id: "shaan",
     name: "Shaan",
+    inspiration: "Al-Wisam Day",
+    fragranticaDna: "Rasasi - Al Wisam Day",
     collection: "Arabic",
     category: "Arabic",
     badge: "Heritage Treasure",
@@ -374,6 +390,8 @@ const NURAAN_CATALOG = [
   {
     id: "wazir",
     name: "Wazir",
+    inspiration: "Kaaf",
+    fragranticaDna: "Ahmed Al Maghribi - Kaaf",
     collection: "Arabic",
     category: "Arabic",
     badge: "Master Counselor",
@@ -418,6 +436,8 @@ const NURAAN_CATALOG = [
   {
     id: "nishan",
     name: "Nishan",
+    inspiration: "Liquid Brun",
+    fragranticaDna: "French Avenue - Liquid Brun (PDM Althaïr DNA)",
     collection: "Arabic",
     category: "Arabic",
     badge: "Unique Signature",
@@ -462,6 +482,8 @@ const NURAAN_CATALOG = [
   {
     id: "malik",
     name: "Malik",
+    inspiration: "Marj",
+    fragranticaDna: "Ahmed Al Maghribi - Marj",
     collection: "Arabic",
     category: "Arabic",
     badge: "Sovereign Crown",
@@ -506,6 +528,8 @@ const NURAAN_CATALOG = [
   {
     id: "raqeeq",
     name: "Raqeeq",
+    inspiration: "Khofooq",
+    fragranticaDna: "Ajmal - Khofooq",
     collection: "Arabic",
     category: "Arabic",
     badge: "Delicate Sublime",
@@ -554,6 +578,8 @@ const NURAAN_CATALOG = [
   {
     id: "velvet-oud",
     name: "Velvet Oud",
+    inspiration: "Purple Oud",
+    fragranticaDna: "Dior - Purple Oud (Maison Christian Dior)",
     collection: "Women",
     category: "Women",
     badge: "Bestseller",
@@ -598,6 +624,8 @@ const NURAAN_CATALOG = [
   {
     id: "garden-bloom",
     name: "Garden Bloom",
+    inspiration: "Gucci Flora",
+    fragranticaDna: "Gucci - Flora Gorgeous Gardenia",
     collection: "Women",
     category: "Women",
     badge: "Natural Floral",
@@ -642,6 +670,8 @@ const NURAAN_CATALOG = [
   {
     id: "black-night",
     name: "Black Night",
+    inspiration: "Black Opium",
+    fragranticaDna: "Yves Saint Laurent - Black Opium",
     collection: "Women",
     category: "Women",
     badge: "Dark Elegance",
@@ -686,6 +716,8 @@ const NURAAN_CATALOG = [
   {
     id: "golden-musk",
     name: "Golden Musk",
+    inspiration: "Aurum",
+    fragranticaDna: "Ajmal - Aurum (Lady Million DNA)",
     collection: "Women",
     category: "Women",
     badge: "Warm Solar",
@@ -730,6 +762,8 @@ const NURAAN_CATALOG = [
   {
     id: "island-kiss",
     name: "Island Kiss",
+    inspiration: "Island Kiss",
+    fragranticaDna: "Escada - Island Kiss",
     collection: "Women",
     category: "Women",
     badge: "Tropical Fresh",
@@ -778,6 +812,8 @@ const NURAAN_CATALOG = [
   {
     id: "bayan",
     name: "Bayan",
+    inspiration: "Kalemat",
+    fragranticaDna: "Arabian Oud - Kalemat",
     collection: "Oud",
     category: "Oud",
     badge: "Gourmand Wood",
@@ -822,6 +858,8 @@ const NURAAN_CATALOG = [
   {
     id: "camel-oud",
     name: "Camel Oud",
+    inspiration: "Camel Oud",
+    fragranticaDna: "Caramel Oriental Oud Accord",
     collection: "Oud",
     category: "Oud",
     badge: "Desert Heritage",
@@ -866,6 +904,8 @@ const NURAAN_CATALOG = [
   {
     id: "amir-majlis",
     name: "Amir Majlis",
+    inspiration: "Bin Shaikh",
+    fragranticaDna: "Ahmed Al Maghribi - Bin Shaikh",
     collection: "Oud",
     category: "Oud",
     badge: "Gathering Special",
@@ -910,6 +950,8 @@ const NURAAN_CATALOG = [
   {
     id: "safwan-oud",
     name: "Safwan Oud",
+    inspiration: "Arabian Tobacco",
+    fragranticaDna: "Ibrahim Al-Qurashi - Arabian Tobacco",
     collection: "Oud",
     category: "Oud",
     badge: "Smooth Artisanal",
@@ -954,6 +996,8 @@ const NURAAN_CATALOG = [
   {
     id: "surkh-oud",
     name: "Surkh Oud",
+    inspiration: "Red Tobacco",
+    fragranticaDna: "Mancera - Red Tobacco",
     collection: "Oud",
     category: "Oud",
     badge: "Signature Classic",

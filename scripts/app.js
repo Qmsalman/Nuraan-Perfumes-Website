@@ -191,6 +191,9 @@ function renderCatalog(products) {
           product.notes && product.notes.heart && product.notes.heart[0],
           product.notes && product.notes.base && product.notes.base[0]].filter(Boolean).join(" • ") || product.tagline || "");
 
+    const inspiredShort = product.inspiration || product.fragranticaDna || '';
+    const inspiredFull = product.fragranticaDna || product.inspiration || '';
+
     return `
       <article class="perfume-card" id="card-${product.id}" data-category="${product.category}" onclick="openNotesModal('${product.id}')" role="button" tabindex="0" aria-label="Inspect ${product.name} details">
         <div class="card-visual-wrapper continuous-sheen">
@@ -222,6 +225,22 @@ function renderCatalog(products) {
           </button>
         </div>
 
+        <!-- Mobile Botanical Ingredient Strip (replaces overlapping floating nodes) -->
+        ${(product.botanicals && product.botanicals.length > 0) ? `
+        <div class="card-botanicals-mobile-strip" onclick="event.stopPropagation(); openNotesModal('${product.id}')" title="Inspect olfactory notes">
+          ${product.botanicals.map(bot => `
+            <div class="mobile-botanical-chip">
+              <div class="mobile-botanical-chip-icon">
+                ${renderBotanicalSVG(bot.type)}
+              </div>
+              <div class="mobile-botanical-chip-text">
+                <span class="mobile-botanical-chip-name">${bot.name}</span>
+                <span class="mobile-botanical-chip-role">${bot.role}</span>
+              </div>
+            </div>
+          `).join('')}
+        </div>` : ''}
+
         <!-- Description Below the Image -->
         <div class="card-content">
           <!-- Compact Mobile & Desktop Header -->
@@ -231,8 +250,16 @@ function renderCatalog(products) {
               <span class="card-format-tag">PRECISION ROLL-ON</span>
             </div>
 
-            <h3 class="card-title">${product.name}</h3>
-            ${product.fragranticaDna ? `<p class="card-inspired-by">Inspired by ${product.fragranticaDna}</p>` : ''}
+            <h3 class="card-title">
+              <span class="card-title-main">${product.name}</span>
+            </h3>
+
+            ${inspiredShort ? `
+              <div class="card-inspired-tag" title="Inspired by ${inspiredFull}">
+                <span class="inspired-sparkle">✨</span>
+                <span class="inspired-text">Inspired by <strong>${inspiredShort}</strong></span>
+              </div>
+            ` : ''}
             
             ${(() => {
               const topNotes = (product.notes && product.notes.top) ? product.notes.top.slice(0, 4) : [];
@@ -1730,7 +1757,34 @@ window.openNotesModal = function(productId) {
   const currency = (window.NURAAN_CONFIG && window.NURAAN_CONFIG.currencySymbol) || "₹";
   const is12ml = (productSelectedSizes[productId] || '12ml') === '12ml';
 
-  document.getElementById("modal-title").textContent = product.name;
+  const modalTitleEl = document.getElementById("modal-title");
+  const modalInspiredEl = document.getElementById("modal-inspired-by");
+  const inspiredShort = product.inspiration || product.fragranticaDna || "";
+  const inspiredFull = product.fragranticaDna || product.inspiration || "";
+
+  if (modalTitleEl) {
+    if (inspiredShort) {
+      modalTitleEl.innerHTML = `${product.name} <span class="modal-title-inspired">— Inspired by ${inspiredShort}</span>`;
+    } else {
+      modalTitleEl.textContent = product.name;
+    }
+  }
+
+  if (modalInspiredEl) {
+    if (inspiredShort) {
+      modalInspiredEl.innerHTML = `
+        <div class="modal-inspired-banner">
+          <span class="modal-inspired-pill">✦ OLFACTORY INSPIRATION</span>
+          <span class="modal-inspired-lead">Formulated in the style of <strong>${inspiredShort}</strong></span>
+          ${(inspiredFull && inspiredFull !== inspiredShort) ? `<span class="modal-inspired-dna">(${inspiredFull})</span>` : ''}
+        </div>
+      `;
+      modalInspiredEl.style.display = 'block';
+    } else {
+      modalInspiredEl.style.display = 'none';
+    }
+  }
+
   document.getElementById("modal-category").textContent = `${product.collection.toUpperCase()} COLLECTION • 100% ALCOHOL-FREE OIL`;
   document.getElementById("modal-tagline").textContent = `"${product.tagline}"`;
   document.getElementById("modal-story").textContent = product.description;
