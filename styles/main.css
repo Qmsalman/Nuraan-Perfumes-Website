@@ -1548,9 +1548,17 @@ img {
 
 .card-meta {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
   margin-bottom: 8px;
+}
+
+.card-format-col {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  text-align: right;
+  line-height: 1.15;
 }
 
 .card-compact-header {
@@ -1559,9 +1567,18 @@ img {
 }
 
 .card-format-tag {
-  font-size: 0.72rem;
+  font-size: 0.68rem;
   color: var(--color-text-muted);
   font-weight: 600;
+  letter-spacing: 0.05em;
+}
+
+.card-format-size {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--accent-gold-dark, #8c6b23);
+  letter-spacing: 0.03em;
+  margin-top: 1px;
 }
 
 .card-signature-notes {
@@ -4880,6 +4897,9 @@ img {
   }
 
   .card-meta {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
     margin-bottom: 3px;
   }
 
@@ -4888,10 +4908,24 @@ img {
     letter-spacing: 0.1em;
   }
 
+  .card-format-col {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    text-align: right;
+    line-height: 1.1;
+  }
+
   .card-format-tag {
-    font-size: 0.56rem;
+    font-size: 0.52rem;
     color: var(--color-text-muted);
     font-weight: 600;
+  }
+
+  .card-format-size {
+    font-size: 0.58rem;
+    font-weight: 700;
+    color: var(--accent-gold-dark, #8c6b23);
   }
 
   .card-title {
@@ -4917,10 +4951,13 @@ img {
 
   .card-inspired-tag .inspired-sparkle {
     font-size: 9px;
+    flex-shrink: 0;
   }
 
   .card-inspired-tag .inspired-text {
-    font-size: 9.5px;
+    font-size: 9px;
+    white-space: normal;
+    line-height: 1.2;
   }
 
   .modal-title-inspired {

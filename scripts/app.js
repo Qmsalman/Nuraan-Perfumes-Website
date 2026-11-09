@@ -137,6 +137,62 @@ function formatSeason(sea) {
 }
 
 /**
+ * Clean Consumer Inspiration Helper
+ * Formats "Inspired by {Fragrance} — {Brand}" and "Formulated in the style of {Fragrance} by {Brand}"
+ */
+function getInspirationInfo(product) {
+  if (!product) return { badgeText: '', modalLead: '', modalTitleSubtitle: '' };
+
+  const rawDna = product.fragranticaDna || '';
+  let shortName = product.inspiration || '';
+
+  let brand = '';
+  let scent = shortName;
+
+  if (rawDna && rawDna.includes(' - ')) {
+    const parts = rawDna.split(' - ');
+    brand = parts[0].trim();
+    const rest = parts.slice(1).join(' - ').replace(/\([^)]*\)/g, '').trim();
+    if (!scent || scent === rawDna) {
+      scent = rest;
+    }
+  }
+
+  // Handle BR 540 / Baccarat Rouge 540 alias
+  if (scent.toLowerCase().includes('baccarat') || scent.toLowerCase().includes('br 540') || scent.toLowerCase().includes('br 450') || product.id === 'garnet-540') {
+    scent = 'BR 540';
+    brand = brand || 'Maison Francis Kurkdjian';
+  }
+
+  if (!brand && rawDna && rawDna !== scent) {
+    brand = rawDna;
+  }
+
+  if (!scent && !brand) {
+    return { badgeText: '', modalLead: '', modalTitleSubtitle: '' };
+  }
+
+  // 1. For Catalog Card Badge: "Inspired by BR 540 — Maison Francis Kurkdjian"
+  const badgeText = brand ? `${scent} — ${brand}` : scent;
+
+  // 2. For Modal Banner: "Formulated in the style of BR 540 by Maison Francis Kurkdjian"
+  const modalLead = brand 
+    ? `Formulated in the style of <strong>${scent}</strong> by <strong>${brand}</strong>` 
+    : `Formulated in the style of <strong>${scent}</strong>`;
+
+  // 3. For Modal Title: "— Inspired by BR 540"
+  const modalTitleSubtitle = `— Inspired by ${scent}`;
+
+  return {
+    scent,
+    brand,
+    badgeText,
+    modalLead,
+    modalTitleSubtitle
+  };
+}
+
+/**
  * Render Fragrance Catalog
  */
 function renderCatalog(products) {
@@ -191,8 +247,7 @@ function renderCatalog(products) {
           product.notes && product.notes.heart && product.notes.heart[0],
           product.notes && product.notes.base && product.notes.base[0]].filter(Boolean).join(" • ") || product.tagline || "");
 
-    const inspiredShort = product.inspiration || product.fragranticaDna || '';
-    const inspiredFull = product.fragranticaDna || product.inspiration || '';
+    const inspInfo = getInspirationInfo(product);
 
     return `
       <article class="perfume-card" id="card-${product.id}" data-category="${product.category}" onclick="openNotesModal('${product.id}')" role="button" tabindex="0" aria-label="Inspect ${product.name} details">
@@ -211,16 +266,16 @@ function renderCatalog(products) {
             ${renderProceduralBottle(product)}
           </div>
 
-          <!-- Olfactory Notes Modal Direct Inspection Trigger -->
+          <!-- Fragrance Notes Modal Inspection Trigger -->
           <button 
             type="button" 
             class="nudge-banner-btn" 
             id="nudge-${product.id}"
             onclick="event.stopPropagation(); openNotesModal('${product.id}')"
-            aria-label="Inspect ${product.name} Olfactory Notes & Pyramid"
+            aria-label="View ${product.name} Notes & Scent Pyramid"
           >
             <span>✨</span>
-            <span class="nudge-label">Inspect Olfactory Notes & Pyramid</span>
+            <span class="nudge-label">View Fragrance Notes & Pyramid</span>
             <span>▸</span>
           </button>
         </div>
@@ -231,17 +286,20 @@ function renderCatalog(products) {
           <div class="card-compact-header">
             <div class="card-meta">
               <span class="card-category">${product.category} COLLECTION</span>
-              <span class="card-format-tag">PRECISION ROLL-ON</span>
+              <div class="card-format-col">
+                <span class="card-format-tag">PRECISION ROLL-ON</span>
+                <span class="card-format-size">12ml</span>
+              </div>
             </div>
 
             <h3 class="card-title">
               <span class="card-title-main">${product.name}</span>
             </h3>
 
-            ${inspiredShort ? `
-              <div class="card-inspired-tag" title="Inspired by ${inspiredFull}">
+            ${inspInfo.badgeText ? `
+              <div class="card-inspired-tag" title="Inspired by ${inspInfo.badgeText}">
                 <span class="inspired-sparkle">✨</span>
-                <span class="inspired-text">Inspired by <strong>${inspiredShort}</strong></span>
+                <span class="inspired-text">Inspired by <strong>${inspInfo.badgeText}</strong></span>
               </div>
             ` : ''}
 
@@ -1736,24 +1794,22 @@ window.openNotesModal = function(productId) {
 
   const modalTitleEl = document.getElementById("modal-title");
   const modalInspiredEl = document.getElementById("modal-inspired-by");
-  const inspiredShort = product.inspiration || product.fragranticaDna || "";
-  const inspiredFull = product.fragranticaDna || product.inspiration || "";
+  const inspInfo = getInspirationInfo(product);
 
   if (modalTitleEl) {
-    if (inspiredShort) {
-      modalTitleEl.innerHTML = `${product.name} <span class="modal-title-inspired">— Inspired by ${inspiredShort}</span>`;
+    if (inspInfo.modalTitleSubtitle) {
+      modalTitleEl.innerHTML = `${product.name} <span class="modal-title-inspired">${inspInfo.modalTitleSubtitle}</span>`;
     } else {
       modalTitleEl.textContent = product.name;
     }
   }
 
   if (modalInspiredEl) {
-    if (inspiredShort) {
+    if (inspInfo.modalLead) {
       modalInspiredEl.innerHTML = `
         <div class="modal-inspired-banner">
-          <span class="modal-inspired-pill">✦ OLFACTORY INSPIRATION</span>
-          <span class="modal-inspired-lead">Formulated in the style of <strong>${inspiredShort}</strong></span>
-          ${(inspiredFull && inspiredFull !== inspiredShort) ? `<span class="modal-inspired-dna">(${inspiredFull})</span>` : ''}
+          <span class="modal-inspired-pill">✦ INSPIRATION</span>
+          <span class="modal-inspired-lead">${inspInfo.modalLead}</span>
         </div>
       `;
       modalInspiredEl.style.display = 'block';
