@@ -1573,6 +1573,39 @@ img {
   letter-spacing: -0.01em;
 }
 
+/* "Inspired by [Name]" subtle italic label */
+.card-inspired-by {
+  font-size: 10px;
+  font-style: italic;
+  color: var(--accent-gold-dark, #9a7f4a);
+  opacity: 0.72;
+  margin: -4px 0 5px;
+  line-height: 1.3;
+  letter-spacing: 0.01em;
+}
+
+/* Top notes compact pill strip on card face */
+.card-top-notes-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin: 4px 0 6px;
+}
+
+.top-note-pill {
+  display: inline-block;
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  color: var(--accent-gold-dark, #9a7f4a);
+  background: rgba(197, 155, 39, 0.08);
+  border: 1px solid rgba(197, 155, 39, 0.25);
+  border-radius: 99px;
+  padding: 2px 7px;
+  white-space: nowrap;
+  text-transform: uppercase;
+}
+
 .card-compact-price-row {
   display: none; /* Hidden on desktop; activated in mobile 2-column grid */
 }
@@ -4694,11 +4727,18 @@ img {
     display: none !important; /* Hide micro hint on mobile cards to keep bottle pristine */
   }
 
-  /* Hide floating botanical nodes & pulsing banner on mobile card face */
-  /* (These are fully rendered and inspected inside the Olfactory Notes Modal) */
-  .natural-botanical-node,
+  /* Hide floating nudge banner on mobile only — botanical chips remain visible */
   .nudge-banner-btn {
     display: none !important;
+  }
+
+  /* Botanical ingredient chips: always visible on mobile (no hover on touch) */
+  .natural-botanical-node {
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: scale(1) translateY(0) !important;
+    pointer-events: auto !important;
   }
 
   /* Compact Card Content */

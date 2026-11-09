@@ -232,7 +232,15 @@ function renderCatalog(products) {
             </div>
 
             <h3 class="card-title">${product.name}</h3>
+            ${product.fragranticaDna ? `<p class="card-inspired-by">Inspired by ${product.fragranticaDna}</p>` : ''}
             
+            ${(() => {
+              const topNotes = (product.notes && product.notes.top) ? product.notes.top.slice(0, 4) : [];
+              return topNotes.length > 0
+                ? `<div class="card-top-notes-strip">${topNotes.map(n => `<span class="top-note-pill">${n}</span>`).join('')}</div>`
+                : '';
+            })()}
+
             <p class="card-signature-notes" title="${signatureNotes}">
               ${signatureNotes}
             </p>
@@ -242,7 +250,7 @@ function renderCatalog(products) {
           <div class="card-compact-price-row" onclick="event.stopPropagation()">
             <div class="compact-price-wrap">
               <span class="compact-price" id="compact-price-val-${product.id}">${currency}${activePrice.toLocaleString('en-IN')}</span>
-              <span class="compact-size-label" id="compact-size-label-${product.id}">${is12ml ? '12ml' : '3ml'}</span>
+              <span class="compact-size-label">12ml</span>
             </div>
             
             <div class="card-compact-dual-btns">
@@ -311,40 +319,6 @@ function renderCatalog(products) {
               <div class="note-tier-pills">
                 ${(product.notes.base || []).map(n => `<span class="card-note-pill note-base">${n}</span>`).join("")}
               </div>
-            </div>
-          </div>
-
-          <!-- Size Toggle -->
-          <div class="size-toggle-box">
-            <div class="size-toggle-header">
-              <span class="size-toggle-label">Roll-on Format:</span>
-              <span class="size-toggle-active-name" id="size-label-${product.id}">
-                ${is12ml ? "12ml Luxury Single" : "3ml Discovery Option"}
-              </span>
-            </div>
-
-            <div class="size-toggle-buttons">
-              <button 
-                type="button" 
-                class="size-btn ${is12ml ? 'active' : ''}" 
-                id="btn-12ml-${product.id}"
-                onclick="switchProductSize('${product.id}', '12ml')"
-              >
-                <span class="size-qty">12ml</span>
-                <span class="size-desc">Single Bottle</span>
-                <span class="size-price">${currency}${product.price12ml.toLocaleString('en-IN')}</span>
-              </button>
-
-              <button 
-                type="button" 
-                class="size-btn ${!is12ml ? 'active' : ''}" 
-                id="btn-3ml-${product.id}"
-                onclick="switchProductSize('${product.id}', '3ml')"
-              >
-                <span class="size-qty">3ml</span>
-                <span class="size-desc">Discovery</span>
-                <span class="size-price">${currency}${product.price3mlOption.toLocaleString('en-IN')}</span>
-              </button>
             </div>
           </div>
 
