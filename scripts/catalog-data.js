@@ -24,7 +24,7 @@ const NURAAN_CATALOG = [
     category: "French",
     badge: "Bestseller",
     tagline: "Luminous amber crystals, sweet saffron & cedar warmth",
-    description: "An intoxicating extrait-strength pure attar that radiates pure warmth and charisma. Hand-harvested saffron threads melt into sweet mineral ambergris and crushed Himalayan cedarwood.",
+    description: "A warm, sweet, and glowing fragrance that turns heads wherever you go. Smells like spun sugar, warm amber crystals, and fresh cedarwood. Perfect for dates, parties, and evenings out.",
     accords: ["Saffron", "Warm Ambergris", "Cedar", "Sweet Spices"],
     botanicals: [
       {
@@ -56,6 +56,7 @@ const NURAAN_CATALOG = [
     season: "All Season • Signature Evening",
     bottleColor: "#A63D40",
     price12ml: 799,
+    originalMrp: 28000,
     occasions: ["party","casual"],
     seasons: ["winter","rainy","all-season"],
     price3mlOption: 299,
@@ -70,7 +71,7 @@ const NURAAN_CATALOG = [
     category: "French",
     badge: "Aristocratic Poise",
     tagline: "Mysore sandalwood, golden amber & dried spices",
-    description: "A scent of aristocratic poise and calm majesty. Creamy vintage Mysore sandalwood intertwines with warm golden amber, sweet tonka bean, and a whisper of royal saffron.",
+    description: "A fresh, classy, and gentlemanly scent. Bright Italian orange blossom and black pepper blend smoothly with creamy Mysore sandalwood. Ideal for the office, meetings, and daily wear.",
     accords: ["Mysore Sandal", "Golden Amber", "Tonka", "Warm Cashmere"],
     botanicals: [
       {
@@ -102,6 +103,7 @@ const NURAAN_CATALOG = [
     season: "All Year Round • Everyday Luxury",
     bottleColor: "#C59B27",
     price12ml: 799,
+    originalMrp: 8500,
     occasions: ["office","casual"],
     seasons: ["all-season","summer","rainy"],
     price3mlOption: 299,
@@ -116,7 +118,7 @@ const NURAAN_CATALOG = [
     category: "French",
     badge: "Royal Collection",
     tagline: "Crowned spices, royal Assam agarwood & sovereign musk",
-    description: "Crafted to embody leadership and ancient heritage. A commanding opening of nutmeg and coriander gives way to deep Assam agarwood, aged patchouli, and imperial ambergris.",
+    description: "A confident, fresh, and smoky scent that commands respect. Crisp pineapple and blackcurrant open into rich birch wood and smooth amber. Best for leadership, weddings, and special events.",
     accords: ["Assam Oud", "Spicy Nutmeg", "Patchouli", "Imperial Musk"],
     botanicals: [
       {
@@ -148,6 +150,7 @@ const NURAAN_CATALOG = [
     season: "Autumn / Winter • Formal Banquets",
     bottleColor: "#581845",
     price12ml: 799,
+    originalMrp: 34000,
     occasions: ["office","party","travelling"],
     seasons: ["all-season","summer","rainy"],
     price3mlOption: 299,
@@ -162,7 +165,7 @@ const NURAAN_CATALOG = [
     category: "French",
     badge: "Woodland Pure",
     tagline: "Dry Atlas cedarwood, crushed pine needles & smoky vetiver roots",
-    description: "A crisp, meditative olfactory journey through ancient mountain forests. Dry Atlas cedar shavings mingling with aromatic juniper berries, damp pine needles, and earthy Haitian vetiver.",
+    description: "A calming, clean walk through a pine and cedar forest. Pure woody freshness with a hint of warm spices that stays close and comforting on your skin all day. Great for work and relaxation.",
     accords: ["Atlas Cedarwood", "Pine Needles", "Haitian Vetiver", "Juniper Berry"],
     botanicals: [
       {
@@ -194,6 +197,7 @@ const NURAAN_CATALOG = [
     season: "Spring / Autumn • Daily Grounding",
     bottleColor: "#1E8449",
     price12ml: 799,
+    originalMrp: 16500,
     occasions: ["office","casual","travelling"],
     seasons: ["summer","rainy","all-season"],
     price3mlOption: 299,
@@ -208,7 +212,7 @@ const NURAAN_CATALOG = [
     category: "French",
     badge: "Crowd Favorite",
     tagline: "Crisp marine breeze, lavender fields & sun-drenched woods",
-    description: "A triumphant, ultra-refreshing concentrated oil for the modern conqueror. Vibrant Italian citrus sparks through aromatic lavender and wet moss, resting on a buoyant bed of clean driftwood.",
+    description: "A sweet, fruity, and energetic party scent. Juicy crisp apple and warm cinnamon blend with rich vanilla and tonka bean. An absolute magnet for night outs and weekend celebrations.",
     accords: ["Fresh Citrus", "Marine Breeze", "Lavender", "Clean Woods"],
     botanicals: [
       {
@@ -240,6 +244,7 @@ const NURAAN_CATALOG = [
     season: "Spring / Summer • Daytime Dynamic",
     bottleColor: "#1A5276",
     price12ml: 799,
+    originalMrp: 2999,
     occasions: ["casual","party","office"],
     seasons: ["summer","all-season","rainy"],
     price3mlOption: 299,
@@ -254,7 +259,7 @@ const NURAAN_CATALOG = [
     category: "French",
     badge: "Exotic Silk",
     tagline: "Caramelized Medjool dates, exotic bazaar spices & sweet amber",
-    description: "A bewitching oriental elixir celebrating the rich caravans of the Silk Road. Sweet Medjool dates simmered in honey and cinnamon, accented by frankincense tears, benzoin, and warm agarwood.",
+    description: "A delicious, sun-soaked gourmand fragrance. Salted caramel, warm pistachio, and sweet vanilla give you an irresistible holiday vibe. Loved for casual outings, brunches, and cozy days.",
     accords: ["Medjool Dates", "Bazaar Spices", "Sweet Amber", "Benzoin Tears"],
     botanicals: [
       {
@@ -286,6 +291,7 @@ const NURAAN_CATALOG = [
     season: "Autumn / Winter • Festive Evenings",
     bottleColor: "#7D6608",
     price12ml: 799,
+    originalMrp: 3200,
     occasions: ["party","casual","travelling"],
     seasons: ["winter","rainy"],
     price3mlOption: 299,
@@ -304,7 +310,7 @@ const NURAAN_CATALOG = [
     category: "Arabic",
     badge: "Pure Tahara",
     tagline: "Pristine white Tahara musk, clean cotton blossoms & soft rose water",
-    description: "The quintessential Middle Eastern purity attar. Thick, creamy white Tahara musk with a silky, non-greasy skin finish. Smells like pristine white linens, cold well water, and innocent white petals.",
+    description: "The ultimate clean, fresh-out-of-the-shower fragrance. Soft white musk and gentle white florals that smell pure, innocent, and velvety on skin. Perfect for daily wear, prayer, and gifting.",
     accords: ["White Tahara Musk", "Cotton Blossom", "Rose Water", "Clean Powder"],
     botanicals: [
       {
@@ -336,6 +342,7 @@ const NURAAN_CATALOG = [
     season: "All Year Round • Daily Purity & Meditation",
     bottleColor: "#D5D8DC",
     price12ml: 799,
+    originalMrp: 4500,
     occasions: ["casual","office","travelling"],
     seasons: ["summer","all-season","rainy"],
     price3mlOption: 299,
@@ -350,7 +357,7 @@ const NURAAN_CATALOG = [
     category: "Arabic",
     badge: "Heritage Treasure",
     tagline: "Kashmiri saffron threads, Damascena rose & aged sandalwood",
-    description: "Shaan represents pride, grandeur, and regal heritage. Precious crimson Kashmiri saffron threads distilled over vintage sandalwood oil and finished with velvety Damask rose water.",
+    description: "A refreshing, metallic-crisp rose and citrus attar. Sparkling bergamot and fresh lavender blend into delicate Damask rose and sandalwood. Outstanding for hot weather and mornings.",
     accords: ["Kashmiri Saffron", "Damask Rose", "Mysore Sandal", "Sweet Amber"],
     botanicals: [
       {
@@ -382,6 +389,7 @@ const NURAAN_CATALOG = [
     season: "All Season • Festive & Weddings",
     bottleColor: "#D35400",
     price12ml: 799,
+    originalMrp: 3500,
     occasions: ["office","casual","party"],
     seasons: ["summer","rainy","all-season"],
     price3mlOption: 299,
@@ -396,7 +404,7 @@ const NURAAN_CATALOG = [
     category: "Arabic",
     badge: "Master Counselor",
     tagline: "Spiced cardamom pod, dark Indonesian patchouli & smoky woods",
-    description: "A complex fragrance honoring the wisdom and authority of the royal vizier. Intense green cardamom crackles over dark aged patchouli, nutmeg, and dry vetiver roots.",
+    description: "A refreshing splash of chilled watermelon, sea breeze, and juicy red berries over clean white musk. Cool, modern, and ultra-uplifting for daily wear and warm afternoons.",
     accords: ["Green Cardamom", "Dark Patchouli", "Nutmeg", "Vetiver Root"],
     botanicals: [
       {
@@ -428,6 +436,7 @@ const NURAAN_CATALOG = [
     season: "Autumn / Winter / Rainy • Daily Power",
     bottleColor: "#4A235A",
     price12ml: 799,
+    originalMrp: 2499,
     occasions: ["office","travelling","casual"],
     seasons: ["summer","rainy","all-season"],
     price3mlOption: 299,
@@ -442,7 +451,7 @@ const NURAAN_CATALOG = [
     category: "Arabic",
     badge: "Unique Signature",
     tagline: "Bright Calabrian bergamot, Florentine iris & smoky vetiver",
-    description: "Nishan signifies a distinguished mark of honor. A bright, aristocratic signature opening of sparkling Italian bergamot, leading to powdery iris root and a refined dry-down of smoky vetiver and ambergris.",
+    description: "A warm, decadent blend of bourbon vanilla, roasted cinnamon, and smooth woody notes. Rich, sweet, and comforting like a luxury dessert. Perfect for winter nights and celebrations.",
     accords: ["Calabrian Bergamot", "Florentine Iris", "Smoky Vetiver", "Ambergris"],
     botanicals: [
       {
@@ -474,6 +483,7 @@ const NURAAN_CATALOG = [
     season: "All Season • Boardroom to Banquet",
     bottleColor: "#2874A6",
     price12ml: 799,
+    originalMrp: 24000,
     occasions: ["party","casual"],
     seasons: ["winter","rainy"],
     price3mlOption: 299,
@@ -488,7 +498,7 @@ const NURAAN_CATALOG = [
     category: "Arabic",
     badge: "Sovereign Crown",
     tagline: "Imperial aged Hindi oud, mineral ambergris & royal bridle leather",
-    description: "The absolute crown jewel of the Nuraan collection. Fermented, vintage Assam Hindi agarwood oil blended with genuine tincture-profile ambergris and burnished royal saddlery leather.",
+    description: "A bold, royal blend of spicy pink pepper, honeyed amber, and smooth Arabian oud. Rich and regal with deep staying power. Designed for festive gatherings and grand occasions.",
     accords: ["Vintage Hindi Oud", "Natural Ambergris", "Fine Leather", "Smoky Oak"],
     botanicals: [
       {
@@ -520,6 +530,7 @@ const NURAAN_CATALOG = [
     season: "Winter • Sovereign Milestones",
     bottleColor: "#2C1B0B",
     price12ml: 799,
+    originalMrp: 4500,
     occasions: ["party","office"],
     seasons: ["winter","rainy"],
     price3mlOption: 299,
@@ -534,7 +545,7 @@ const NURAAN_CATALOG = [
     category: "Arabic",
     badge: "Delicate Sublime",
     tagline: "Featherweight powdery floral musk, white lotus & vanilla silk",
-    description: "Raqeeq translates to delicate, tender, and sublime. A sheer veil of clean white lotus, iris root powder, creamy vanilla bean, and silken musks that melt effortlessly into the wearer's skin.",
+    description: "A delicate, soft floral and powdery musk that feels like a gentle whisper on the skin. Notes of white lotus, creamy vanilla, and clean musk create a peaceful, soothing trail.'s skin.",
     accords: ["White Lotus", "Iris Powder", "Vanilla Silk", "Clean Musks"],
     botanicals: [
       {
@@ -566,6 +577,7 @@ const NURAAN_CATALOG = [
     season: "All Year Round • Bedtime & Meditative",
     bottleColor: "#E8DAEF",
     price12ml: 799,
+    originalMrp: 3500,
     occasions: ["casual","office","travelling"],
     seasons: ["summer","all-season"],
     price3mlOption: 299,
@@ -584,7 +596,7 @@ const NURAAN_CATALOG = [
     category: "Women",
     badge: "Bestseller",
     tagline: "Plush velvet suede, cinnamon bark & sweet golden agarwood",
-    description: "An effortlessly smooth, contemporary take on Arabian oud. Supple velvet suede enveloped in warm cinnamon, sweet amber, and a non-medicinal, warm golden agarwood that feels like wrapping yourself in cashmere.",
+    description: "A smooth, contemporary oud wrapped in soft suede and warm cinnamon. Unlike heavy traditional ouds, this is velvety, easy to wear, and delightfully warm. Perfect for cozy evenings.",
     accords: ["Velvet Suede", "Warm Cinnamon", "Golden Oud", "Cashmere Amber"],
     botanicals: [
       {
@@ -616,6 +628,7 @@ const NURAAN_CATALOG = [
     season: "Autumn / Winter / Air-Conditioned Evenings",
     bottleColor: "#4A0E17",
     price12ml: 799,
+    originalMrp: 29000,
     occasions: ["party","casual"],
     seasons: ["winter","rainy","all-season"],
     price3mlOption: 299,
@@ -630,7 +643,7 @@ const NURAAN_CATALOG = [
     category: "Women",
     badge: "Natural Floral",
     tagline: "Lush white florals, night-blooming jasmine & dew-kissed tuberose",
-    description: "A stroll through a royal pleasure garden at dusk. Heady Sambac jasmine and intoxicating Indian tuberose softened by green stems, white lilies, and a featherweight musk trail.",
+    description: "A lush, fresh bouquet of white gardenia, jasmine, and pear blossom. Bright, romantic, and feminine without being overpowering. Perfect for sunny days, weddings, and brunches.",
     accords: ["Jasmine Sambac", "Tuberose", "White Lily", "Dewy Greens"],
     botanicals: [
       {
@@ -662,6 +675,7 @@ const NURAAN_CATALOG = [
     season: "Spring / Summer • Celebrations",
     bottleColor: "#229954",
     price12ml: 799,
+    originalMrp: 12500,
     occasions: ["casual","party","office"],
     seasons: ["summer","rainy","all-season"],
     price3mlOption: 299,
@@ -676,7 +690,7 @@ const NURAAN_CATALOG = [
     category: "Women",
     badge: "Dark Elegance",
     tagline: "Nocturnal leather, smoky birch tar & brooding incense",
-    description: "An enigmatic masterpiece formulated for bold evenings. Rich black leather combines with charred birch bark, aged dark woods, and resinous Omani frankincense.",
+    description: "A bold, seductive mix of rich dark coffee, sweet vanilla, and warm white flowers. Deep, mysterious, and unforgettable for nighttime wear and dinner dates.",
     accords: ["Black Leather", "Smoky Birch", "Incense", "Dark Woods"],
     botanicals: [
       {
@@ -708,6 +722,7 @@ const NURAAN_CATALOG = [
     season: "Autumn / Winter • Formal Evening",
     bottleColor: "#1B1B1E",
     price12ml: 799,
+    originalMrp: 11500,
     occasions: ["party"],
     seasons: ["winter","rainy"],
     price3mlOption: 299,
@@ -722,7 +737,7 @@ const NURAAN_CATALOG = [
     category: "Women",
     badge: "Warm Solar",
     tagline: "Honeyed musk crystals, warm solar amber & caramelized sugar",
-    description: "A rich, honeyed nectar musk that glows like liquid gold on warm skin. Sweet sun-warmed amber, white musks, and a hint of golden honeycomb create an irresistible, comforting warmth.",
+    description: "A glowing, sun-warmed blend of honeyed citrus, golden amber, and soft musk. Comforting, sweet, and radiant on your skin throughout the day.",
     accords: ["Honeyed Musk", "Solar Amber", "Sweet Honeycomb", "Benzoin"],
     botanicals: [
       {
@@ -754,6 +769,7 @@ const NURAAN_CATALOG = [
     season: "All Season • Daytime & Evening Glow",
     bottleColor: "#F39C12",
     price12ml: 799,
+    originalMrp: 3500,
     occasions: ["casual","party","travelling"],
     seasons: ["all-season","summer","rainy"],
     price3mlOption: 299,
@@ -768,7 +784,7 @@ const NURAAN_CATALOG = [
     category: "Women",
     badge: "Tropical Fresh",
     tagline: "Exotic passion fruit nectar, coconut water & sun-kissed frangipani",
-    description: "A joyful burst of tropical paradise captured in an alcohol-free concentrated oil. Luscious passion fruit, chilled coconut water, and fragrant white frangipani blossoms resting on a base of creamy solar musk.",
+    description: "A cheerful splash of tropical mango, passion fruit, and coconut breeze. Fruity, uplifting, and fun—like an exotic beach vacation in a bottle.",
     accords: ["Passion Fruit", "Coconut Water", "Frangipani Blossom", "Solar Musk"],
     botanicals: [
       {
@@ -800,6 +816,7 @@ const NURAAN_CATALOG = [
     season: "Summer / Vacation • Sunny Days",
     bottleColor: "#E67E22",
     price12ml: 799,
+    originalMrp: 6500,
     occasions: ["casual","travelling"],
     seasons: ["summer"],
     price3mlOption: 299,
@@ -818,7 +835,7 @@ const NURAAN_CATALOG = [
     category: "Oud",
     badge: "Gourmand Wood",
     tagline: "Warm aromatic spiced tobacco, bourbon vanilla & honeyed tonka",
-    description: "Bayan means eloquence and revelation. A rich, opulent gourmand attar celebrating honeyed pipe tobacco leaves, sweet cinnamon bark, roasted tonka bean, and Madagascan bourbon vanilla.",
+    description: "A rich, sweet scent of warm honey, spiced tobacco leaf, and Madagascar vanilla. Cozy, warm, and sophisticated for evening gatherings and chilly evenings.",
     accords: ["Sweet Tobacco", "Vanilla Cream", "Cinnamon", "Roasted Tonka"],
     botanicals: [
       {
@@ -850,6 +867,7 @@ const NURAAN_CATALOG = [
     season: "Autumn / Winter • Evening Intimacy",
     bottleColor: "#784212",
     price12ml: 799,
+    originalMrp: 8500,
     occasions: ["party","casual"],
     seasons: ["winter","rainy"],
     price3mlOption: 299,
@@ -864,7 +882,7 @@ const NURAAN_CATALOG = [
     category: "Oud",
     badge: "Desert Heritage",
     tagline: "Caravan spices, warm desert sand & smoky agarwood resin",
-    description: "Inspired by ancient incense camel caravans crossing the Rub' al Khali desert. Sun-warmed desert minerals blend with wild Frankincense, scorched agarwood chips, and dry amber resin.",
+    description: "A golden, warm desert scent with frankincense, smoky cedar, and rich amber resin. Grounding, earthy, and long-lasting for anyone who loves traditional woody scents.' al Khali desert. Sun-warmed desert minerals blend with wild Frankincense, scorched agarwood chips, and dry amber resin.",
     accords: ["Desert Minerals", "Wild Frankincense", "Aged Oud", "Dry Amber"],
     botanicals: [
       {
@@ -896,6 +914,7 @@ const NURAAN_CATALOG = [
     season: "Cool Weather • Contemplative",
     bottleColor: "#B7950B",
     price12ml: 799,
+    originalMrp: 3500,
     occasions: ["travelling","party"],
     seasons: ["winter","all-season"],
     price3mlOption: 299,
@@ -910,7 +929,7 @@ const NURAAN_CATALOG = [
     category: "Oud",
     badge: "Gathering Special",
     tagline: "Bakhoor embers, Arabic spiced coffee, cardamom & frankincense",
-    description: "The scent of Arab hospitality and sacred evening gatherings. Glowing bakhoor wood chips smoking gently alongside freshly roasted cardamom coffee, saffron tea, and amber resin.",
+    description: "The welcoming aroma of traditional Arab hospitality. Warm bakhoor incense, fresh cardamom, and sweet amber creating a cozy, generous atmosphere.",
     accords: ["Bakhoor Smoke", "Arabic Qahwa", "Frankincense", "Cardamom"],
     botanicals: [
       {
@@ -942,6 +961,7 @@ const NURAAN_CATALOG = [
     season: "Autumn / Winter / Jummah Gatherings",
     bottleColor: "#6E2C00",
     price12ml: 799,
+    originalMrp: 4500,
     occasions: ["party","casual"],
     seasons: ["winter","rainy"],
     price3mlOption: 299,
@@ -956,7 +976,7 @@ const NURAAN_CATALOG = [
     category: "Oud",
     badge: "Smooth Artisanal",
     tagline: "Smooth Cambodian agarwood, wild dried berries & sweet woods",
-    description: "Safwan means pure, clear, and serene. Unlike heavy barnyard notes, Safwan Oud showcases the sweet, fruit-glazed, balsamic characteristics of wild Koh Kong Cambodian distillations.",
+    description: "A sweet, smooth Cambodian oud with notes of dried fruit and warm balsamic woods. Gentle, refined, and completely free of harsh medicinal notes.",
     accords: ["Cambodian Oud", "Dried Wild Berries", "Balsamic Wood", "Warm Resins"],
     botanicals: [
       {
@@ -988,6 +1008,7 @@ const NURAAN_CATALOG = [
     season: "All Seasons • Oud Lovers & Connoisseurs",
     bottleColor: "#512E5F",
     price12ml: 799,
+    originalMrp: 7500,
     occasions: ["party","office"],
     seasons: ["winter","rainy"],
     price3mlOption: 299,
@@ -1002,7 +1023,7 @@ const NURAAN_CATALOG = [
     category: "Oud",
     badge: "Signature Classic",
     tagline: "Crimson Taif rose married with deep Assam agarwood oil",
-    description: "The eternal romance of royal perfumery: sweet crimson Taif roses distilled with dark, earthy Indian agarwood. An opulent duality of velvet petals and resinous forest depth.",
+    description: "An intense, powerful blend of dark tobacco, spicy cinnamon, and smoky oud. Incredibly long-lasting with a warm, commanding trail. Made for cold nights and statements.",
     accords: ["Crimson Taif Rose", "Assam Agarwood", "Geranium", "Warm Amber"],
     botanicals: [
       {
@@ -1034,6 +1055,7 @@ const NURAAN_CATALOG = [
     season: "All Season • Romantic Evenings & Weddings",
     bottleColor: "#922B21",
     price12ml: 799,
+    originalMrp: 14500,
     occasions: ["party","travelling"],
     seasons: ["winter","rainy","all-season"],
     price3mlOption: 299,

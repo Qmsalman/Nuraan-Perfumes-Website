@@ -414,29 +414,39 @@ const NuraanSheetsSync = {
 
   /**
    * Convert any Google Drive sharing or viewer link into a direct high-speed image CDN URL
+   * Automatically applies Google's edge CDN WebP compression (=w600-h600-c-rw) to shrink multi-MB uploads to ~40KB
    * Supports:
    * - https://drive.google.com/file/d/{FILE_ID}/view?usp=sharing
    * - https://drive.google.com/open?id={FILE_ID}
    * - https://drive.google.com/uc?id={FILE_ID}
-   * - Direct image URLs (jpg, png, webp) pass through untouched
+   * - Direct image URLs pass through untouched
    */
   convertGoogleDriveUrl: function(url) {
     if (!url || typeof url !== 'string') return url;
     const trimmed = url.trim();
     if (!trimmed) return trimmed;
 
+    // Google CDN sizing & WebP optimization parameter
+    const cdnTransform = '=w600-h600-c-rw';
+
     if (trimmed.includes('drive.google.com') || trimmed.includes('docs.google.com')) {
       // Pattern 1: /file/d/{FILE_ID}/
       const fileIdMatch = trimmed.match(/\/d\/([a-zA-Z0-9_-]+)/);
       if (fileIdMatch && fileIdMatch[1]) {
-        return `https://lh3.googleusercontent.com/d/${fileIdMatch[1]}`;
+        return `https://lh3.googleusercontent.com/d/${fileIdMatch[1]}${cdnTransform}`;
       }
       // Pattern 2: id={FILE_ID}
       const idParamMatch = trimmed.match(/[?&]id=([a-zA-Z0-9_-]+)/);
       if (idParamMatch && idParamMatch[1]) {
-        return `https://lh3.googleusercontent.com/d/${idParamMatch[1]}`;
+        return `https://lh3.googleusercontent.com/d/${idParamMatch[1]}${cdnTransform}`;
       }
     }
+
+    // If already a Google CDN usercontent link without size transform:
+    if (trimmed.includes('lh3.googleusercontent.com/d/') && !trimmed.includes('=')) {
+      return `${trimmed}${cdnTransform}`;
+    }
+
     return trimmed;
   },
 

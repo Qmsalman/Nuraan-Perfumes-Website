@@ -54,6 +54,12 @@ const NURAAN_CONFIG = {
     syncOnLoad: true
   },
 
+  // Visitor Tracking & Analytics (Google Tag Manager / GA4)
+  googleAnalytics: {
+    enabled: true,
+    measurementId: "GTM-PWWT7P7W"
+  },
+
   // Business Hours / Response Time
   responseTime: "Replies typically within 15–30 minutes on WhatsApp"
 };

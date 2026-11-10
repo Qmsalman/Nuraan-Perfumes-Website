@@ -677,46 +677,62 @@ img {
   z-index: 6;
 }
 
-/* Trust Pillars */
+/* Trust Pillars (Expanded 3-Pillar Banner) */
 .trust-pillars {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
-  margin: 0;
-  border-top: 1px solid var(--color-border);
-  padding-top: 28px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  margin: 32px 0 0;
+  border-top: 1px solid rgba(197, 160, 89, 0.25);
+  padding-top: 26px;
 }
 
 .pillar-item {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 15px;
   text-align: left;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.92) 0%, rgba(249, 246, 240, 0.88) 100%);
+  border: 1px solid rgba(197, 160, 89, 0.28);
+  border-radius: 14px;
+  padding: 16px 18px;
+  box-shadow: 0 4px 16px rgba(30, 20, 10, 0.04);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.pillar-item:hover {
+  transform: translateY(-2px);
+  border-color: rgba(197, 160, 89, 0.55);
+  box-shadow: 0 8px 24px rgba(197, 160, 89, 0.15);
 }
 
 .pillar-icon {
-  width: 44px;
-  height: 44px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
-  background: rgba(179, 143, 77, 0.1);
-  border: 1px solid var(--border-gold);
+  background: linear-gradient(135deg, rgba(197, 160, 89, 0.18) 0%, rgba(197, 160, 89, 0.06) 100%);
+  border: 1.5px solid var(--border-gold);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(197, 160, 89, 0.15);
 }
 
 .pillar-title {
-  font-size: 0.86rem;
+  font-size: 0.96rem;
   font-weight: 700;
   color: var(--color-text-main);
+  letter-spacing: -0.01em;
+  margin-bottom: 2px;
   display: block;
 }
 
 .pillar-desc {
-  font-size: 0.74rem;
+  font-size: 0.78rem;
   color: var(--color-text-muted);
+  line-height: 1.35;
   display: block;
 }
 
@@ -1889,8 +1905,15 @@ img {
 
 .current-price-display {
   display: flex;
-  align-items: baseline;
+  flex-direction: column;
   gap: 4px;
+}
+
+.price-val-row {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  flex-wrap: wrap;
 }
 
 .price-currency {
@@ -1906,10 +1929,106 @@ img {
   line-height: 1;
 }
 
+.price-original-mrp {
+  font-size: 0.82rem;
+  color: #8c827a;
+  text-decoration: line-through;
+  font-weight: 500;
+}
+
+.price-savings-badge {
+  display: inline-flex;
+  align-items: center;
+  background: #1b4332;
+  color: #d8f3dc;
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 999px;
+  letter-spacing: 0.02em;
+}
+
 .price-note {
   font-size: 0.72rem;
   color: var(--color-text-muted);
-  margin-left: auto;
+}
+
+/* Compact Price Row Savings (Mobile) */
+.compact-price-line {
+  display: flex;
+  align-items: baseline;
+  gap: 5px;
+}
+
+.compact-original-mrp {
+  font-size: 0.72rem;
+  color: #8c827a;
+  text-decoration: line-through;
+  font-weight: 500;
+}
+
+.compact-size-line {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.compact-savings-badge {
+  display: inline-block;
+  background: #1b4332;
+  color: #d8f3dc;
+  font-size: 0.62rem;
+  font-weight: 700;
+  padding: 1px 5px;
+  border-radius: 4px;
+}
+
+/* Modal Pricing Row & Savings Highlight */
+.modal-price-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.modal-price-headline {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.modal-original-mrp {
+  font-size: 0.95rem;
+  color: #8c827a;
+  text-decoration: line-through;
+  font-weight: 500;
+}
+
+.modal-savings-pill {
+  display: inline-flex;
+  align-items: center;
+  background: #1b4332;
+  color: #d8f3dc;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 999px;
+}
+
+.modal-savings-highlight {
+  margin-top: 8px;
+  padding: 9px 13px;
+  background: linear-gradient(135deg, rgba(27, 67, 50, 0.08) 0%, rgba(197, 160, 89, 0.12) 100%);
+  border: 1px solid rgba(197, 160, 89, 0.35);
+  border-radius: 8px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--color-text-main);
+  line-height: 1.45;
+}
+
+.modal-savings-highlight strong {
+  color: #1b4332;
 }
 
 .dual-action-buttons {
@@ -4198,7 +4317,8 @@ img {
     grid-template-columns: repeat(3, 1fr);
   }
   .trust-pillars {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
   }
   .footer-grid {
     grid-template-columns: repeat(2, 1fr);
@@ -4346,24 +4466,25 @@ img {
     justify-content: center;
   }
   .trust-pillars {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
-    padding-top: 20px;
+    grid-template-columns: 1fr;
+    gap: 10px;
+    padding-top: 18px;
     width: 100%;
   }
   .pillar-item {
-    gap: 8px;
+    gap: 12px;
+    padding: 12px 14px;
   }
   .pillar-icon {
-    width: 36px;
-    height: 36px;
-    font-size: 1rem;
+    width: 40px;
+    height: 40px;
+    font-size: 1.15rem;
   }
   .pillar-title {
-    font-size: 0.74rem;
+    font-size: 0.88rem;
   }
   .pillar-desc {
-    font-size: 0.62rem;
+    font-size: 0.72rem;
   }
   .catalog-controls {
     position: relative !important;
