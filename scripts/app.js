@@ -1521,6 +1521,8 @@ window.triggerCustomBoxWhatsApp = function() {
   const names = customBoxState.selectedAttars.map(p => p.name);
 
   trackEvent('whatsapp_custom_box_click', {
+    item_name: `Custom Box (${sizeLabel})`,
+    item_category: 'Custom Discovery Box',
     box_size: sizeLabel,
     item_count: names.length,
     value: price,
@@ -1540,6 +1542,8 @@ window.triggerCustomBoxInstagram = function() {
   const names = customBoxState.selectedAttars.map(p => p.name);
 
   trackEvent('instagram_custom_box_click', {
+    item_name: `Custom Box (${sizeLabel})`,
+    item_category: 'Custom Discovery Box',
     box_size: sizeLabel,
     item_count: names.length,
     value: price,
@@ -1612,6 +1616,7 @@ window.triggerWhatsAppOrder = function(productId) {
   trackEvent('whatsapp_click', {
     item_id: product.id,
     item_name: product.name,
+    item_category: product.category,
     size: size,
     value: price,
     currency: 'INR'
@@ -1627,6 +1632,7 @@ window.triggerInstagramInquiry = function(productId) {
   trackEvent('instagram_click', {
     item_id: product.id,
     item_name: product.name,
+    item_category: product.category,
     size: size,
     value: price,
     currency: 'INR'
@@ -1640,6 +1646,8 @@ window.triggerComboWhatsApp = function(comboId) {
   const size = (window.comboSelectedSizes && window.comboSelectedSizes[comboId]) || '3ml';
   const price = size === '12ml' ? (combo.price12ml || 2999) : (combo.price3ml || combo.price || 1299);
   trackEvent('whatsapp_combo_click', {
+    item_name: combo.name,
+    item_category: 'Discovery Box',
     combo_id: combo.id,
     combo_name: combo.name,
     size: size,
@@ -1655,6 +1663,8 @@ window.triggerComboInstagram = function(comboId) {
   const size = (window.comboSelectedSizes && window.comboSelectedSizes[comboId]) || '3ml';
   const price = size === '12ml' ? (combo.price12ml || 2999) : (combo.price3ml || combo.price || 1299);
   trackEvent('instagram_combo_click', {
+    item_name: combo.name,
+    item_category: 'Discovery Box',
     combo_id: combo.id,
     combo_name: combo.name,
     size: size,
@@ -1699,7 +1709,10 @@ function setupFilterTabs() {
       // Reset expanded state when changing categories
       showAllAttarsInHighlights = false;
       applyFilters();
-      trackEvent('filter_collection', { category: currentCategory });
+      trackEvent('filter_collection', { 
+        category: currentCategory,
+        item_category: currentCategory 
+      });
     });
   });
 }
@@ -2293,6 +2306,7 @@ window.toggleSelection = function(productId) {
     trackEvent('add_to_cart', {
       item_id: product.id,
       item_name: product.name,
+      item_category: product.category,
       item_size: currentSize,
       price: price,
       currency: 'INR'
