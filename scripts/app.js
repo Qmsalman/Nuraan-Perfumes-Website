@@ -36,6 +36,7 @@ function initApp() {
   setupModalEvents();
   setupStickyMobileBar();
   updateSelectionUI();
+  setupSectionTracking();
 }
 
 /**
@@ -1519,6 +1520,13 @@ window.triggerCustomBoxWhatsApp = function() {
   const sizeLabel = is3ml ? "3ml Roll-on" : "12ml Roll-on";
   const names = customBoxState.selectedAttars.map(p => p.name);
 
+  trackEvent('whatsapp_custom_box_click', {
+    box_size: sizeLabel,
+    item_count: names.length,
+    value: price,
+    currency: 'INR'
+  });
+
   window.SocialCheckout.orderCustomBoxOnWhatsApp(sizeLabel, names, price);
 };
 
@@ -1530,6 +1538,13 @@ window.triggerCustomBoxInstagram = function() {
     : (config.customBox12mlPrice || 3999);
   const sizeLabel = is3ml ? "3ml Roll-on" : "12ml Roll-on";
   const names = customBoxState.selectedAttars.map(p => p.name);
+
+  trackEvent('instagram_custom_box_click', {
+    box_size: sizeLabel,
+    item_count: names.length,
+    value: price,
+    currency: 'INR'
+  });
 
   window.SocialCheckout.orderCustomBoxOnInstagram(sizeLabel, names, price);
 };
@@ -1684,6 +1699,7 @@ function setupFilterTabs() {
       // Reset expanded state when changing categories
       showAllAttarsInHighlights = false;
       applyFilters();
+      trackEvent('filter_collection', { category: currentCategory });
     });
   });
 }
@@ -1697,6 +1713,7 @@ function setupCompassFilters() {
       currentOccasion = btn.getAttribute("data-occasion");
       showAllAttarsInHighlights = true;
       applyFilters();
+      trackEvent('filter_compass', { occasion: currentOccasion, season: currentSeason });
     });
   });
 
@@ -1708,6 +1725,7 @@ function setupCompassFilters() {
       currentSeason = btn.getAttribute("data-season");
       showAllAttarsInHighlights = true;
       applyFilters();
+      trackEvent('filter_compass', { occasion: currentOccasion, season: currentSeason });
     });
   });
 }
@@ -1733,8 +1751,16 @@ function setupSearch() {
   const searchInput = document.getElementById("search-input");
   if (!searchInput) return;
 
+  let searchDebounceTimer = null;
   searchInput.addEventListener("input", (e) => {
-    applyFilters(e.target.value.trim().toLowerCase());
+    const val = e.target.value.trim().toLowerCase();
+    applyFilters(val);
+    clearTimeout(searchDebounceTimer);
+    if (val.length >= 2) {
+      searchDebounceTimer = setTimeout(() => {
+        trackEvent('search_perfume', { search_term: val });
+      }, 700);
+    }
   });
 }
 
@@ -2178,6 +2204,58 @@ function setupStickyMobileBar() {
   }, { passive: true });
 }
 
+/**
+ * Automated Section Impression & Funnel Tracking (GA4)
+ * Passively observes when a visitor scrolls to distinct storefront sections
+ */
+function setupSectionTracking() {
+  if (typeof IntersectionObserver !== 'function') return;
+
+  const sectionMap = {
+    'hero': 'Hero & Brand Pillars',
+    'combos': 'Curated Discovery Sets',
+    'custom-builder': 'Build Your Own Attar Box',
+    'catalog': 'Fragrance Collection Catalog',
+    'guide': 'How to Apply Ritual Guide'
+  };
+
+  const trackedSections = new Set();
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.id;
+        if (id && sectionMap[id] && !trackedSections.has(id)) {
+          trackedSections.add(id);
+          trackEvent('section_view', {
+            section_id: id,
+            section_name: sectionMap[id]
+          });
+        }
+      }
+    });
+  }, {
+    threshold: 0.35 // Triggers when 35% of the section enters the viewport
+  });
+
+  Object.keys(sectionMap).forEach(id => {
+    const el = document.getElementById(id);
+    if (el) observer.observe(el);
+  });
+
+  // Track Header & Hero Navigation link clicks
+  document.querySelectorAll('.header-nav a, .hero-cta-group a, .announcement-track-link').forEach(link => {
+    link.addEventListener('click', () => {
+      const href = link.getAttribute('href') || '';
+      const text = (link.textContent || '').trim().replace(/\s+/g, ' ');
+      trackEvent('nav_click', {
+        link_text: text,
+        target_section: href
+      });
+    });
+  });
+}
+
 // ==============================================================================
 // 14. MULTI-ITEM SCENT SELECTION LIST SYSTEM ("ORDER A COUPLE OF ATTARS")
 // ==============================================================================
@@ -2196,6 +2274,12 @@ window.toggleSelection = function(productId) {
   if (existingIdx !== -1) {
     window.selectionList.splice(existingIdx, 1);
     window.SocialCheckout.showToast(`Removed "${product.name}" from your order list.`, "info");
+    trackEvent('remove_from_cart', {
+      item_id: product.id,
+      item_name: product.name,
+      item_size: currentSize,
+      price: price
+    });
   } else {
     window.selectionList.push({
       id: product.id,
@@ -2206,6 +2290,13 @@ window.toggleSelection = function(productId) {
       bottleColor: product.bottleColor || "#C59B27"
     });
     window.SocialCheckout.showToast(`✓ Added "${product.name} (${currentSize})" to your order list! ✨`, "success");
+    trackEvent('add_to_cart', {
+      item_id: product.id,
+      item_name: product.name,
+      item_size: currentSize,
+      price: price,
+      currency: 'INR'
+    });
   }
 
   updateSelectionUI();
@@ -2216,6 +2307,11 @@ window.removeFromSelection = function(index) {
     const item = window.selectionList[index];
     window.selectionList.splice(index, 1);
     window.SocialCheckout.showToast(`Removed "${item.name}" from your selection.`, "info");
+    trackEvent('remove_from_cart', {
+      item_id: item.id,
+      item_name: item.name,
+      item_size: item.size
+    });
     updateSelectionUI();
   }
 };
@@ -2230,6 +2326,11 @@ window.openSelectionDrawer = function() {
   const overlay = document.getElementById("selection-drawer-overlay");
   if (overlay) overlay.classList.add("open");
   document.body.style.overflow = "hidden";
+  trackEvent('view_cart', {
+    item_count: window.selectionList.length,
+    total_value: window.selectionList.reduce((acc, i) => acc + (i.price || 0), 0),
+    currency: 'INR'
+  });
 };
 
 window.closeSelectionDrawer = function() {
