@@ -5851,3 +5851,201 @@ img {
     height: 11px !important;
   }
 }
+
+/* ==============================================================================
+ * 16. GIFT SET BUNDLE SELECTOR & 12ML WARDROBE PROGRESS UI
+ * ============================================================================== */
+.combo-bundle-selector {
+  margin: 12px 0 16px 0;
+  text-align: left;
+}
+.bundle-selector-label {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-text-muted, #718096);
+  margin-bottom: 8px;
+}
+.combo-bundle-pills {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+.combo-bundle-pill {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 9px 12px;
+  border-radius: 9px;
+  border: 1.5px solid var(--color-border, #E8E2D9);
+  background: #FAFAFA;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+  width: 100%;
+  text-align: left;
+}
+.combo-bundle-pill:hover {
+  border-color: var(--accent-gold, #C5A059);
+  background: #FFFFFF;
+}
+.combo-bundle-pill.active {
+  border-color: var(--accent-gold, #C5A059);
+  background: rgba(197, 160, 89, 0.09);
+  box-shadow: 0 3px 10px rgba(197, 160, 89, 0.15);
+}
+.combo-bundle-pill .pill-radio {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  border: 2px solid #CBD5E0;
+  margin-right: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.combo-bundle-pill.active .pill-radio {
+  border-color: var(--accent-gold, #C5A059);
+}
+.combo-bundle-pill.active .pill-radio::after {
+  content: '';
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent-gold, #C5A059);
+}
+.combo-bundle-pill .pill-name {
+  font-weight: 700;
+  font-size: 0.84rem;
+  color: var(--color-text-main, #14171E);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-grow: 1;
+}
+.combo-bundle-pill .pill-price {
+  font-weight: 800;
+  font-size: 0.92rem;
+  color: var(--color-text-main, #14171E);
+}
+.pill-badge-deal {
+  font-size: 0.65rem;
+  font-weight: 800;
+  padding: 2px 6px;
+  border-radius: 5px;
+  background: #FEF3C7;
+  color: #92400E;
+  text-transform: uppercase;
+}
+.pill-badge-deal.best {
+  background: #DCFCE7;
+  color: #166534;
+}
+.btn-add-combo-sel {
+  width: 100%;
+  background: transparent;
+  color: var(--color-text-main, #14171E);
+  border: 1.5px dashed var(--color-border, #E8E2D9);
+  padding: 9px 12px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+.btn-add-combo-sel:hover {
+  border-color: var(--accent-gold, #C5A059);
+  background: rgba(197, 160, 89, 0.05);
+  color: var(--accent-gold-dark, #8A6C2F);
+}
+
+/* 12ml Wardrobe Progress Card in Drawer */
+.wardrobe-progress-card {
+  background: linear-gradient(135deg, #FAF7F2 0%, #F5EFE6 100%);
+  border: 1px solid #E8DFD3;
+  border-radius: 12px;
+  padding: 14px;
+  margin-bottom: 14px;
+}
+.progress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+.progress-title {
+  font-size: 0.76rem;
+  font-weight: 800;
+  color: var(--accent-gold-dark, #8A6C2F);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.progress-count {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--color-text-main, #14171E);
+}
+.progress-bar-bg {
+  width: 100%;
+  height: 8px;
+  background: #E2D9CC;
+  border-radius: 5px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #C5A059 0%, #8A6C2F 100%);
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.unlocked-benefit {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #166534;
+  line-height: 1.35;
+}
+
+/* Universal Gift Set Progress Card in Drawer */
+.giftset-bundle-card {
+  background: #F0FDF4;
+  border: 1px solid #BBF7D0;
+  border-radius: 12px;
+  padding: 12px 14px;
+  margin-bottom: 14px;
+}
+.giftset-bundle-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+}
+.giftset-bundle-title {
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: #166534;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.giftset-bundle-badge {
+  font-size: 0.68rem;
+  font-weight: 800;
+  padding: 2px 7px;
+  border-radius: 6px;
+  background: #DCFCE7;
+  color: #166534;
+  text-transform: uppercase;
+}
+.giftset-bundle-msg {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #15803D;
+  line-height: 1.35;
+}
+
