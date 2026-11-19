@@ -624,18 +624,11 @@ img {
   border: 1px solid rgba(212, 175, 55, 0.4);
   color: #FFFFFF;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  animation: heroTagFloat 4s ease-in-out infinite alternate;
-}
-
-@keyframes heroTagFloat {
-  0% { transform: translateY(0); }
-  100% { transform: translateY(-5px); }
 }
 
 .tag-saffron {
   top: 20%;
   left: 8%;
-  animation-delay: 0s;
 }
 
 .tag-rose {
@@ -1041,27 +1034,7 @@ img {
   overflow: hidden;
 }
 .continuous-sheen::after {
-  content: '';
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: linear-gradient(
-    60deg,
-    transparent 35%,
-    rgba(255, 255, 255, 0.45) 50%,
-    rgba(197, 160, 89, 0.4) 53%,
-    transparent 65%
-  );
-  animation: continuousLightGlint 4.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-  pointer-events: none;
-  z-index: 15;
-}
-@keyframes continuousLightGlint {
-  0% { transform: translateX(-150%) rotate(25deg); }
-  35% { transform: translateX(150%) rotate(25deg); }
-  100% { transform: translateX(150%) rotate(25deg); }
+  display: none;
 }
 
 .card-visual-wrapper {
@@ -1131,12 +1104,13 @@ img {
   filter: drop-shadow(0 8px 12px rgba(20, 23, 30, 0.12));
 }
 
-@keyframes oilViscosityPulse {
-  0%, 100% { opacity: 0.92; filter: brightness(1); }
-  50% { opacity: 1; filter: brightness(1.12); }
-}
 .oil-pulse {
-  animation: oilViscosityPulse 4s ease-in-out infinite;
+  opacity: 0.96;
+  transition: opacity 0.3s ease, filter 0.3s ease;
+}
+.bottle-3d-stage:hover .oil-pulse {
+  opacity: 1;
+  filter: brightness(1.08);
 }
 
 /* ==============================================================================
@@ -1220,44 +1194,8 @@ img {
 }
 
 /* ==============================================================================
-   LIVING BOTANICAL INGREDIENT ANIMATIONS
+   BOTANICAL INGREDIENT PRESENTATION
    ============================================================================== */
-@keyframes roseBloomAnim {
-  0%, 100% { transform: scale(1) rotate(0deg); }
-  50% { transform: scale(1.08) rotate(3deg); }
-}
-.anim-rose-bloom {
-  animation: roseBloomAnim 4s ease-in-out infinite;
-  transform-origin: center;
-}
-
-@keyframes resinDripAnim {
-  0%, 100% { transform: translateY(0px) scale(1); }
-  50% { transform: translateY(3px) scale(1.15); filter: drop-shadow(0 0 6px #FFB049); }
-}
-.anim-resin-drip {
-  animation: resinDripAnim 3s ease-in-out infinite;
-  transform-origin: top center;
-}
-
-@keyframes saffronWaveAnim {
-  0%, 100% { transform: rotate(0deg) skewX(0deg); }
-  33% { transform: rotate(5deg) skewX(3deg); }
-  66% { transform: rotate(-4deg) skewX(-2deg); }
-}
-.anim-saffron-thread {
-  animation: saffronWaveAnim 3.5s ease-in-out infinite;
-  transform-origin: bottom center;
-}
-
-@keyframes sandalGrainAnim {
-  0%, 100% { opacity: 0.85; transform: scale(1); }
-  50% { opacity: 1; transform: scale(1.05); }
-}
-.anim-sandal-grain {
-  animation: sandalGrainAnim 4.5s ease-in-out infinite;
-  transform-origin: center;
-}
 
 /* ==============================================================================
    4B. LIVING ORGANIC BOTANICAL INGREDIENT ANIMATIONS (ORIGINAL NATURAL FORMS)
@@ -1302,24 +1240,6 @@ img {
   bottom: 20px;
   right: 14px;
   transition-delay: 0.26s;
-}
-
-/* Continuous Gentle Organic Floating Drift */
-.pos-1 .natural-botanical-pill { animation: floatBotanical1 3.8s ease-in-out infinite alternate; }
-.pos-2 .natural-botanical-pill { animation: floatBotanical2 4.4s ease-in-out infinite alternate 0.5s; }
-.pos-3 .natural-botanical-pill { animation: floatBotanical3 4.1s ease-in-out infinite alternate 1.0s; }
-
-@keyframes floatBotanical1 {
-  0% { transform: translateY(0px) rotate(0deg); }
-  100% { transform: translateY(-5px) rotate(0.8deg); }
-}
-@keyframes floatBotanical2 {
-  0% { transform: translateY(0px) rotate(0deg); }
-  100% { transform: translateY(-6px) rotate(-1deg); }
-}
-@keyframes floatBotanical3 {
-  0% { transform: translateY(0px) rotate(0deg); }
-  100% { transform: translateY(-4px) rotate(0.6deg); }
 }
 
 /* Frosted Luxury Glass Capsule */
@@ -1374,156 +1294,34 @@ img {
 }
 
 /* ==============================================================================
-   AUTHENTIC INGREDIENT MICRO-ANIMATIONS (ORIGINAL NATURAL FORMS)
+   AUTHENTIC INGREDIENT NATURAL FORMS (CALM LUXURY - NO CONTINUOUS CPU LOOPS)
    ============================================================================== */
-/* 1. Rose Breathing Bloom */
-.anim-rose-breathe {
-  animation: naturalRoseBreathe 3.6s ease-in-out infinite alternate;
-  transform-origin: center center;
-}
-@keyframes naturalRoseBreathe {
-  0% { transform: scale(0.96) rotate(-1deg); }
-  50% { transform: scale(1.04) rotate(1.5deg); }
-  100% { transform: scale(1.01) rotate(0deg); }
-}
-
-/* 2. Saffron Swaying Threads */
-.anim-saffron-sway {
-  animation: naturalSaffronSway 4.2s ease-in-out infinite alternate;
-  transform-origin: bottom center;
-}
-@keyframes naturalSaffronSway {
-  0% { transform: rotate(-3deg) skewX(-1.5deg); }
-  50% { transform: rotate(3deg) skewX(2deg); }
-  100% { transform: rotate(-1deg) skewX(-0.5deg); }
-}
-
-/* 3. Aged Agarwood Smoke Trails */
-.anim-smoke-trail-1 {
-  animation: naturalSmokeWaft1 3s ease-in-out infinite;
-}
-.anim-smoke-trail-2 {
-  animation: naturalSmokeWaft2 3.5s ease-in-out infinite 0.7s;
-}
-@keyframes naturalSmokeWaft1 {
-  0% { stroke-dashoffset: 0; transform: translateY(0px) scaleX(1); opacity: 0.3; }
-  50% { opacity: 0.9; transform: translateY(-3px) scaleX(1.15); }
-  100% { stroke-dashoffset: 20; transform: translateY(-7px) scaleX(0.85); opacity: 0; }
-}
-@keyframes naturalSmokeWaft2 {
-  0% { stroke-dashoffset: 0; transform: translateY(0px) scaleX(1); opacity: 0.2; }
-  50% { opacity: 0.85; transform: translateY(-4px) scaleX(1.2); }
-  100% { stroke-dashoffset: 20; transform: translateY(-8px) scaleX(0.9); opacity: 0; }
-}
-
-/* 4. Sandalwood Warm Heartwood Aura */
-.anim-sandal-warmth {
-  animation: naturalSandalWarmth 3.8s ease-in-out infinite alternate;
-}
-@keyframes naturalSandalWarmth {
-  0% { filter: drop-shadow(0 2px 4px rgba(197, 160, 89, 0.2)); }
-  100% { filter: drop-shadow(0 3px 10px rgba(197, 160, 89, 0.6)); }
-}
-
-/* 5. Coffee Beans Steam Waft */
-.anim-steam-1 {
-  animation: naturalSteamRise 2.8s ease-in-out infinite;
-}
-.anim-steam-2 {
-  animation: naturalSteamRise 3.2s ease-in-out infinite 0.6s;
-}
-@keyframes naturalSteamRise {
-  0% { transform: translateY(0) scaleY(0.9); opacity: 0.2; }
-  50% { transform: translateY(-3px) scaleY(1.1); opacity: 0.85; }
-  100% { transform: translateY(-6px) scaleY(1.25); opacity: 0; }
-}
-
-/* 6. Bourbon Vanilla Specular Gleam */
-.anim-vanilla-gleam {
-  animation: naturalVanillaGleam 4s ease-in-out infinite alternate;
-}
-@keyframes naturalVanillaGleam {
-  0% { filter: brightness(0.98); }
-  50% { filter: brightness(1.12); }
-  100% { filter: brightness(1.02); }
-}
-
-/* 7. Citrus Glistening Droplets */
-.anim-citrus-glisten {
-  animation: naturalCitrusGlisten 3.5s ease-in-out infinite alternate;
-  transform-origin: center center;
-}
-@keyframes naturalCitrusGlisten {
-  0% { transform: rotate(-2deg); filter: drop-shadow(0 2px 5px rgba(255, 160, 0, 0.2)); }
-  100% { transform: rotate(2deg); filter: drop-shadow(0 4px 10px rgba(255, 160, 0, 0.5)); }
-}
-
-/* 8. Molten Caramel & Honey Drip */
-.anim-caramel-drip {
-  animation: naturalCaramelDrip 3.2s ease-in-out infinite alternate;
-  transform-origin: top center;
-}
-@keyframes naturalCaramelDrip {
-  0% { transform: scaleY(0.96); }
-  60% { transform: scaleY(1.08) translateY(1.5px); }
-  100% { transform: scaleY(1.02); }
-}
-
-/* 9. Ceylon Cinnamon & Spice Dust */
-.anim-spice-float {
-  animation: naturalSpiceFloat 4s ease-in-out infinite alternate;
-}
-@keyframes naturalSpiceFloat {
-  0% { transform: rotate(-1.5deg); }
-  100% { transform: rotate(2.5deg); }
-}
-
-/* 10. French Lavender Stem Nodding */
-.anim-flower-nod {
-  animation: naturalFlowerNod 3.6s ease-in-out infinite alternate;
-  transform-origin: bottom center;
-}
-@keyframes naturalFlowerNod {
-  0% { transform: rotate(-2.5deg); }
-  100% { transform: rotate(3deg); }
-}
-
-/* 11. Cured Tobacco Leaf Flutter */
-.anim-leaf-flutter {
-  animation: naturalLeafFlutter 4.5s ease-in-out infinite alternate;
-  transform-origin: bottom center;
-}
-@keyframes naturalLeafFlutter {
-  0% { transform: rotate(-2deg) scale(0.98); }
-  100% { transform: rotate(2.5deg) scale(1.02); }
-}
-
-/* 12. Tahara Musk Lotus Float */
-.anim-musk-float {
-  animation: naturalMuskFloat 3.8s ease-in-out infinite alternate;
-}
-@keyframes naturalMuskFloat {
-  0% { transform: translateY(0px) scale(0.98); }
-  100% { transform: translateY(-4px) scale(1.04); filter: drop-shadow(0 4px 12px rgba(225, 190, 231, 0.5)); }
-}
-
-/* 13. Exotic Fruit Bob */
-.anim-fruit-bob {
-  animation: naturalFruitBob 3.4s ease-in-out infinite alternate;
-}
-@keyframes naturalFruitBob {
-  0% { transform: translateY(0px) rotate(-1deg); }
-  100% { transform: translateY(-3px) rotate(2deg); }
-}
-
-/* 14. Amber Crystal Pulse */
+.anim-rose-breathe,
+.anim-saffron-sway,
+.anim-smoke-trail-1,
+.anim-smoke-trail-2,
+.anim-sandal-warmth,
+.anim-steam-1,
+.anim-steam-2,
+.anim-vanilla-gleam,
+.anim-citrus-glisten,
+.anim-caramel-drip,
+.anim-spice-float,
+.anim-flower-nod,
+.anim-leaf-flutter,
+.anim-musk-float,
+.anim-fruit-bob,
 .anim-amber-pulse {
-  animation: naturalAmberPulse 3s ease-in-out infinite alternate;
+  transform-origin: center center;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), filter 0.3s ease;
 }
-@keyframes naturalAmberPulse {
-  0% { filter: drop-shadow(0 2px 6px rgba(245, 158, 11, 0.3)); }
-  100% { filter: drop-shadow(0 4px 14px rgba(245, 158, 11, 0.7)); }
-}
+
+.botanical-tile:hover .anim-rose-breathe { transform: scale(1.05); }
+.botanical-tile:hover .anim-saffron-sway { transform: rotate(3deg); }
+.botanical-tile:hover .anim-sandal-warmth { filter: drop-shadow(0 3px 8px rgba(197, 160, 89, 0.45)); }
+.botanical-tile:hover .anim-vanilla-gleam { filter: brightness(1.08); }
+.botanical-tile:hover .anim-citrus-glisten { filter: drop-shadow(0 3px 8px rgba(255, 160, 0, 0.4)); }
+.botanical-tile:hover .anim-amber-pulse { filter: drop-shadow(0 3px 10px rgba(245, 158, 11, 0.5)); }
 
 .nudge-banner-btn {
   position: relative;
@@ -1540,16 +1338,13 @@ img {
   align-items: center;
   gap: 6px;
   box-shadow: var(--shadow-subtle);
-  transition: all 0.25s ease;
-  animation: nudgePulseGlow 2.5s infinite;
-}
-@keyframes nudgePulseGlow {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(197, 160, 89, 0.4); }
-  50% { box-shadow: 0 0 0 6px rgba(197, 160, 89, 0); }
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .nudge-banner-btn:hover {
   background: var(--bg-warm-tint);
   border-color: var(--color-text-main);
+  box-shadow: 0 4px 12px rgba(197, 160, 89, 0.25);
+  transform: translateY(-1px);
 }
 
 /* ==============================================================================
@@ -3305,152 +3100,140 @@ img {
    ANIMATION DEFINITIONS FOR THE 5-CARD RITUALS
    ============================================================================== */
 
-/* SHARED PULSE BEACONS */
+/* ==============================================================================
+   5-CARD RITUALS (INTERACTIVE ON HOVER - ZERO IDLE CPU CONSUMPTION)
+   ============================================================================== */
+
+/* Static elegant pulse beacons */
 .pulse-beacon-glow {
-  animation: beaconGlowAnim 2.2s ease-in-out infinite alternate;
-  transform-origin: center;
+  opacity: 0.7;
+  filter: drop-shadow(0 0 3px rgba(255, 213, 79, 0.6));
+  transition: opacity 0.3s ease, filter 0.3s ease;
 }
-@keyframes beaconGlowAnim {
-  0% { transform: scale(0.85); opacity: 0.4; }
-  100% { transform: scale(1.25); opacity: 0.9; filter: drop-shadow(0 0 6px rgba(255, 213, 79, 0.85)); }
+.guide-card:hover .pulse-beacon-glow {
+  opacity: 1;
+  filter: drop-shadow(0 0 8px rgba(255, 213, 79, 0.9));
 }
 
-.beacon-wave-1 {
-  animation: beaconWaveAnim 2.4s ease-out infinite;
-  transform-origin: center;
-}
+.beacon-wave-1,
 .beacon-wave-2 {
-  animation: beaconWaveAnim 2.4s ease-out infinite 0.8s;
-  transform-origin: center;
+  opacity: 0.3;
+  transition: opacity 0.3s ease;
 }
-@keyframes beaconWaveAnim {
-  0% { r: 4; opacity: 0.95; stroke-width: 1.8; }
-  100% { r: 24; opacity: 0; stroke-width: 0.5; }
+.guide-card:hover .beacon-wave-1 {
+  opacity: 0.7;
 }
 
-/* CARD 1: WRIST GLIDE */
+/* CARD 1: WRIST GLIDE - Smooth on Hover */
 .flacon-wrist-touch {
-  animation: wristTouchGlide 3.8s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite alternate;
+  transform: translate(62px, 122px) rotate(-18deg);
   transform-origin: 68px 130px;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
-@keyframes wristTouchGlide {
-  0% { transform: translate(62px, 122px) rotate(-18deg); }
-  50% { transform: translate(68px, 130px) rotate(-4deg); }
-  100% { transform: translate(74px, 126px) rotate(14deg); }
+.guide-card:hover .flacon-wrist-touch {
+  transform: translate(68px, 130px) rotate(-4deg);
 }
 
 /* CARD 2: NECK & BEHIND EAR */
 .neck-touch-glide {
-  animation: neckGlideMotion 3.8s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite alternate;
+  transform: translate(114px, 94px) rotate(-20deg);
   transform-origin: 120px 102px;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
-@keyframes neckGlideMotion {
-  0% { transform: translate(114px, 94px) rotate(-20deg); }
-  50% { transform: translate(120px, 102px) rotate(-6deg); }
-  100% { transform: translate(126px, 98px) rotate(10deg); }
+.guide-card:hover .neck-touch-glide {
+  transform: translate(120px, 102px) rotate(-6deg);
 }
 
 .sillage-swirl-1 {
   stroke-dasharray: 60;
-  animation: swirlRise 3.5s ease-in-out infinite;
+  stroke-dashoffset: 0;
+  opacity: 0.6;
+  transition: stroke-dashoffset 0.5s ease, opacity 0.5s ease;
 }
-@keyframes swirlRise {
-  0% { stroke-dashoffset: 60; opacity: 0; transform: translateY(4px); }
-  40% { opacity: 0.9; }
-  100% { stroke-dashoffset: -60; opacity: 0; transform: translateY(-12px); }
+.guide-card:hover .sillage-swirl-1 {
+  opacity: 0.95;
 }
 
 /* CARD 3: INNER ELBOW */
 .elbow-dab-glide {
-  animation: elbowDabMotion 3.6s ease-in-out infinite alternate;
+  transform: translate(94px, 68px) rotate(-16deg);
   transform-origin: 100px 75px;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
-@keyframes elbowDabMotion {
-  0% { transform: translate(94px, 68px) rotate(-16deg); }
-  50% { transform: translate(100px, 75px) rotate(0deg); }
-  100% { transform: translate(106px, 72px) rotate(16deg); }
+.guide-card:hover .elbow-dab-glide {
+  transform: translate(100px, 75px) rotate(0deg);
 }
 
 /* CARD 4: BEARD & PALMS */
 .palms-warming-sway {
-  animation: palmsWarmthMotion 2.8s ease-in-out infinite alternate;
   transform-origin: 125px 125px;
+  transition: transform 0.4s ease;
 }
-@keyframes palmsWarmthMotion {
-  0% { transform: rotate(-2deg) scale(0.98); }
-  100% { transform: rotate(2deg) scale(1.02); }
+.guide-card:hover .palms-warming-sway {
+  transform: scale(1.03);
 }
 
 .oil-warmth-pulse {
-  animation: dropWarmthPulse 2.8s ease-in-out infinite alternate;
   transform-origin: 125px 122px;
+  opacity: 0.7;
+  filter: drop-shadow(0 0 3px rgba(212, 175, 55, 0.4));
+  transition: opacity 0.3s ease, filter 0.3s ease, transform 0.3s ease;
 }
-@keyframes dropWarmthPulse {
-  0% { transform: scale(0.85); opacity: 0.5; filter: drop-shadow(0 0 2px rgba(212, 175, 55, 0.4)); }
-  100% { transform: scale(1.25); opacity: 1; filter: drop-shadow(0 0 8px rgba(255, 213, 79, 0.9)); }
+.guide-card:hover .oil-warmth-pulse {
+  opacity: 1;
+  transform: scale(1.15);
+  filter: drop-shadow(0 0 8px rgba(255, 213, 79, 0.8));
 }
 
-.beard-aroma-ribbon-1 {
-  stroke-dasharray: 80;
-  animation: ribbonFlowUp 3.6s ease-in-out infinite;
-}
+.beard-aroma-ribbon-1,
 .beard-aroma-ribbon-2 {
-  stroke-dasharray: 70;
-  animation: ribbonFlowUp 3.2s ease-in-out infinite 0.7s;
+  opacity: 0.5;
+  transition: opacity 0.3s ease;
 }
-@keyframes ribbonFlowUp {
-  0% { stroke-dashoffset: 80; opacity: 0; transform: translateY(6px); }
-  35% { opacity: 0.95; }
-  100% { stroke-dashoffset: -80; opacity: 0; transform: translateY(-16px); }
+.guide-card:hover .beard-aroma-ribbon-1,
+.guide-card:hover .beard-aroma-ribbon-2 {
+  opacity: 0.95;
 }
 
 .sparkle-particle {
-  animation: sparkleTwinkle 2s ease-in-out infinite alternate;
+  opacity: 0.5;
+  transition: opacity 0.3s ease, transform 0.3s ease;
 }
-.sparkle-p2 {
-  animation-delay: 0.6s;
-}
-@keyframes sparkleTwinkle {
-  0% { transform: scale(0.6); opacity: 0.3; }
-  100% { transform: scale(1.3); opacity: 1; }
+.guide-card:hover .sparkle-particle {
+  opacity: 1;
+  transform: scale(1.2);
 }
 
 /* CARD 5: FABRIC */
 .fabric-flacon-dab {
-  animation: collarDabMotion 3.8s ease-in-out infinite alternate;
+  transform: translate(52px, 50px) rotate(-18deg);
   transform-origin: center;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
-@keyframes collarDabMotion {
-  0% { transform: translate(52px, 50px) rotate(-18deg); }
-  50% { transform: translate(64px, 66px) rotate(-8deg); }
-  100% { transform: translate(76px, 60px) rotate(8deg); }
+.guide-card:hover .fabric-flacon-dab {
+  transform: translate(64px, 66px) rotate(-8deg);
 }
 
 .fabric-absorb-pulse {
-  animation: oilAbsorbWeave 2.6s ease-in-out infinite alternate;
-  transform-origin: center;
+  opacity: 0.6;
+  transition: opacity 0.3s ease, filter 0.3s ease;
 }
-@keyframes oilAbsorbWeave {
-  0% { transform: scale(0.7); opacity: 0.3; }
-  100% { transform: scale(1.25); opacity: 0.9; filter: drop-shadow(0 0 8px rgba(212, 175, 55, 0.7)); }
+.guide-card:hover .fabric-absorb-pulse {
+  opacity: 1;
+  filter: drop-shadow(0 0 8px rgba(212, 175, 55, 0.7));
 }
 
 .longevity-orbit-ring {
-  animation: rotateClock 16s linear infinite;
   transform-origin: center;
-}
-@keyframes rotateClock {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
 }
 
 .longevity-badge-pulse {
-  animation: badgeBreath 3s ease-in-out infinite alternate;
   transform-origin: center;
+  transition: filter 0.3s ease, transform 0.3s ease;
 }
-@keyframes badgeBreath {
-  0% { transform: scale(0.97); }
-  100% { transform: scale(1.04); filter: drop-shadow(0 4px 12px rgba(212, 175, 55, 0.45)); }
+.guide-card:hover .longevity-badge-pulse {
+  transform: scale(1.03);
+  filter: drop-shadow(0 4px 12px rgba(212, 175, 55, 0.45));
 }
 
 /* ==============================================================================
@@ -4116,7 +3899,7 @@ img {
 .selection-drawer {
   position: fixed;
   top: 0;
-  right: -480px;
+  right: 0;
   bottom: 0;
   width: 100%;
   max-width: 440px;
@@ -4125,11 +3908,57 @@ img {
   z-index: 1001;
   display: flex;
   flex-direction: column;
-  transition: right 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: translateX(100%);
+  transition: transform 0.28s cubic-bezier(0.32, 0.72, 0, 1);
+  will-change: transform;
 }
 
 .selection-drawer-overlay.open .selection-drawer {
-  right: 0;
+  transform: translateX(0);
+}
+
+/* ==============================================================================
+   21ST.DEV SPECULAR GLARE REFLECTION & APPLE-GRADE TACTILE PRESS
+   ============================================================================== */
+.specular-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.specular-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    550px circle at var(--mouse-x, -999px) var(--mouse-y, -999px),
+    rgba(212, 175, 55, 0.08),
+    transparent 42%
+  );
+  opacity: 0;
+  pointer-events: none;
+  z-index: 3;
+  transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.specular-card:hover::before {
+  opacity: 1;
+}
+
+/* Apple-grade Tactile Press Feedback */
+.btn-order-wa:active,
+.btn-inquire-ig:active,
+.btn-mixmatch-curate:active,
+.combo-bundle-pill:active,
+.btn-add-to-cart:active,
+.bundle-tier-card:active,
+.drawer-checkout-wa:active,
+.drawer-checkout-ig:active,
+.chip-quick-add:active,
+.nudge-banner-btn:active,
+.drawer-floating-pill:active {
+  transform: scale(0.982) !important;
+  transition: transform 0.08s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
 }
 
 .drawer-header {
