@@ -139,7 +139,7 @@
 
   <!-- Stylesheets -->
   <link rel="stylesheet" href="styles/typography.css">
-  <link rel="stylesheet" href="styles/main.css?v=2.6">
+  <link rel="stylesheet" href="styles/main.css?v=2.7">
 </head>
 <body>
 
@@ -158,25 +158,18 @@
         <span class="brand-subtitle">PERFUMES</span>
       </a>
 
-      <!-- Navigation Links -->
+      <!-- Navigation Links (Consistent High-Perfumery Typography) -->
       <nav class="header-nav" aria-label="Main Navigation">
         <a href="#combos" class="nav-link">Curated Gift Sets</a>
         <a href="#custom-builder" class="nav-link">Build Your Attar Box</a>
+        <button type="button" class="nav-link" onclick="openScentFinderModal()">Find Your Scent</button>
         <a href="#catalog" class="nav-link">The Collection</a>
         <a href="#guide" class="nav-link">How to Apply</a>
-        <button type="button" class="nav-link nav-scent-finder-btn" onclick="openScentFinderModal()" style="background: rgba(197, 160, 89, 0.12); border: 1px solid var(--accent-gold); border-radius: 20px; padding: 4px 12px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; font-weight: 700; color: var(--accent-gold-dark); font-size: 0.82rem;">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
-          <span>Find Your Scent</span>
-        </button>
         <a href="#faq-section" class="nav-link">FAQ</a>
-        <a href="#track" onclick="openTrackingModal(); return false;" class="nav-link track-nav-link" style="color: var(--accent-gold-dark); font-weight: 700; display: inline-flex; align-items: center; gap: 6px;">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
-          <span>Track Order</span>
-        </a>
-        <button type="button" class="nav-link nav-order-list-btn" onclick="openSelectionDrawer()" style="background: none; border: none; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; font-weight: 700; color: var(--color-text-main);">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+        <a href="#track" onclick="openTrackingModal(); return false;" class="nav-link">Track Order</a>
+        <button type="button" class="nav-link" onclick="openSelectionDrawer()">
           <span>Order List</span>
-          <span class="pill-count-badge" id="header-selection-badge" style="display: none; width: 20px; height: 20px; font-size: 0.7rem; background: var(--accent-gold); color: #fff; border-radius: 50%; align-items: center; justify-content: center;">0</span>
+          <span class="pill-count-badge" id="header-selection-badge" style="display: none; width: 18px; height: 18px; font-size: 0.68rem; background: var(--accent-gold); color: #fff; border-radius: 50%; align-items: center; justify-content: center; margin-left: 3px;">0</span>
         </button>
       </nav>
     </div>
@@ -1860,11 +1853,11 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
   <!-- Application Scripts -->
-  <script src="scripts/config.js?v=2.6"></script>
-  <script src="scripts/catalog-data.js?v=2.6"></script>
-  <script src="scripts/social-checkout.js?v=2.6"></script>
-  <script src="scripts/app.js?v=2.6"></script>
-  <script src="scripts/3d-experience.js?v=2.6"></script>
-  <script src="scripts/sheets-sync.js?v=2.6"></script>
+  <script src="scripts/config.js?v=2.7"></script>
+  <script src="scripts/catalog-data.js?v=2.7"></script>
+  <script src="scripts/social-checkout.js?v=2.7"></script>
+  <script src="scripts/app.js?v=2.7"></script>
+  <script src="scripts/3d-experience.js?v=2.7"></script>
+  <script src="scripts/sheets-sync.js?v=2.7"></script>
 </body>
 </html>
