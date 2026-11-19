@@ -6049,3 +6049,146 @@ img {
   line-height: 1.35;
 }
 
+/* Mix & Match Feature Banner Above Gift Sets */
+.giftset-mixmatch-banner {
+  background: linear-gradient(135deg, #FAF7F0 0%, #F5EFE0 100%);
+  border: 1.5px solid #E8DFD0;
+  border-radius: 16px;
+  padding: 22px 28px;
+  margin: 0 0 28px 0;
+  box-shadow: 0 8px 24px rgba(197, 160, 89, 0.1);
+}
+.mixmatch-banner-body {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+@media (max-width: 768px) {
+  .mixmatch-banner-body {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+.mixmatch-banner-badge {
+  display: inline-block;
+  background: rgba(197, 160, 89, 0.18);
+  color: var(--accent-gold-dark, #8A6C2F);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 20px;
+  margin-bottom: 8px;
+}
+.mixmatch-banner-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.35rem;
+  color: var(--color-text-main, #14171E);
+  margin-bottom: 6px;
+}
+.mixmatch-banner-desc {
+  font-size: 0.86rem;
+  color: var(--color-text-muted, #718096);
+  line-height: 1.5;
+  margin-bottom: 12px;
+}
+.mixmatch-perks-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.mixmatch-perk {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8rem;
+  background: #FFFFFF;
+  border: 1px solid var(--color-border, #E8E2D9);
+  padding: 5px 10px;
+  border-radius: 8px;
+}
+.mixmatch-perk.highlight {
+  border-color: #C5A059;
+  background: #FFFDF8;
+}
+.mixmatch-perk .perk-tag {
+  font-style: normal;
+  font-size: 0.68rem;
+  font-weight: 800;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: #FEF3C7;
+  color: #92400E;
+}
+.mixmatch-perk .perk-tag.gold {
+  background: #DCFCE7;
+  color: #166534;
+}
+.btn-mixmatch-curate {
+  background: var(--color-text-main, #14171E);
+  color: #FFFFFF;
+  border: none;
+  padding: 12px 18px;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 0.86rem;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+.btn-mixmatch-curate:hover {
+  background: var(--accent-gold-dark, #8A6C2F);
+  transform: translateY(-1px);
+}
+
+/* Card Pill Context Hint */
+.pill-context-hint {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--color-text-muted, #718096);
+  margin-left: 2px;
+}
+
+/* Drawer Quick Sets Chips */
+.drawer-quick-sets-bar {
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(22, 101, 52, 0.15);
+}
+.quick-sets-label {
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #166534;
+  display: block;
+  margin-bottom: 6px;
+}
+.quick-sets-chips {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.btn-drawer-quick-set {
+  background: #FFFFFF;
+  border: 1px solid #BBF7D0;
+  color: #166534;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 5px 9px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.btn-drawer-quick-set:hover {
+  background: #DCFCE7;
+  border-color: #166534;
+}
+.btn-drawer-quick-set.added {
+  background: #166534;
+  color: #FFFFFF;
+  border-color: #166534;
+}
+
