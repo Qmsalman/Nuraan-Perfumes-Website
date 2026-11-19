@@ -307,7 +307,8 @@ const NuraanSheetsSync = {
           }
           break;
         }
-        case 'curated_box_3ml_price': {
+        case 'curated_box_3ml_price':
+        case 'curated_gift_set_price': {
           const num = parseInt(val.replace(/[^0-9]/g, ''), 10);
           if (num && !isNaN(num)) {
             config.defaultCuratedBoxPrice = num;
@@ -315,7 +316,8 @@ const NuraanSheetsSync = {
           }
           break;
         }
-        case 'curated_box_3ml_mrp': {
+        case 'curated_box_3ml_mrp':
+        case 'curated_gift_set_mrp': {
           const num = parseInt(val.replace(/[^0-9]/g, ''), 10);
           if (num && !isNaN(num)) {
             config.defaultCuratedBoxMRP = num;
@@ -323,30 +325,10 @@ const NuraanSheetsSync = {
           }
           break;
         }
-        case 'curated_box_12ml_price': {
-          const num = parseInt(val.replace(/[^0-9]/g, ''), 10);
-          if (num && !isNaN(num)) {
-            config.defaultCuratedBox12mlPrice = num;
-            combos.forEach(c => { c.price12ml = num; });
-          }
-          break;
-        }
-        case 'curated_box_12ml_mrp': {
-          const num = parseInt(val.replace(/[^0-9]/g, ''), 10);
-          if (num && !isNaN(num)) {
-            config.defaultCuratedBox12mlMRP = num;
-            combos.forEach(c => { c.mrp12ml = num; });
-          }
-          break;
-        }
-        case 'custom_box_3ml_price': {
+        case 'custom_box_3ml_price':
+        case 'custom_gift_set_price': {
           const num = parseInt(val.replace(/[^0-9]/g, ''), 10);
           if (num && !isNaN(num)) config.customBox3mlPrice = num;
-          break;
-        }
-        case 'custom_box_12ml_price': {
-          const num = parseInt(val.replace(/[^0-9]/g, ''), 10);
-          if (num && !isNaN(num)) config.customBox12mlPrice = num;
           break;
         }
         case 'combo_french_photo': {
@@ -414,29 +396,39 @@ const NuraanSheetsSync = {
 
   /**
    * Convert any Google Drive sharing or viewer link into a direct high-speed image CDN URL
+   * Automatically applies Google's edge CDN WebP compression (=w600-h600-c-rw) to shrink multi-MB uploads to ~40KB
    * Supports:
    * - https://drive.google.com/file/d/{FILE_ID}/view?usp=sharing
    * - https://drive.google.com/open?id={FILE_ID}
    * - https://drive.google.com/uc?id={FILE_ID}
-   * - Direct image URLs (jpg, png, webp) pass through untouched
+   * - Direct image URLs pass through untouched
    */
   convertGoogleDriveUrl: function(url) {
     if (!url || typeof url !== 'string') return url;
     const trimmed = url.trim();
     if (!trimmed) return trimmed;
 
+    // Google CDN sizing & WebP optimization parameter
+    const cdnTransform = '=w600-h600-c-rw';
+
     if (trimmed.includes('drive.google.com') || trimmed.includes('docs.google.com')) {
       // Pattern 1: /file/d/{FILE_ID}/
       const fileIdMatch = trimmed.match(/\/d\/([a-zA-Z0-9_-]+)/);
       if (fileIdMatch && fileIdMatch[1]) {
-        return `https://lh3.googleusercontent.com/d/${fileIdMatch[1]}`;
+        return `https://lh3.googleusercontent.com/d/${fileIdMatch[1]}${cdnTransform}`;
       }
       // Pattern 2: id={FILE_ID}
       const idParamMatch = trimmed.match(/[?&]id=([a-zA-Z0-9_-]+)/);
       if (idParamMatch && idParamMatch[1]) {
-        return `https://lh3.googleusercontent.com/d/${idParamMatch[1]}`;
+        return `https://lh3.googleusercontent.com/d/${idParamMatch[1]}${cdnTransform}`;
       }
     }
+
+    // If already a Google CDN usercontent link without size transform:
+    if (trimmed.includes('lh3.googleusercontent.com/d/') && !trimmed.includes('=')) {
+      return `${trimmed}${cdnTransform}`;
+    }
+
     return trimmed;
   },
 
@@ -466,14 +458,6 @@ const NuraanSheetsSync = {
             if (priceVal && !isNaN(priceVal)) {
               comboObj.price = priceVal;
               comboObj.price3ml = priceVal;
-            }
-          }
-          // Column U is 12ml Selling Price (index 20)
-          const price12Raw = row[20];
-          if (price12Raw) {
-            const price12Val = parseInt(String(price12Raw).replace(/[^0-9]/g, ''), 10);
-            if (price12Val && !isNaN(price12Val)) {
-              comboObj.price12ml = price12Val;
             }
           }
         }

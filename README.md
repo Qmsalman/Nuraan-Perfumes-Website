@@ -26,7 +26,7 @@ Customers who want to order 2, 3, or more fragrances together can easily do so:
 
 ---
 
-## 🎨 Collections & Discovery Boxes (from Irfan's Pick)
+## 🎨 Collections & Curated Gift Sets
 
 All fragrances are categorized cleanly into four collections:
 1. **French Collection**: Garnet 540, Regent, Monarch, Cedar, Victor, Rumo
@@ -34,18 +34,28 @@ All fragrances are categorized cleanly into four collections:
 3. **Women's Collection**: Velvet Oud, Garden Bloom, Black Night, Golden Musk, Island Kiss, Wazir
 4. **Oud Collection**: Bayan, Camel Oud, Amir Majlis, Safwan Oud, Surkh Oud, Raqeeq
 
-Each collection has a matching curated **Discovery Box** containing all 6 roll-on attars from that category.
+Each collection has a matching curated **Gift Set** containing 6 × 3ml precision roll-on attars housed in a luxury gift coffret at **₹999** (MRP ₹2,499).
 
 ---
 
-## 🎁 Bespoke "Build Your Own" Discovery Box Builder
+## 🎁 Bespoke "Build Your Attar Box" Gift Set Builder
 
-Customers can also create their own personalized Discovery Box:
-1. **Choose Bottle Size**: Select either **3ml Roll-on Box** (₹2,499) or **12ml Roll-on Box** (₹6,999).
-2. **Select Up to 6 Attars**: Tap any scent pill to add it to the 6 luxury presentation slots.
-3. **Instant Order / Inquiry**: Tap **Order Custom Box on WhatsApp** or **Inquire Custom Box on IG** to send the exact list of chosen attars with one tap.
+Customers can also create their own personalized 6-pack Gift Set:
+1. **Format & Pricing**: Fixed 6 × 3ml Precision Roll-Ons at **₹999** (MRP ₹2,499 • Save 60%).
+2. **Select 6 Attars**: Tap any scent pill to add it to the 6 luxury coffret slots.
+3. **Instant Order / Inquiry**: Tap **Order Gift Set on WhatsApp** or **Order Gift Set on Instagram** to send the exact list of chosen attars with one tap.
 
-You can adjust custom box prices easily in `scripts/config.js` (`customBox3mlPrice` and `customBox12mlPrice`).
+You can adjust gift set prices in `scripts/config.js` (`customBox3mlPrice` and `defaultCuratedBoxPrice`).
+
+---
+
+## 🔗 Direct Product Deep-Linking (WhatsApp Catalog & Social Sharing)
+
+Every fragrance and gift set has a unique anchor hash:
+- Fragrance deep links: `https://nuraanperfumes.in/#bayan`, `https://nuraanperfumes.in/#garnet-540`, `https://nuraanperfumes.in/#regent`
+- Gift set deep links: `https://nuraanperfumes.in/#combo-french`, `https://nuraanperfumes.in/#combo-arabic`
+
+When visited, the page automatically scrolls to the card, opens the notes inspection modal, and records an analytics event (`catalog_deep_link`). Perfect for copying into WhatsApp Business Catalog product links!
 
 ---
 
