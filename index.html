@@ -139,14 +139,14 @@
 
   <!-- Stylesheets -->
   <link rel="stylesheet" href="styles/typography.css">
-  <link rel="stylesheet" href="styles/main.css?v=2.5">
+  <link rel="stylesheet" href="styles/main.css?v=2.6">
 </head>
 <body>
 
   <!-- 1. PROMOTIONAL ANNOUNCEMENT BAR -->
   <aside class="announcement-bar" id="announcement-bar" aria-label="Announcement">
     <span id="announcement-text">✦ 100% Pure Alcohol-Free Attars • Precision Roll-on Bottles • Inquire & Order via WhatsApp & Instagram ✦</span>
-    <a href="#track" onclick="openTrackingModal(); return false;" class="announcement-track-link">📦 Track Consignment ➔</a>
+    <a href="#track" onclick="openTrackingModal(); return false;" class="announcement-track-link">Track Consignment ➔</a>
   </aside>
 
   <!-- 2. SITE HEADER (CLEAN LATIN LUXURY) -->
@@ -164,9 +164,18 @@
         <a href="#custom-builder" class="nav-link">Build Your Attar Box</a>
         <a href="#catalog" class="nav-link">The Collection</a>
         <a href="#guide" class="nav-link">How to Apply</a>
-        <a href="#track" onclick="openTrackingModal(); return false;" class="nav-link track-nav-link" style="color: var(--accent-gold-dark); font-weight: 700;">📦 Track Order</a>
+        <button type="button" class="nav-link nav-scent-finder-btn" onclick="openScentFinderModal()" style="background: rgba(197, 160, 89, 0.12); border: 1px solid var(--accent-gold); border-radius: 20px; padding: 4px 12px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; font-weight: 700; color: var(--accent-gold-dark); font-size: 0.82rem;">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
+          <span>Find Your Scent</span>
+        </button>
+        <a href="#faq-section" class="nav-link">FAQ</a>
+        <a href="#track" onclick="openTrackingModal(); return false;" class="nav-link track-nav-link" style="color: var(--accent-gold-dark); font-weight: 700; display: inline-flex; align-items: center; gap: 6px;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+          <span>Track Order</span>
+        </a>
         <button type="button" class="nav-link nav-order-list-btn" onclick="openSelectionDrawer()" style="background: none; border: none; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; font-weight: 700; color: var(--color-text-main);">
-          <span>🛍️ Order List</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+          <span>Order List</span>
           <span class="pill-count-badge" id="header-selection-badge" style="display: none; width: 20px; height: 20px; font-size: 0.7rem; background: var(--accent-gold); color: #fff; border-radius: 50%; align-items: center; justify-content: center;">0</span>
         </button>
       </nav>
@@ -200,24 +209,30 @@
             </a>
           </div>
 
-          <!-- Trust Pillars (3 Expanded Pillars - Clean Luxury Accents) -->
+          <!-- Trust Pillars (Option 2: Royal Apothecary Diptyque Etchings) -->
           <div class="trust-pillars">
             <div class="pillar-item">
-              <div class="pillar-icon">✦</div>
+              <div class="diptyque-crest-box">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+              </div>
               <div>
                 <span class="pillar-title">100% Alcohol-Free</span>
                 <span class="pillar-desc">Pure concentrated perfume oil</span>
               </div>
             </div>
             <div class="pillar-item">
-              <div class="pillar-icon">✦</div>
+              <div class="diptyque-crest-box">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              </div>
               <div>
                 <span class="pillar-title">14+ Hours Longevity</span>
                 <span class="pillar-desc">Deep scent that lingers on skin</span>
               </div>
             </div>
             <div class="pillar-item">
-              <div class="pillar-icon">✦</div>
+              <div class="diptyque-crest-box">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+              </div>
               <div>
                 <span class="pillar-title">Free Express Shipping</span>
                 <span class="pillar-desc">Complimentary all-India delivery</span>
@@ -385,12 +400,12 @@
             </p>
             <div class="mixmatch-perks-row">
               <span class="mixmatch-perk"><strong>Any 2 Sets:</strong> ₹1,699 <em class="perk-tag">30% OFF 2nd Box</em></span>
-              <span class="mixmatch-perk highlight"><strong>All 4 Sets (Complete Library):</strong> ₹2,999 <em class="perk-tag gold">👑 BUY 3, GET 1 FREE</em></span>
+              <span class="mixmatch-perk highlight"><strong>All 4 Sets (Complete Library):</strong> ₹2,999 <em class="perk-tag gold">BUY 3, GET 1 FREE</em></span>
             </div>
           </div>
           <div class="mixmatch-banner-right">
             <button type="button" class="btn-mixmatch-curate" onclick="window.openSelectionDrawer()">
-              <span>🎨 Open Mix & Match Cart ➔</span>
+              <span>Open Mix & Match Cart ➔</span>
             </button>
           </div>
         </div>
@@ -510,19 +525,36 @@
 
         <!-- Filter Tabs: Divided by Parts/Families -->
         <div class="filter-tabs" role="tablist">
-          <button type="button" class="filter-btn active" data-category="all">✨ All Highlights</button>
-          <button type="button" class="filter-btn" data-category="Arabic">👑 Arabic<span class="tab-suffix"> & Royal</span></button>
-          <button type="button" class="filter-btn" data-category="French">🌿 French<span class="tab-suffix"> & Fresh</span></button>
-          <button type="button" class="filter-btn" data-category="Women">🌹 Floral<span class="tab-suffix"> & Feminine</span></button>
-          <button type="button" class="filter-btn" data-category="Oud">🔥 Woody<span class="tab-suffix"> & Oud</span></button>
+          <button type="button" class="filter-btn active" data-category="all">
+            <svg class="diptyque-micro-icon" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <span>All Highlights</span>
+          </button>
+          <button type="button" class="filter-btn" data-category="Arabic">
+            <svg class="diptyque-micro-icon" viewBox="0 0 24 24"><path d="M2 4l3 12h14l3-12-6 7-4-7-4 7-6-7zM5 20h14v2H5z"/></svg>
+            <span>Arabic<span class="tab-suffix"> & Royal</span></span>
+          </button>
+          <button type="button" class="filter-btn" data-category="French">
+            <svg class="diptyque-micro-icon" viewBox="0 0 24 24"><path d="M12 2L15 9L22 9L17 14L19 21L12 17L5 21L7 14L2 9L9 9Z"/></svg>
+            <span>French<span class="tab-suffix"> & Fresh</span></span>
+          </button>
+          <button type="button" class="filter-btn" data-category="Women">
+            <svg class="diptyque-micro-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2a4 4 0 0 0-4 4c0 3 4 6 4 6s4-3 4-6a4 4 0 0 0-4-4z"/><path d="M12 22a4 4 0 0 0 4-4c0-3-4-6-4-6s-4 3-4 6a4 4 0 0 0 4 4z"/><path d="M2 12a4 4 0 0 0 4 4c3 0 6-4 6-4s-3-4-6-4a4 4 0 0 0-4 4z"/><path d="M22 12a4 4 0 0 0-4-4c-3 0-6 4-6 4s3 4 6 4a4 4 0 0 0 4-4z"/></svg>
+            <span>Floral<span class="tab-suffix"> & Feminine</span></span>
+          </button>
+          <button type="button" class="filter-btn" data-category="Oud">
+            <svg class="diptyque-micro-icon" viewBox="0 0 24 24"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+            <span>Woody<span class="tab-suffix"> & Oud</span></span>
+          </button>
         </div>
 
-        <!-- Indian Fragrance Buyer's Compass: Occasion & Season Mood Filters -->
+        <!-- Indian Fragrance Buyer's Compass: Occasion & Season Mood Filters (Option 2: Fine-Line Apothecary Etchings) -->
         <div class="fragrance-compass-panel" aria-label="Scent Occasion and Season Filters">
           <!-- Occasion Wear Section -->
           <div class="compass-filter-row">
             <div class="compass-row-label">
-              <span class="compass-icon">🎯</span>
+              <span class="compass-icon">
+                <svg class="diptyque-micro-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><polygon points="12 2 15 9 22 12 15 15 12 22 9 15 2 12 9 9"/></svg>
+              </span>
               <span class="compass-title">Occasion:</span>
             </div>
             <div class="compass-chips-group" id="occasion-filter-group" role="group" aria-label="Filter by Occasion">
@@ -530,19 +562,19 @@
                 <span class="chip-label">All<span class="chip-suffix"> Occasions</span></span>
               </button>
               <button type="button" class="compass-chip" data-occasion="casual">
-                <span class="chip-emoji">👕</span>
+                <svg class="diptyque-micro-icon" viewBox="0 0 24 24"><path d="M20.38 3.46L16 2 12 5.5 8 2l-4.38 1.46a2 2 0 0 0-1.34 1.63L1 10.5 4 12l1-4.5V20a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7.5l1 4.5 3-1.5-1.28-5.41a2 2 0 0 0-1.34-1.63z"/></svg>
                 <span class="chip-label">Casual<span class="chip-suffix"> Wear</span></span>
               </button>
               <button type="button" class="compass-chip" data-occasion="office">
-                <span class="chip-emoji">👔</span>
+                <svg class="diptyque-micro-icon" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
                 <span class="chip-label">Office<span class="chip-suffix"> Wear</span></span>
               </button>
               <button type="button" class="compass-chip" data-occasion="party">
-                <span class="chip-emoji">🎉</span>
+                <svg class="diptyque-micro-icon" viewBox="0 0 24 24"><path d="M8 22h8M12 11v11M5 3h14l-2 8H7L5 3z"/></svg>
                 <span class="chip-label">Party<span class="chip-suffix"> Wear</span></span>
               </button>
               <button type="button" class="compass-chip" data-occasion="travelling">
-                <span class="chip-emoji">✈️</span>
+                <svg class="diptyque-micro-icon" viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
                 <span class="chip-label">Travel<span class="chip-suffix">ling</span></span>
               </button>
             </div>
@@ -551,7 +583,9 @@
           <!-- Season Wear Section -->
           <div class="compass-filter-row">
             <div class="compass-row-label">
-              <span class="compass-icon">🌤️</span>
+              <span class="compass-icon">
+                <svg class="diptyque-micro-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2v20M2 12h20"/></svg>
+              </span>
               <span class="compass-title">Season:</span>
             </div>
             <div class="compass-chips-group" id="season-filter-group" role="group" aria-label="Filter by Season">
@@ -559,19 +593,19 @@
                 <span class="chip-label">All<span class="chip-suffix"> Seasons</span></span>
               </button>
               <button type="button" class="compass-chip" data-season="summer">
-                <span class="chip-emoji">☀️</span>
+                <svg class="diptyque-micro-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
                 <span class="chip-label">Summer<span class="chip-suffix"> Wear</span></span>
               </button>
               <button type="button" class="compass-chip" data-season="winter">
-                <span class="chip-emoji">❄️</span>
+                <svg class="diptyque-micro-icon" viewBox="0 0 24 24"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
                 <span class="chip-label">Winter<span class="chip-suffix"> Wear</span></span>
               </button>
               <button type="button" class="compass-chip" data-season="rainy">
-                <span class="chip-emoji">🌧️</span>
+                <svg class="diptyque-micro-icon" viewBox="0 0 24 24"><path d="M16 13v8M8 13v8M12 15v8M20 16.58A5 5 0 0 0 18 7h-1.26A8 8 0 1 0 4 15.25"/></svg>
                 <span class="chip-label">Rainy<span class="chip-suffix"> Season</span></span>
               </button>
               <button type="button" class="compass-chip" data-season="all-season">
-                <span class="chip-emoji">⛅</span>
+                <svg class="diptyque-micro-icon" viewBox="0 0 24 24"><path d="M9 3h6M10 3v3l-4 8a3 3 0 0 0 3 4h6a3 3 0 0 0 3-4l-4-8V3"/></svg>
                 <span class="chip-label">All<span class="chip-suffix"> Season</span></span>
               </button>
             </div>
@@ -703,8 +737,8 @@
           </p>
 
           <div class="feature-tag-list">
-            <span class="feature-tag">✋ Radial Artery</span>
-            <span class="feature-tag">🚫 Never Rub (Preserves Notes)</span>
+            <span class="feature-tag">Radial Artery</span>
+            <span class="feature-tag">Never Rub (Preserves Notes)</span>
           </div>
 
           <div class="guide-card-pop-trigger">
@@ -806,8 +840,8 @@
           </p>
 
           <div class="feature-tag-list">
-            <span class="feature-tag">👂 Carotid Pulse</span>
-            <span class="feature-tag">💨 Upward Convection Aura</span>
+            <span class="feature-tag">Carotid Pulse</span>
+            <span class="feature-tag">Upward Convection Aura</span>
           </div>
 
           <div class="guide-card-pop-trigger">
@@ -889,8 +923,8 @@
           </p>
 
           <div class="feature-tag-list">
-            <span class="feature-tag">💪 Antecubital Fold</span>
-            <span class="feature-tag">⏳ Anchors Oud & Resins</span>
+            <span class="feature-tag">Antecubital Fold</span>
+            <span class="feature-tag">Anchors Oud & Resins</span>
           </div>
 
           <div class="guide-card-pop-trigger">
@@ -957,8 +991,8 @@
           </p>
 
           <div class="feature-tag-list">
-            <span class="feature-tag">🧔 0% Alcohol (Non-Drying)</span>
-            <span class="feature-tag">🤲 Warm in Palms First</span>
+            <span class="feature-tag">0% Alcohol (Non-Drying)</span>
+            <span class="feature-tag">Warm in Palms First</span>
           </div>
 
           <div class="guide-card-pop-trigger">
@@ -1045,8 +1079,8 @@
           </p>
 
           <div class="feature-tag-list">
-            <span class="feature-tag">👔 Inner Collar Seams</span>
-            <span class="feature-tag">🪙 Awadhi Cotton Faha (फाहा)</span>
+            <span class="feature-tag">Inner Collar Seams</span>
+            <span class="feature-tag">Awadhi Cotton Faha (फाहा)</span>
           </div>
 
           <div class="guide-card-pop-trigger">
@@ -1058,49 +1092,7 @@
     </div>
   </section>
 
-  <!-- 7. INSTAGRAM & SOCIAL PROOF -->
-  <section class="instagram-section">
-    <div class="container">
-      <div class="section-header-block">
-        <span class="section-kicker">Community & Connoisseurs</span>
-        <h2 class="section-title">Connect with @nuraan_perfumes</h2>
-        <p class="section-subtitle">
-          Join our growing circle of fragrance collectors. Follow us on Instagram for bottle reveals, 
-          distillation reels, and customer unboxings.
-        </p>
-      </div>
-
-      <div class="ig-feed-mockup">
-        <div class="ig-post-card">
-          <div class="ig-post-icon">✦</div>
-          <p class="ig-post-caption">"Surkh Oud is pure royalty. The Taif rose with Indian agarwood lasted through my entire family wedding!"</p>
-          <span class="ig-post-author">— Zaid M., Mumbai</span>
-        </div>
-        <div class="ig-post-card">
-          <div class="ig-post-icon">✦</div>
-          <p class="ig-post-caption">"Malik and Monarch are incredible. True connoisseur grade oud with zero synthetic alcohol sharpness."</p>
-          <span class="ig-post-author">— Dr. Faizan, Hyderabad</span>
-        </div>
-        <div class="ig-post-card">
-          <div class="ig-post-icon">✦</div>
-          <p class="ig-post-caption">"The 6-bottle discovery box arrived in 2 days. Garnet 540 and Bayan are now my daily signature scents."</p>
-          <span class="ig-post-author">— Sneha K., Bengaluru</span>
-        </div>
-        <div class="ig-post-card">
-          <div class="ig-post-icon">✦</div>
-          <p class="ig-post-caption">"Musk Safa is the cleanest Tahara musk I have ever tried. Silky, non-sticky and smells like heavenly purity."</p>
-          <span class="ig-post-author">— Ayesha R., Delhi</span>
-        </div>
-      </div>
-
-      <a href="https://www.instagram.com/nuraan_perfumes?srtk=MTh1Z241OHdwcm00Yw==" target="_blank" class="btn-primary-brass">
-        <span>Follow @nuraan_perfumes on Instagram</span>
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-      </a>
-    </div>
-  </section>
-
-  <!-- 8. LUXURY BENTO GRID (BRAND PROOFS) -->
+  <!-- 7. LUXURY BENTO GRID (BRAND PROOFS) -->
   <section class="bento-section" id="bento-proofs">
     <div class="container">
       <div class="section-header-block" style="text-align: center; margin-bottom: 32px;">
@@ -1153,12 +1145,6 @@
             By cutting out celebrity endorsements, airport retail margins, and middleman distributors, Nuraan delivers ₹18,000-grade olfactory compositions at ₹499 for 12ml single bottles and ₹999 for curated discovery gift sets.
           </p>
           <span class="bento-stat">100% Pure Oils</span>
-
-          <div id="bentoReviewLinkContainer" style="margin-top: 10px;">
-            <a href="#reviews-section" class="bento-review-link is-disabled-link" id="bentoReviewLink">
-              <span>✦ Reviews Coming Soon</span>
-            </a>
-          </div>
         </div>
       </div>
     </div>
@@ -1435,7 +1421,7 @@
             <div class="progress-bar-fill" id="drawer-wardrobe-bar" style="width: 0%;"></div>
           </div>
           <div class="unlocked-benefit" id="drawer-wardrobe-msg">
-            <span>💡 Add 3 bottles to unlock 15% OFF your entire cart!</span>
+            <span>Add 3 bottles to unlock 15% OFF your entire cart!</span>
           </div>
         </div>
 
@@ -1510,7 +1496,7 @@
 
       <div class="ritual-modal-body">
         <div class="ritual-master-rule-box">
-          <span class="rule-icon">⚠️</span>
+          <span class="rule-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg></span>
           <div>
             <strong class="rule-title">Strict Kannauj Master Rule:</strong>
             <p class="rule-desc" id="ritual-modal-rule"></p>
@@ -1553,7 +1539,7 @@
       <!-- Search Input Box -->
       <form class="tracking-form" onsubmit="event.preventDefault(); executeOrderSearch();">
         <div class="tracking-input-wrapper">
-          <span class="tracking-input-icon">🔍</span>
+          <span class="tracking-input-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></span>
           <input 
             type="text" 
             id="tracking-search-input" 
@@ -1584,7 +1570,7 @@
 
       <!-- Tracking Not Found Error Card -->
       <div class="tracking-error-box" id="tracking-error-box" style="display: none;">
-        <span class="error-badge-icon">📦</span>
+        <span class="error-badge-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg></span>
         <h4 class="error-heading">Order ID Not Found Yet</h4>
         <p class="error-message" id="tracking-error-message">
           We couldn't locate this order in our live dispatch log. If you just placed your order via WhatsApp, please allow up to 2–4 hours for your AWB to sync.
@@ -1668,7 +1654,8 @@
             <p style="margin-top: 10px;">
               <strong>Google Business Profile:</strong><br>
               <a href="https://www.google.com/maps/place/Nuraan+Perfumes/data=!4m2!3m1!1s0x3be7c39092405663:0xb15275cbcba777f4" target="_blank" rel="noopener noreferrer" style="color: var(--accent-gold-light); display: inline-flex; align-items: center; gap: 6px; font-weight: 600;" id="footer-gmb-link" onclick="if(window.trackEvent) trackEvent('google_maps_click', { destination: 'Google Business Profile' })">
-                <span>📍 View on Google Maps</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                <span>View on Google Maps</span>
               </a>
             </p>
             <p style="font-size: 0.78rem; color: #718096; margin-top: 8px;">
@@ -1873,11 +1860,11 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
   <!-- Application Scripts -->
-  <script src="scripts/config.js?v=2.5"></script>
-  <script src="scripts/catalog-data.js?v=2.5"></script>
-  <script src="scripts/social-checkout.js?v=2.5"></script>
-  <script src="scripts/app.js?v=2.5"></script>
-  <script src="scripts/3d-experience.js?v=2.5"></script>
-  <script src="scripts/sheets-sync.js?v=2.5"></script>
+  <script src="scripts/config.js?v=2.6"></script>
+  <script src="scripts/catalog-data.js?v=2.6"></script>
+  <script src="scripts/social-checkout.js?v=2.6"></script>
+  <script src="scripts/app.js?v=2.6"></script>
+  <script src="scripts/3d-experience.js?v=2.6"></script>
+  <script src="scripts/sheets-sync.js?v=2.6"></script>
 </body>
 </html>
