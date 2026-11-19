@@ -6021,3 +6021,713 @@ img {
   border-color: #166534;
 }
 
+/* ==============================================================================
+   21ST.DEV LUXURY COMPONENTS — COMPARE SLIDER, BENTO, FAQ, REVIEWS & SCENT FINDER
+   ============================================================================== */
+
+/* LUXURY ICON WRAPPERS */
+.luxury-icon-wrap {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(197, 160, 89, 0.1);
+  border: 1px solid var(--border-gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent-gold-dark);
+  margin-bottom: 12px;
+}
+.luxury-icon-wrap svg {
+  width: 18px;
+  height: 18px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.6;
+}
+
+/* 1. COMPARISON SLIDER */
+.compare-section {
+  padding: 60px 0;
+  background: var(--bg-page);
+}
+.compare-container {
+  position: relative;
+  width: 100%;
+  max-width: 960px;
+  margin: 0 auto;
+  height: 380px;
+  border-radius: var(--radius-lg, 16px);
+  overflow: hidden;
+  box-shadow: 0 15px 40px rgba(20, 23, 30, 0.12);
+  user-select: none;
+  cursor: ew-resize;
+  border: 1.5px solid var(--border-gold);
+}
+.compare-side {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 30px;
+}
+.side-spray {
+  background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);
+  color: #FFFFFF;
+  text-align: left;
+  padding-left: 50px;
+}
+.side-oil {
+  background: linear-gradient(135deg, #2A1F0D 0%, #14171E 100%);
+  color: #FFFFFF;
+  text-align: right;
+  padding-right: 50px;
+  clip-path: polygon(50% 0, 100% 0, 100% 100%, 50% 100%);
+  transition: clip-path 0.05s linear;
+}
+.compare-card-content {
+  max-width: 320px;
+}
+.compare-tag-spray {
+  display: inline-block;
+  padding: 4px 10px;
+  background: rgba(239, 68, 68, 0.18);
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  color: #FCA5A5;
+  font-size: 0.72rem;
+  font-weight: 700;
+  border-radius: 4px;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.compare-tag-oil {
+  display: inline-block;
+  padding: 4px 10px;
+  background: rgba(197, 160, 89, 0.18);
+  border: 1px solid var(--accent-gold);
+  color: #F3E5AB;
+  font-size: 0.72rem;
+  font-weight: 700;
+  border-radius: 4px;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.compare-title {
+  font-family: var(--font-display);
+  font-size: 1.45rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+.compare-list {
+  list-style: none;
+  margin-top: 14px;
+}
+.compare-list li {
+  font-size: 0.84rem;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.side-oil .compare-list li {
+  justify-content: flex-end;
+}
+.compare-divider {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 3px;
+  background: var(--accent-gold);
+  box-shadow: 0 0 15px rgba(212, 175, 55, 0.8);
+  transform: translateX(-50%);
+  pointer-events: none;
+  transition: left 0.05s linear;
+}
+.compare-handle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: #FFFFFF;
+  border: 2.5px solid var(--accent-gold);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.95rem;
+  color: var(--color-text-main);
+  font-weight: 800;
+  transition: left 0.05s linear, transform 0.2s ease;
+  z-index: 5;
+}
+.compare-instruction-pill {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(20, 23, 30, 0.88);
+  backdrop-filter: blur(8px);
+  color: #F3E5AB;
+  border: 1px solid var(--accent-gold);
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 0.74rem;
+  font-weight: 700;
+  pointer-events: none;
+  z-index: 6;
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  letter-spacing: 0.04em;
+}
+.compare-instruction-pill.hidden {
+  opacity: 0;
+  transform: translate(-50%, -10px);
+}
+
+/* 2. LUXURY BENTO GRID */
+.bento-section {
+  padding: 70px 0;
+  background: #FFFFFF;
+  border-top: 1px solid var(--border-gold);
+  border-bottom: 1px solid var(--border-gold);
+}
+.bento-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  max-width: 1040px;
+  margin: 0 auto;
+}
+.bento-card {
+  background: var(--bg-page);
+  border: 1px solid var(--border-gold);
+  border-radius: var(--radius-lg, 16px);
+  padding: 26px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.bento-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(197, 160, 89, 0.15);
+}
+.bento-col-2 {
+  grid-column: span 2;
+}
+.bento-title {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: var(--color-text-main);
+}
+.bento-desc {
+  font-size: 0.82rem;
+  color: var(--color-text-muted);
+  line-height: 1.5;
+}
+.bento-stat {
+  font-family: var(--font-display);
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: var(--accent-gold-dark);
+  margin-top: 10px;
+  display: block;
+}
+.bento-review-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 10px;
+  padding: 6px 14px;
+  background: rgba(197, 160, 89, 0.12);
+  border: 1px solid var(--accent-gold);
+  border-radius: 20px;
+  color: var(--accent-gold-dark);
+  font-size: 0.74rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+.bento-review-link:hover {
+  background: var(--accent-gold-dark);
+  color: #FFFFFF;
+}
+.bento-review-link.is-disabled-link {
+  opacity: 0.6;
+  cursor: not-allowed;
+  pointer-events: none;
+  background: #F1F5F9;
+  border-color: #CBD5E1;
+  color: #64748B;
+}
+
+/* 3. UNIVERSAL FAQ ACCORDION */
+.faq-section {
+  padding: 70px 0;
+  background: var(--bg-page);
+}
+.faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.faq-item {
+  border: 1px solid var(--border-gold);
+  border-radius: 12px;
+  background: #FFFFFF;
+  overflow: hidden;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.faq-item.active {
+  border-color: var(--accent-gold);
+  box-shadow: 0 4px 15px rgba(197, 160, 89, 0.1);
+}
+.faq-header {
+  padding: 16px 22px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  user-select: none;
+  font-weight: 700;
+  font-size: 0.94rem;
+  color: var(--color-text-main);
+  transition: color 0.2s ease;
+}
+.faq-header:hover {
+  color: var(--accent-gold-dark);
+}
+.faq-icon {
+  font-size: 1.2rem;
+  color: var(--accent-gold);
+  transition: transform 0.25s ease;
+  font-weight: 400;
+}
+.faq-item.active .faq-icon {
+  transform: rotate(45deg);
+}
+.faq-body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s cubic-bezier(0.16, 1, 0.3, 1), padding 0.3s ease;
+  padding: 0 22px;
+  background: #FFFDF9;
+  color: var(--color-text-muted);
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+.faq-item.active .faq-body {
+  max-height: 250px;
+  padding: 0 22px 18px 22px;
+}
+
+/* 4. REVIEWS SECTION */
+.reviews-section {
+  padding: 70px 0;
+  background: var(--bg-page);
+}
+.reviews-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  max-width: 1040px;
+  margin: 0 auto;
+}
+.review-card {
+  background: #FFFFFF;
+  border: 1px solid var(--border-gold);
+  border-radius: 14px;
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.review-stars {
+  color: #F59E0B;
+  font-size: 0.92rem;
+  margin-bottom: 6px;
+}
+.review-text {
+  font-size: 0.82rem;
+  color: var(--color-text-main);
+  font-style: italic;
+  line-height: 1.5;
+  margin-bottom: 16px;
+  flex: 1;
+}
+.review-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 12px;
+  border-top: 1px solid var(--border-light);
+}
+.reviewer-info {
+  display: flex;
+  flex-direction: column;
+}
+.reviewer-name {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--color-text-main);
+}
+.reviewer-city {
+  font-size: 0.7rem;
+  color: var(--color-text-muted);
+}
+.review-product-tag {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--accent-gold-dark);
+  background: #FFF9ED;
+  padding: 2px 7px;
+  border-radius: 8px;
+  border: 1px solid rgba(197, 160, 89, 0.4);
+}
+
+/* 5. MULTI-SELECT SIGNATURE SCENT FINDER */
+.quiz-card {
+  border-radius: 16px;
+  padding: 20px;
+}
+.quiz-progress-bar {
+  height: 4px;
+  background: #E2E8F0;
+  border-radius: 2px;
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+.quiz-progress-fill {
+  height: 100%;
+  background: var(--accent-gold);
+  transition: width 0.3s ease;
+}
+.quiz-step-title {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+  color: var(--color-text-main);
+}
+.quiz-step-desc {
+  font-size: 0.82rem;
+  color: var(--color-text-muted);
+  margin-bottom: 16px;
+}
+.multi-select-note {
+  display: inline-block;
+  font-size: 0.7rem;
+  color: var(--accent-gold-dark);
+  font-weight: 700;
+  background: rgba(197, 160, 89, 0.12);
+  padding: 2px 7px;
+  border-radius: 4px;
+  margin-left: 6px;
+}
+.quiz-options-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+.quiz-option-btn {
+  padding: 16px;
+  border-radius: 12px;
+  background: #FFFFFF;
+  border: 1.5px solid var(--border-light);
+  text-align: left;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.quiz-option-btn:hover {
+  border-color: var(--accent-gold);
+  background: #FFFDF9;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(197, 160, 89, 0.12);
+}
+.quiz-option-btn.selected {
+  border-color: var(--accent-gold);
+  background: #FFF9ED;
+  box-shadow: 0 0 0 2px var(--accent-gold);
+}
+.quiz-option-checkbox {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+  border: 1.5px solid #CBD5E1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  color: transparent;
+  transition: all 0.2s ease;
+}
+.quiz-option-btn.selected .quiz-option-checkbox {
+  background: var(--accent-gold);
+  border-color: var(--accent-gold);
+  color: #FFFFFF;
+}
+.quiz-option-name {
+  font-weight: 700;
+  font-size: 0.88rem;
+  color: var(--color-text-main);
+  padding-right: 22px;
+}
+.quiz-option-sub {
+  font-size: 0.72rem;
+  color: var(--color-text-muted);
+  margin-top: 3px;
+}
+.quiz-actions {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.btn-quiz-next {
+  padding: 9px 24px;
+  border-radius: 20px;
+  background: var(--color-text-main);
+  color: #FFFFFF;
+  border: none;
+  font-weight: 700;
+  font-size: 0.84rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.btn-quiz-next:hover {
+  background: var(--accent-gold-dark);
+}
+.btn-quiz-back {
+  background: none;
+  border: none;
+  color: var(--color-text-muted);
+  font-weight: 600;
+  font-size: 0.82rem;
+  cursor: pointer;
+}
+
+/* Scent Quiz Result View */
+.quiz-result-box {
+  display: none;
+  padding: 10px 0;
+}
+.quiz-result-box.active {
+  display: block;
+  animation: fadeIn 0.4s ease;
+}
+.result-tags-header {
+  background: #FFFFFF;
+  border: 1px solid var(--border-gold);
+  border-radius: 12px;
+  padding: 14px 18px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.result-tags-title {
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.result-chips-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.result-chip {
+  padding: 3px 9px;
+  background: rgba(197, 160, 89, 0.15);
+  border: 1px solid var(--accent-gold);
+  color: var(--color-text-main);
+  font-size: 0.7rem;
+  font-weight: 700;
+  border-radius: 14px;
+}
+.recommendations-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+.rec-card {
+  background: #FFFFFF;
+  border: 1.5px solid var(--border-gold);
+  border-radius: 14px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 4px 12px rgba(20, 23, 30, 0.04);
+}
+.rec-card.primary {
+  border-color: var(--accent-gold);
+  box-shadow: 0 6px 20px rgba(197, 160, 89, 0.2);
+}
+.rec-badge {
+  display: inline-block;
+  align-self: flex-start;
+  font-size: 0.65rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  padding: 2px 7px;
+  border-radius: 5px;
+  margin-bottom: 8px;
+}
+.rec-badge-gold {
+  background: #FFF9ED;
+  color: var(--accent-gold-dark);
+  border: 1px solid var(--accent-gold);
+}
+.rec-badge-blue {
+  background: #F0F9FF;
+  color: #0284C7;
+  border: 1px solid #BAE6FD;
+}
+.rec-badge-green {
+  background: #ECFDF5;
+  color: #059669;
+  border: 1px solid #A7F3D0;
+}
+.rec-bottle-name {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--color-text-main);
+  line-height: 1.2;
+  margin-bottom: 4px;
+}
+.rec-bottle-desc {
+  font-size: 0.74rem;
+  color: var(--color-text-muted);
+  line-height: 1.4;
+  margin-bottom: 12px;
+  flex: 1;
+}
+.rec-price-row {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+.rec-price {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--color-text-main);
+}
+.rec-mrp {
+  font-size: 0.75rem;
+  color: #94A3B8;
+  text-decoration: line-through;
+}
+.btn-rec-wa {
+  display: block;
+  text-align: center;
+  padding: 8px 12px;
+  border-radius: 20px;
+  background: #128C7E;
+  color: #FFFFFF;
+  font-weight: 700;
+  font-size: 0.76rem;
+  text-decoration: none;
+  transition: background 0.2s ease;
+}
+.btn-rec-wa:hover {
+  background: #0D6E63;
+}
+
+/* 6. FLOATING MOBILE GLASS DOCK */
+.floating-dock-bar {
+  display: none;
+}
+@media (max-width: 768px) {
+  .floating-dock-bar {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1.5px solid var(--border-gold);
+    border-radius: 36px;
+    box-shadow: 0 12px 35px rgba(20, 23, 30, 0.2);
+    z-index: 998;
+  }
+  .dock-pill-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 14px;
+    border-radius: 20px;
+    border: none;
+    cursor: pointer;
+    font-size: 0.78rem;
+    font-weight: 700;
+    transition: all 0.2s ease;
+    text-decoration: none;
+  }
+  .dock-pill-cart {
+    background: var(--color-text-main);
+    color: #FFFFFF;
+  }
+  .dock-pill-quiz {
+    background: rgba(197, 160, 89, 0.15);
+    border: 1px solid var(--accent-gold);
+    color: var(--accent-gold-dark);
+  }
+  .dock-pill-wa {
+    background: #25D366;
+    color: #FFFFFF;
+  }
+  .dock-badge {
+    background: #D4AF37;
+    color: #14171E;
+    font-size: 0.65rem;
+    padding: 1px 6px;
+    border-radius: 10px;
+    font-weight: 800;
+  }
+  .bento-grid,
+  .reviews-grid,
+  .recommendations-grid {
+    grid-template-columns: 1fr;
+  }
+  .bento-col-2 {
+    grid-column: span 1;
+  }
+  .quiz-options-grid {
+    grid-template-columns: 1fr;
+  }
+  .compare-container {
+    height: 440px;
+  }
+  .compare-side {
+    padding: 20px;
+  }
+  .side-spray {
+    padding-left: 20px;
+  }
+  .side-oil {
+    padding-right: 20px;
+  }
+}
+
