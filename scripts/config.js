@@ -34,15 +34,13 @@ const NURAAN_CONFIG = {
   // Default Promotional Announcement Bar
   announcement: "✦ 100% Pure Alcohol-Free Attars • Precision Roll-on Bottles • Inquire & Order via WhatsApp & Instagram ✦",
 
-  // Default Pricing Placeholders for Discovery Boxes (Change anytime!)
-  defaultCuratedBoxPrice: 1299,
-  defaultCuratedBoxMRP: 3299,
-  defaultCuratedBox12mlPrice: 2999,
-  defaultCuratedBox12mlMRP: 4299,
+  // Default Pricing for Curated 6-Piece Gift Sets (6 × 3ml Precision Roll-Ons)
+  defaultCuratedBoxPrice: 999,
+  defaultCuratedBoxMRP: 2499,
   
-  // Custom "Build Your Own" Box Prices:
-  customBox3mlPrice: 1399,   // Price for Custom 3ml Box (Pick up to 6 attars)
-  customBox12mlPrice: 3999,  // Price for Custom 12ml Box (Pick up to 6 attars)
+  // Custom "Build Your Own" 6-Piece Gift Set Price:
+  customBox3mlPrice: 999,   // Price for Custom 6-Piece Box (Pick any 6 attars)
+  customBoxMRP: 2499,
 
   // Google Sheets Live Sync (Pricing & Olfactory Notes)
   googleSheet: {

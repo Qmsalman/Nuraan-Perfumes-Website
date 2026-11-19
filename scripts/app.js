@@ -37,6 +37,8 @@ function initApp() {
   setupStickyMobileBar();
   updateSelectionUI();
   setupSectionTracking();
+  handleDeepLink();
+  window.addEventListener('hashchange', handleDeepLink);
 }
 
 /**
@@ -928,7 +930,7 @@ window.switchComboSize = function(comboId, size) {
 };
 
 /**
- * Render Curated Discovery Boxes (Interactive 3ml Discovery vs 12ml Luxury Coffret)
+ * Render Curated Gift Sets (Handcrafted 6 × 3ml Precision Roll-Ons)
  */
 function renderCombos(combos) {
   const container = document.getElementById("combos-grid");
@@ -937,15 +939,8 @@ function renderCombos(combos) {
   const currency = (window.NURAAN_CONFIG && window.NURAAN_CONFIG.currencySymbol) || "₹";
 
   container.innerHTML = combos.map(combo => {
-    const selectedSize = window.comboSelectedSizes[combo.id] || '3ml';
-    const is12ml = selectedSize === '12ml';
-    const price3ml = combo.price3ml || combo.price || 1299;
-    const mrp3ml = combo.mrp3ml || combo.mrp || 3299;
-    const price12ml = combo.price12ml || 2999;
-    const mrp12ml = combo.mrp12ml || 4299;
-
-    const activePrice = is12ml ? price12ml : price3ml;
-    const activeMRP = is12ml ? mrp12ml : mrp3ml;
+    const activePrice = combo.price || 999;
+    const activeMRP = combo.mrp || 2499;
     const activeSavings = activeMRP - activePrice;
 
     const itemsHtml = (combo.itemsIncluded || [])
@@ -958,7 +953,7 @@ function renderCombos(combos) {
       <div class="combo-card" id="combo-${combo.id}">
         <div class="combo-badge-wrapper">
           <span class="badge badge-collection">${combo.badge}</span>
-          <span class="badge badge-subtle" id="combo-save-${combo.id}" style="font-weight: 800; color: var(--wa-green);">SAVE ${currency}${activeSavings.toLocaleString('en-IN')}</span>
+          <span class="badge badge-subtle" id="combo-save-${combo.id}" style="font-weight: 800; color: var(--wa-green);">SAVE ${currency}${activeSavings.toLocaleString('en-IN')} (60% OFF)</span>
         </div>
 
         <div class="combo-body">
@@ -973,13 +968,13 @@ function renderCombos(combos) {
                   loading="lazy"
                   decoding="async"
                 />
-                <div class="combo-interactive-box is-open ${is12ml ? 'size-12ml' : ''}" id="combo-box-${combo.id}" style="display: none;" onclick="window.toggleComboUnbox('${combo.id}')" title="Tap to toggle magnetic unboxing">
+                <div class="combo-interactive-box is-open" id="combo-box-${combo.id}" style="display: none;" onclick="window.toggleComboUnbox('${combo.id}')" title="Tap to toggle magnetic unboxing">
                   <!-- 3D Box Lid (Lifts and tilts in 3D perspective) -->
                   <div class="combo-box-lid" id="combo-lid-${combo.id}">
                     <div class="combo-lid-face">
                       <span class="lid-foil-badge">✦ NURAAN LUXURY COFFRET ✦</span>
                       <div class="lid-gold-stripe"></div>
-                      <span class="lid-size-tag" id="combo-lid-tag-${combo.id}">${is12ml ? '6 × 12ml LUXURY COFFRET' : '6 × 3ml PRECISION ROLL-ONS'}</span>
+                      <span class="lid-size-tag" id="combo-lid-tag-${combo.id}">6 × 3ml PRECISION ROLL-ONS</span>
                     </div>
                   </div>
 
@@ -1005,13 +1000,13 @@ function renderCombos(combos) {
                 </div>
               </div>
             ` : `
-              <div class="combo-interactive-box is-open ${is12ml ? 'size-12ml' : ''}" id="combo-box-${combo.id}" onclick="window.toggleComboUnbox('${combo.id}')" title="Tap to toggle magnetic unboxing">
+              <div class="combo-interactive-box is-open" id="combo-box-${combo.id}" onclick="window.toggleComboUnbox('${combo.id}')" title="Tap to toggle magnetic unboxing">
                 <!-- 3D Box Lid (Lifts and tilts in 3D perspective) -->
                 <div class="combo-box-lid" id="combo-lid-${combo.id}">
                   <div class="combo-lid-face">
                     <span class="lid-foil-badge">✦ NURAAN LUXURY COFFRET ✦</span>
                     <div class="lid-gold-stripe"></div>
-                    <span class="lid-size-tag" id="combo-lid-tag-${combo.id}">${is12ml ? '6 × 12ml LUXURY COFFRET' : '6 × 3ml PRECISION ROLL-ONS'}</span>
+                    <span class="lid-size-tag" id="combo-lid-tag-${combo.id}">6 × 3ml PRECISION ROLL-ONS</span>
                   </div>
                 </div>
 
@@ -1040,31 +1035,8 @@ function renderCombos(combos) {
 
           <h3 class="combo-title">${combo.name}</h3>
           <p class="combo-tagline">"${combo.tagline}"</p>
+          <div class="combo-format-tag">✦ 6 × 3ml PRECISION ROLL-ONS • LUXURY GIFT SET</div>
           <p class="combo-description">${combo.description}</p>
-          
-          <!-- Interactive Size Selector for Discovery Box -->
-          <div class="combo-size-selector-wrap">
-            <div class="combo-size-selector" role="group" aria-label="Select box size">
-              <button 
-                type="button" 
-                class="combo-size-pill ${!is12ml ? 'active' : ''}" 
-                id="combo-btn-3ml-${combo.id}"
-                onclick="switchComboSize('${combo.id}', '3ml')"
-              >
-                <span class="size-pill-qty">3ml Discovery</span>
-                <span class="size-pill-price">${currency}${price3ml.toLocaleString('en-IN')}</span>
-              </button>
-              <button 
-                type="button" 
-                class="combo-size-pill ${is12ml ? 'active' : ''}" 
-                id="combo-btn-12ml-${combo.id}"
-                onclick="switchComboSize('${combo.id}', '12ml')"
-              >
-                <span class="size-pill-qty">12ml Coffret</span>
-                <span class="size-pill-price">${currency}${price12ml.toLocaleString('en-IN')}</span>
-              </button>
-            </div>
-          </div>
 
           <div class="combo-included-box">
             <span class="included-title">Attars in this Box Set:</span>
@@ -1086,14 +1058,14 @@ function renderCombos(combos) {
                 class="btn-order-wa" 
                 onclick="triggerComboWhatsApp('${combo.id}')"
               >
-                <span>Order Discovery Box on WhatsApp</span>
+                <span>Order Gift Set on WhatsApp</span>
               </button>
               <button 
                 type="button" 
                 class="btn-inquire-ig" 
                 onclick="triggerComboInstagram('${combo.id}')"
               >
-                <span>Order Discovery Box on Instagram</span>
+                <span>Order Gift Set on Instagram</span>
               </button>
             </div>
           </div>
@@ -1256,50 +1228,28 @@ window.scrollToComboCard = scrollToComboCard;
 window.initComboCarousel = initComboCarousel;
 
 // ==============================================================================
-// 7. BESPOKE "BUILD YOUR OWN" CUSTOM DISCOVERY BOX (UP TO 6 ATTARS)
-// Limit sizes to: 3ml or 12ml roll-on box
+// 7. BESPOKE "BUILD YOUR ATTAR BOX" CUSTOM GIFT SET (6 × 3ml PRECISION ROLL-ONS)
 // ==============================================================================
 const customBoxState = {
-  size: '3ml', // '3ml' or '12ml'
-  selectedAttars: [] // array of product objects
+  size: '3ml',
+  selectedAttars: []
 };
 
 function initCustomBoxBuilder() {
+  updateCustomBoxTotal();
   renderCustomBoxSlots();
   renderCustomBoxPillTray();
 }
 
 window.setCustomBoxSize = function(size) {
-  customBoxState.size = size;
-  
-  const btn3 = document.getElementById("btn-custom-size-3ml");
-  const btn12 = document.getElementById("btn-custom-size-12ml");
-  if (btn3 && btn12) {
-    if (size === '3ml') {
-      btn3.classList.add("active");
-      btn12.classList.remove("active");
-    } else {
-      btn12.classList.add("active");
-      btn3.classList.remove("active");
-    }
-  }
-
+  customBoxState.size = '3ml';
   updateCustomBoxTotal();
 };
 
 function updateCustomBoxTotal() {
   const config = window.NURAAN_CONFIG || {};
   const currency = config.currencySymbol || "₹";
-  const is3ml = customBoxState.size === '3ml';
-  const price3ml = config.customBox3mlPrice || 1399;
-  const price12ml = config.customBox12mlPrice || 3999;
-  const activePrice = is3ml ? price3ml : price12ml;
-
-  // Sync button tags so they always match the live configuration exactly
-  const tag3 = document.getElementById("tag-custom-size-3ml");
-  const tag12 = document.getElementById("tag-custom-size-12ml");
-  if (tag3) tag3.textContent = `${currency}${price3ml.toLocaleString('en-IN')}`;
-  if (tag12) tag12.textContent = `${currency}${price12ml.toLocaleString('en-IN')}`;
+  const activePrice = config.customBox3mlPrice || 999;
 
   const totalEl = document.getElementById("custom-box-total");
   if (totalEl) {
@@ -1308,7 +1258,7 @@ function updateCustomBoxTotal() {
 
   const formatNotice = document.getElementById("custom-format-notice");
   if (formatNotice) {
-    formatNotice.textContent = is3ml ? "3ml Precision Roll-on Flacons" : "12ml Full-Size Luxury Roll-ons";
+    formatNotice.textContent = "6 × 3ml Precision Roll-ons";
   }
 }
 
@@ -1513,16 +1463,13 @@ window.clearCustomBox = function() {
 
 window.triggerCustomBoxWhatsApp = function() {
   const config = window.NURAAN_CONFIG || {};
-  const is3ml = customBoxState.size === '3ml';
-  const price = is3ml 
-    ? (config.customBox3mlPrice || 1399) 
-    : (config.customBox12mlPrice || 3999);
-  const sizeLabel = is3ml ? "3ml Roll-on" : "12ml Roll-on";
+  const price = config.customBox3mlPrice || 999;
+  const sizeLabel = "6 × 3ml Precision Roll-ons";
   const names = customBoxState.selectedAttars.map(p => p.name);
 
   trackEvent('whatsapp_custom_box_click', {
-    item_name: `Custom Box (${sizeLabel})`,
-    item_category: 'Custom Discovery Box',
+    item_name: 'Custom Gift Set',
+    item_category: 'Custom Gift Set',
     box_size: sizeLabel,
     item_count: names.length,
     value: price,
@@ -1534,23 +1481,20 @@ window.triggerCustomBoxWhatsApp = function() {
 
 window.triggerCustomBoxInstagram = function() {
   const config = window.NURAAN_CONFIG || {};
-  const is3ml = customBoxState.size === '3ml';
-  const price = is3ml 
-    ? (config.customBox3mlPrice || 1399) 
-    : (config.customBox12mlPrice || 3999);
-  const sizeLabel = is3ml ? "3ml Roll-on" : "12ml Roll-on";
+  const price = config.customBox3mlPrice || 999;
+  const sizeLabel = "6 × 3ml Precision Roll-ons";
   const names = customBoxState.selectedAttars.map(p => p.name);
 
   trackEvent('instagram_custom_box_click', {
-    item_name: `Custom Box (${sizeLabel})`,
-    item_category: 'Custom Discovery Box',
+    item_name: 'Custom Gift Set',
+    item_category: 'Custom Gift Set',
     box_size: sizeLabel,
     item_count: names.length,
     value: price,
     currency: 'INR'
   });
 
-  window.SocialCheckout.orderCustomBoxOnInstagram(sizeLabel, names, price);
+  window.SocialCheckout.inquireCustomBoxOnInstagram(sizeLabel, names, price);
 };
 
 /**
@@ -1643,35 +1587,33 @@ window.triggerInstagramInquiry = function(productId) {
 window.triggerComboWhatsApp = function(comboId) {
   const combo = (window.NURAAN_COMBOS || []).find(c => c.id === comboId);
   if (!combo) return;
-  const size = (window.comboSelectedSizes && window.comboSelectedSizes[comboId]) || '3ml';
-  const price = size === '12ml' ? (combo.price12ml || 2999) : (combo.price3ml || combo.price || 1299);
+  const price = combo.price || 999;
   trackEvent('whatsapp_combo_click', {
     item_name: combo.name,
-    item_category: 'Discovery Box',
+    item_category: 'Gift Set',
     combo_id: combo.id,
     combo_name: combo.name,
-    size: size,
+    size: '3ml',
     value: price,
     currency: 'INR'
   });
-  window.SocialCheckout.orderComboOnWhatsApp(combo, size);
+  window.SocialCheckout.orderComboOnWhatsApp(combo, '3ml');
 };
 
 window.triggerComboInstagram = function(comboId) {
   const combo = (window.NURAAN_COMBOS || []).find(c => c.id === comboId);
   if (!combo) return;
-  const size = (window.comboSelectedSizes && window.comboSelectedSizes[comboId]) || '3ml';
-  const price = size === '12ml' ? (combo.price12ml || 2999) : (combo.price3ml || combo.price || 1299);
+  const price = combo.price || 999;
   trackEvent('instagram_combo_click', {
     item_name: combo.name,
-    item_category: 'Discovery Box',
+    item_category: 'Gift Set',
     combo_id: combo.id,
     combo_name: combo.name,
-    size: size,
+    size: '3ml',
     value: price,
     currency: 'INR'
   });
-  window.SocialCheckout.inquireComboOnInstagram(combo, size);
+  window.SocialCheckout.inquireComboOnInstagram(combo, '3ml');
 };
 
 /**
@@ -2014,6 +1956,13 @@ window.openNotesModal = function(productId) {
 
   modal.classList.add("active");
   document.body.style.overflow = "hidden";
+
+  // Sync address bar hash for deep-linking & WhatsApp catalog sharing
+  if (window.location.hash !== '#' + productId) {
+    try {
+      history.replaceState(null, null, '#' + productId);
+    } catch (e) {}
+  }
 };
 
 window.closeNotesModal = function() {
@@ -2021,13 +1970,84 @@ window.closeNotesModal = function() {
   if (modal) {
     modal.classList.remove("active");
     document.body.style.overflow = "";
+
+    // Clear product hash from address bar when closing modal
+    const currentHash = window.location.hash ? window.location.hash.replace('#', '').trim() : '';
+    const catalog = window.NURAAN_CATALOG || [];
+    if (catalog.some(p => p.id === currentHash || p.id.toLowerCase() === currentHash.toLowerCase())) {
+      try {
+        history.replaceState(null, null, window.location.pathname + window.location.search);
+      } catch (e) {}
+    }
   }
 };
+
+/**
+ * Product & Scent Deep-Linking System
+ * Handles URLs like https://nuraanperfumes.in/#bayan or /#garnet-540 or /#combo-french
+ * Seamlessly scrolls to the item, opens its notes inspection modal, and tracks event.
+ */
+function handleDeepLink() {
+  const hash = window.location.hash ? window.location.hash.replace('#', '').trim() : '';
+  if (!hash) return;
+
+  const hashLower = hash.toLowerCase();
+
+  // Skip standard UI section hashes
+  if (['combos', 'custom-builder', 'catalog', 'guide', 'hero', 'footer', 'track'].includes(hashLower)) {
+    return;
+  }
+
+  const catalog = window.NURAAN_CATALOG || [];
+  const targetProduct = catalog.find(p => p.id === hash || p.id.toLowerCase() === hashLower);
+
+  if (targetProduct) {
+    setTimeout(() => {
+      const card = document.getElementById('card-' + targetProduct.id);
+      if (card) {
+        card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+      openNotesModal(targetProduct.id);
+      trackEvent('catalog_deep_link', {
+        item_id: targetProduct.id,
+        item_name: targetProduct.name
+      });
+    }, 250);
+    return;
+  }
+
+  // Also support combo deep links e.g. #combo-french or #french-gift-set
+  const combos = window.NURAAN_COMBOS || [];
+  const targetCombo = combos.find(c => c.id === hash || c.id === 'combo-' + hash || c.id.replace('combo-', '') === hashLower);
+  if (targetCombo) {
+    setTimeout(() => {
+      const el = document.getElementById(targetCombo.id) || document.getElementById('combo-' + targetCombo.id);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      } else {
+        const combosSection = document.getElementById('combos');
+        if (combosSection) combosSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+      trackEvent('combo_deep_link', {
+        combo_id: targetCombo.id,
+        combo_name: targetCombo.name
+      });
+    }, 250);
+  }
+}
 
 function setupModalEvents() {
   const modal = document.getElementById("notes-modal");
   const ritualModal = document.getElementById("ritual-modal");
   const trackingModal = document.getElementById("tracking-modal");
+
+  // Native Mobile Back Button Support: Close modal instead of leaving page
+  window.addEventListener('popstate', () => {
+    const activeModal = document.getElementById("notes-modal");
+    if (activeModal && activeModal.classList.contains("active")) {
+      closeNotesModal();
+    }
+  });
 
   if (modal) {
     modal.addEventListener("click", (e) => {

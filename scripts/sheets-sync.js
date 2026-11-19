@@ -307,7 +307,8 @@ const NuraanSheetsSync = {
           }
           break;
         }
-        case 'curated_box_3ml_price': {
+        case 'curated_box_3ml_price':
+        case 'curated_gift_set_price': {
           const num = parseInt(val.replace(/[^0-9]/g, ''), 10);
           if (num && !isNaN(num)) {
             config.defaultCuratedBoxPrice = num;
@@ -315,7 +316,8 @@ const NuraanSheetsSync = {
           }
           break;
         }
-        case 'curated_box_3ml_mrp': {
+        case 'curated_box_3ml_mrp':
+        case 'curated_gift_set_mrp': {
           const num = parseInt(val.replace(/[^0-9]/g, ''), 10);
           if (num && !isNaN(num)) {
             config.defaultCuratedBoxMRP = num;
@@ -323,30 +325,10 @@ const NuraanSheetsSync = {
           }
           break;
         }
-        case 'curated_box_12ml_price': {
-          const num = parseInt(val.replace(/[^0-9]/g, ''), 10);
-          if (num && !isNaN(num)) {
-            config.defaultCuratedBox12mlPrice = num;
-            combos.forEach(c => { c.price12ml = num; });
-          }
-          break;
-        }
-        case 'curated_box_12ml_mrp': {
-          const num = parseInt(val.replace(/[^0-9]/g, ''), 10);
-          if (num && !isNaN(num)) {
-            config.defaultCuratedBox12mlMRP = num;
-            combos.forEach(c => { c.mrp12ml = num; });
-          }
-          break;
-        }
-        case 'custom_box_3ml_price': {
+        case 'custom_box_3ml_price':
+        case 'custom_gift_set_price': {
           const num = parseInt(val.replace(/[^0-9]/g, ''), 10);
           if (num && !isNaN(num)) config.customBox3mlPrice = num;
-          break;
-        }
-        case 'custom_box_12ml_price': {
-          const num = parseInt(val.replace(/[^0-9]/g, ''), 10);
-          if (num && !isNaN(num)) config.customBox12mlPrice = num;
           break;
         }
         case 'combo_french_photo': {
@@ -476,14 +458,6 @@ const NuraanSheetsSync = {
             if (priceVal && !isNaN(priceVal)) {
               comboObj.price = priceVal;
               comboObj.price3ml = priceVal;
-            }
-          }
-          // Column U is 12ml Selling Price (index 20)
-          const price12Raw = row[20];
-          if (price12Raw) {
-            const price12Val = parseInt(String(price12Raw).replace(/[^0-9]/g, ''), 10);
-            if (price12Val && !isNaN(price12Val)) {
-              comboObj.price12ml = price12Val;
             }
           }
         }

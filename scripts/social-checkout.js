@@ -69,7 +69,7 @@ Thank you!`;
   },
 
   /**
-   * Order a Curated Discovery Box on WhatsApp
+   * Order a Curated Gift Set on WhatsApp
    */
   orderComboOnWhatsApp: function(combo, size) {
     const config = window.NURAAN_CONFIG || {};
@@ -77,24 +77,23 @@ Thank you!`;
     const brandName = config.brandName || "Nuraan Perfumes";
     const currency = config.currencySymbol || "₹";
 
-    const is12ml = size === '12ml';
-    const activePrice = is12ml ? (combo.price12ml || 2999) : (combo.price3ml || combo.price || 1299);
-    const activeMRP = is12ml ? (combo.mrp12ml || 4299) : (combo.mrp3ml || combo.mrp || 3299);
-    const formatName = is12ml ? "6 × 12ml Luxury Coffret Box" : "6 × 3ml Precision Roll-on Discovery Box";
+    const activePrice = combo.price || 999;
+    const activeMRP = combo.mrp || 2499;
+    const formatName = "6 × 3ml Precision Roll-on Luxury Gift Coffret";
 
     const itemsList = combo.itemsIncluded ? combo.itemsIncluded.join(", ") : "";
 
     const message = 
-`✦ *DISCOVERY BOX ORDER — ${brandName.toUpperCase()}* ✦
+`✦ *GIFT SET ORDER — ${brandName.toUpperCase()}* ✦
 
 Hello Nuraan Perfumes,
-I would like to order this curated Discovery Box:
+I would like to order this curated Gift Set:
 
 • *Set Name:* ${combo.name}
-• *Selected Size:* ${formatName}
+• *Format:* ${formatName}
 • *Attars Included:* ${itemsList}
 • *Price:* ${currency}${activePrice.toLocaleString('en-IN')} (MRP: ${currency}${activeMRP.toLocaleString('en-IN')})
-• *Box Code:* #${combo.id.toUpperCase()}-${is12ml ? '12ML' : '3ML'}
+• *Set Code:* #${combo.id.toUpperCase()}
 
 Please share UPI details and dispatch schedule.
 
@@ -111,16 +110,15 @@ Thank you!`;
   },
 
   /**
-   * Inquire about a Curated Box on Instagram DM
+   * Inquire about a Curated Gift Set on Instagram DM
    */
   inquireComboOnInstagram: function(combo, size) {
     const config = window.NURAAN_CONFIG || {};
     const igHandle = config.instagramHandle || "nuraan_perfumes";
     const currency = config.currencySymbol || "₹";
 
-    const is12ml = size === '12ml';
-    const activePrice = is12ml ? (combo.price12ml || 2999) : (combo.price3ml || combo.price || 1299);
-    const formatLabel = is12ml ? "12ml Luxury Coffret" : "3ml Discovery Box";
+    const activePrice = combo.price || 999;
+    const formatLabel = "6 × 3ml Luxury Gift Set";
 
     const summary = `Nuraan Perfumes Order: ${combo.name} (${formatLabel}) - ${currency}${activePrice.toLocaleString('en-IN')}`;
 
@@ -133,7 +131,7 @@ Thank you!`;
   },
 
   /**
-   * Order a Custom "Build Your Own" Discovery Box on WhatsApp
+   * Order a Custom "Build Your Own" Gift Set on WhatsApp
    */
   orderCustomBoxOnWhatsApp: function(size, selectedAttars, price) {
     const config = window.NURAAN_CONFIG || {};
@@ -151,14 +149,16 @@ Thank you!`;
       itemsFormatted += `  ${idx + 1}. *${attarName}*\n`;
     });
 
+    const activePrice = price || config.customBox3mlPrice || 999;
+
     const message = 
-`✦ *BESPOKE CUSTOM DISCOVERY BOX — ${brandName.toUpperCase()}* ✦
+`✦ *BESPOKE CUSTOM GIFT SET — ${brandName.toUpperCase()}* ✦
 
 Hello Nuraan Perfumes,
-I have customized my own Discovery Box with the following ${selectedAttars.length} attars:
+I have customized my own Attar Gift Set with the following ${selectedAttars.length} attars:
 
-• *Box Format:* Custom ${size} Roll-on Discovery Box
-• *Estimated Price:* ${currency}${price.toLocaleString('en-IN')}
+• *Box Format:* Custom 6 × 3ml Precision Roll-on Gift Coffret
+• *Special Price:* ${currency}${activePrice.toLocaleString('en-IN')} (MRP: ₹2,499)
 
 *My Selected Attars:*
 ${itemsFormatted}
@@ -178,7 +178,7 @@ Thank you!`;
   },
 
   /**
-   * Inquire about Custom Box on Instagram DM
+   * Inquire about Custom Gift Set on Instagram DM
    */
   inquireCustomBoxOnInstagram: function(size, selectedAttars, price) {
     const config = window.NURAAN_CONFIG || {};
@@ -190,10 +190,11 @@ Thank you!`;
       return;
     }
 
-    const summary = `Nuraan Perfumes Inquiry: Custom ${size} Discovery Box [${selectedAttars.join(', ')}] - ${currency}${price}`;
+    const activePrice = price || config.customBox3mlPrice || 999;
+    const summary = `Nuraan Perfumes Inquiry: Custom 6 × 3ml Gift Set [${selectedAttars.join(', ')}] - ${currency}${activePrice}`;
 
     SocialCheckout.copyToClipboard(summary, function() {
-      SocialCheckout.showToast(`✓ Copied your ${selectedAttars.length}-attar custom box details! Opening @${igHandle}...`, "success");
+      SocialCheckout.showToast(`✓ Copied your ${selectedAttars.length}-attar custom gift set details! Opening @${igHandle}...`, "success");
       setTimeout(function() {
         window.open(`https://ig.me/m/${igHandle}`, '_blank');
       }, 750);
