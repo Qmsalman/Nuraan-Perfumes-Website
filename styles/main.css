@@ -2788,6 +2788,73 @@ img {
   color: #FFFFFF;
 }
 
+/* Custom Builder Fixed Format Badge & Modal Legal Disclaimer */
+.builder-format-badge {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  background: var(--bg-card, #FFFFFF);
+  border: 1px solid var(--accent-gold);
+  border-radius: 12px;
+  padding: 14px 28px;
+  box-shadow: 0 4px 16px rgba(197, 160, 89, 0.12);
+  margin-bottom: 24px;
+}
+.builder-format-tag {
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  color: var(--accent-gold-dark, #8a6c2f);
+  text-transform: uppercase;
+}
+.builder-format-pricing {
+  font-size: 0.95rem;
+  color: var(--color-text-main, #14171E);
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+.builder-format-pricing strong {
+  font-size: 1.15rem;
+  color: var(--color-text-main, #14171E);
+}
+.builder-mrp {
+  text-decoration: line-through;
+  color: var(--color-text-muted, #718096);
+  font-size: 0.85rem;
+}
+.builder-save-pill {
+  background: rgba(37, 211, 102, 0.15);
+  color: #128C7E;
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 2px 8px;
+  border-radius: 10px;
+}
+.combo-format-tag {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--accent-gold-dark, #8a6c2f);
+  background: rgba(197, 160, 89, 0.12);
+  padding: 4px 10px;
+  border-radius: 6px;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+}
+.modal-legal-disclaimer {
+  font-size: 0.65rem;
+  line-height: 1.4;
+  color: #8c827a;
+  font-style: italic;
+  margin-top: 10px;
+  text-align: center;
+}
+
 /* 6 Interactive Slots */
 .slots-grid {
   display: grid;
