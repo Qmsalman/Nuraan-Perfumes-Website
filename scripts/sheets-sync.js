@@ -206,13 +206,32 @@ const NuraanSheetsSync = {
         if (colInspiration !== -1 && row[colInspiration]) {
           const rawInsp = row[colInspiration].trim();
           // Auto-fix known typo in sheet: "BR 450" -> "BR 540"
-          product.inspiration = (rawInsp.toUpperCase() === 'BR 450' || rawInsp.toUpperCase() === 'BR450') ? 'BR 540' : rawInsp;
+          let cleanInsp = (rawInsp.toUpperCase() === 'BR 450' || rawInsp.toUpperCase() === 'BR450') ? 'BR 540' : rawInsp;
+          // Strip parent corporate houses
+          cleanInsp = cleanInsp
+            .replace(/^Maison Francis Kurkdjian\s*[-–—]?\s*/i, '')
+            .replace(/^Alfred Dunhill\s*[-–—]?\s*/i, '')
+            .replace(/^Dunhill\s+/i, '')
+            .replace(/^Creed\s*[-–—]?\s*/i, '')
+            .replace(/\s+Creed$/i, '')
+            .replace(/^Gucci\s+/i, '')
+            .replace(/^Yves Saint Laurent\s*[-–—]?\s*/i, '')
+            .replace(/^YSL\s*[-–—]?\s*/i, '')
+            .replace(/^Afnan\s*[-–—]?\s*/i, '')
+            .replace(/^Sol de Janeiro\s*[-–—]?\s*/i, '')
+            .replace(/^Diptyque\s*[-–—]?\s*/i, '')
+            .replace(/^Dior\s*[-–—]?\s*/i, '')
+            .replace(/^Mancera\s*[-–—]?\s*/i, '')
+            .replace(/Baccarat Rouge 540/i, 'BR 540')
+            .trim();
+          product.inspiration = cleanInsp || product.inspiration;
         }
         if (colDna !== -1 && row[colDna]) {
           const rawDna = row[colDna].trim();
           // Guarantee URLs NEVER leak into fragranticaDna
           if (!rawDna.startsWith('http://') && !rawDna.startsWith('https://') && !rawDna.includes('fragrantica.com')) {
-            product.fragranticaDna = rawDna;
+            const cleanDna = rawDna.includes(' - ') ? rawDna.split(' - ').slice(1).join(' - ').trim() : rawDna;
+            product.fragranticaDna = cleanDna;
           }
         }
         if (colFragrantica !== -1 && row[colFragrantica]) {
@@ -310,25 +329,25 @@ const NuraanSheetsSync = {
         case 'curated_box_3ml_price':
         case 'curated_gift_set_price': {
           const num = parseInt(val.replace(/[^0-9]/g, ''), 10);
-          if (num && !isNaN(num)) {
-            config.defaultCuratedBoxPrice = num;
-            combos.forEach(c => { c.price3ml = num; c.price = num; });
-          }
+          // Standardize gift sets to 999 (ignore legacy 1299 from old control panel)
+          const targetPrice = (num === 1299 || !num || isNaN(num)) ? 999 : num;
+          config.defaultCuratedBoxPrice = targetPrice;
+          combos.forEach(c => { c.price3ml = targetPrice; c.price = targetPrice; });
           break;
         }
         case 'curated_box_3ml_mrp':
         case 'curated_gift_set_mrp': {
           const num = parseInt(val.replace(/[^0-9]/g, ''), 10);
-          if (num && !isNaN(num)) {
-            config.defaultCuratedBoxMRP = num;
-            combos.forEach(c => { c.mrp3ml = num; c.mrp = num; });
-          }
+          const targetMRP = (num === 3299 || !num || isNaN(num)) ? 2499 : num;
+          config.defaultCuratedBoxMRP = targetMRP;
+          combos.forEach(c => { c.mrp3ml = targetMRP; c.mrp = targetMRP; });
           break;
         }
         case 'custom_box_3ml_price':
         case 'custom_gift_set_price': {
           const num = parseInt(val.replace(/[^0-9]/g, ''), 10);
-          if (num && !isNaN(num)) config.customBox3mlPrice = num;
+          const targetCustom = (num === 1399 || !num || isNaN(num)) ? 999 : num;
+          config.customBox3mlPrice = targetCustom;
           break;
         }
         case 'combo_french_photo': {
@@ -456,8 +475,9 @@ const NuraanSheetsSync = {
           if (priceRaw) {
             const priceVal = parseInt(String(priceRaw).replace(/[^0-9]/g, ''), 10);
             if (priceVal && !isNaN(priceVal)) {
-              comboObj.price = priceVal;
-              comboObj.price3ml = priceVal;
+              const finalPrice = (priceVal === 1299) ? 999 : priceVal;
+              comboObj.price = finalPrice;
+              comboObj.price3ml = finalPrice;
             }
           }
         }

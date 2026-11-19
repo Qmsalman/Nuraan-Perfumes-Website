@@ -157,72 +157,81 @@ function formatSeason(sea) {
 
 /**
  * Clean Consumer Inspiration Helper
- * Formats "Inspired by {Fragrance} — {Brand}" and "Formulated in the style of {Fragrance} by {Brand}"
+ * Formats "Inspired by {Scent}" without corporate brand parent names (Strict Trademark Safety)
  */
 function getInspirationInfo(product) {
   if (!product) return { badgeText: '', modalLead: '', modalTitleSubtitle: '' };
 
-  let rawDna = (product.fragranticaDna || '').trim();
-  let shortName = (product.inspiration || '').trim();
+  // Explicit, legally safe scent model codes for all 22 fragrances (brand names stripped)
+  const cleanModelMap = {
+    'garnet-540': 'BR 540',
+    'monarch': 'Aventus',
+    'black-night': 'Black Opium',
+    'regent': 'Icon',
+    'cedar': 'Tam Dao',
+    'victor': '9 PM',
+    'rumo': 'Cheirosa 62',
+    'garden-bloom': 'Flora',
+    'island-kiss': 'Island Kiss',
+    'wazir': 'Kaaf',
+    'nishan': 'Liquid Brun',
+    'malik': 'Marj',
+    'shaan': 'Al-Wisam Day',
+    'musk-safa': 'Musk Rijali',
+    'raqeeq': 'Khofooq',
+    'golden-musk': 'Aurum',
+    'bayan': 'Kalemat',
+    'amir-majlis': 'Bin Shaikh',
+    'velvet-oud': 'Purple Oud',
+    'safwan-oud': 'Arabian Tobacco',
+    'camel-oud': 'Camel Oud',
+    'surkh-oud': 'Red Tobacco'
+  };
 
-  // Strip URLs completely — Fragrantica links must never appear in consumer UI
-  if (rawDna.startsWith('http://') || rawDna.startsWith('https://') || rawDna.includes('fragrantica.com')) {
-    rawDna = '';
-  }
-  if (shortName.startsWith('http://') || shortName.startsWith('https://') || shortName.includes('fragrantica.com')) {
-    shortName = '';
-  }
+  let scent = cleanModelMap[product.id] || (product.inspiration || '').trim();
 
-  // Auto-correct sheet typo: "BR 450" -> "BR 540"
-  if (shortName.toUpperCase() === 'BR 450' || shortName.toUpperCase() === 'BR450') {
-    shortName = 'BR 540';
-  }
-
-  let brand = '';
-  let scent = shortName;
-
-  if (rawDna && rawDna.includes(' - ')) {
-    const parts = rawDna.split(' - ');
-    brand = parts[0].trim();
-    const rest = parts.slice(1).join(' - ').replace(/\([^)]*\)/g, '').trim();
-    if (!scent || scent === rawDna) {
-      scent = rest;
-    }
-  }
-
-  // Handle BR 540 / Baccarat Rouge 540 alias
-  if (scent.toLowerCase().includes('baccarat') || scent.toLowerCase().includes('br 540') || scent.toLowerCase().includes('br 450') || product.id === 'garnet-540') {
-    scent = 'BR 540';
-    brand = brand || 'Maison Francis Kurkdjian';
-  }
-
-  if (!brand && rawDna && rawDna !== scent) {
-    brand = rawDna;
+  // Strip URLs if any
+  if (scent.startsWith('http://') || scent.startsWith('https://') || scent.includes('fragrantica.com')) {
+    scent = cleanModelMap[product.id] || product.name;
   }
 
-  if (!scent && !brand) {
+  // Strip any parent company / house names that might leak from sheets
+  scent = scent
+    .replace(/^Maison Francis Kurkdjian\s*[-–—]?\s*/i, '')
+    .replace(/^Alfred Dunhill\s*[-–—]?\s*/i, '')
+    .replace(/^Dunhill\s+/i, '')
+    .replace(/^Creed\s*[-–—]?\s*/i, '')
+    .replace(/\s+Creed$/i, '')
+    .replace(/^Gucci\s+/i, '')
+    .replace(/^Yves Saint Laurent\s*[-–—]?\s*/i, '')
+    .replace(/^YSL\s*[-–—]?\s*/i, '')
+    .replace(/^Afnan\s*[-–—]?\s*/i, '')
+    .replace(/^Sol de Janeiro\s*[-–—]?\s*/i, '')
+    .replace(/^Diptyque\s*[-–—]?\s*/i, '')
+    .replace(/^Dior\s*[-–—]?\s*/i, '')
+    .replace(/^Mancera\s*[-–—]?\s*/i, '')
+    .replace(/Baccarat Rouge 540/i, 'BR 540')
+    .replace(/BR 450/i, 'BR 540')
+    .trim();
+
+  if (!scent) {
     return { badgeText: '', modalLead: '', modalTitleSubtitle: '' };
   }
 
-  // 1. For Catalog Card Badge: "Inspired by BR 540 — Maison Francis Kurkdjian"
-  const badgeText = brand ? `${scent} — ${brand}` : scent;
-
-  // 2. For Modal Banner: "Formulated in the style of BR 540 by Maison Francis Kurkdjian"
-  const modalLead = brand 
-    ? `Formulated in the style of <strong>${scent}</strong> by <strong>${brand}</strong>` 
-    : `Formulated in the style of <strong>${scent}</strong>`;
-
-  // 3. For Modal Title: "— Inspired by BR 540"
+  // Pure model code badge (e.g., "Inspired by BR 540", "Inspired by Icon", "Inspired by Aventus")
+  const badgeText = scent;
+  const modalLead = `Formulated in the style of <strong>${scent}</strong>`;
   const modalTitleSubtitle = `— Inspired by ${scent}`;
 
   return {
     scent,
-    brand,
+    brand: '',
     badgeText,
     modalLead,
     modalTitleSubtitle
   };
 }
+window.getInspirationInfo = getInspirationInfo;
 
 /**
  * Render Fragrance Catalog
@@ -939,8 +948,9 @@ function renderCombos(combos) {
   const currency = (window.NURAAN_CONFIG && window.NURAAN_CONFIG.currencySymbol) || "₹";
 
   container.innerHTML = combos.map(combo => {
-    const activePrice = combo.price || 999;
-    const activeMRP = combo.mrp || 2499;
+    // Lock gift set price strictly to 999 (prevent sheet legacy 1299 overwrite)
+    const activePrice = (combo.price && combo.price !== 1299) ? combo.price : 999;
+    const activeMRP = (combo.mrp && combo.mrp !== 3299) ? combo.mrp : 2499;
     const activeSavings = activeMRP - activePrice;
 
     const itemsHtml = (combo.itemsIncluded || [])
@@ -1045,6 +1055,46 @@ function renderCombos(combos) {
             </ul>
           </div>
 
+          <!-- 3-Tier Multi-Box Bundle Selector -->
+          <div class="combo-bundle-selector">
+            <span class="bundle-selector-label">Select Quantity & Save:</span>
+            <div class="combo-bundle-pills">
+              <button 
+                type="button" 
+                class="combo-bundle-pill combo-tier-btn-${combo.id} active" 
+                data-qty="1" 
+                onclick="window.selectComboTier('${combo.id}', 1)"
+                aria-label="1 Gift Set for ₹999"
+              >
+                <span class="pill-radio"></span>
+                <span class="pill-name">1 Box</span>
+                <span class="pill-price">${currency}999</span>
+              </button>
+              <button 
+                type="button" 
+                class="combo-bundle-pill combo-tier-btn-${combo.id}" 
+                data-qty="2" 
+                onclick="window.selectComboTier('${combo.id}', 2)"
+                aria-label="2 Gift Sets for ₹1,699 with 30% Off 2nd box"
+              >
+                <span class="pill-radio"></span>
+                <span class="pill-name">2 Boxes <span class="pill-badge-deal">30% Off 2nd</span></span>
+                <span class="pill-price">${currency}1,699</span>
+              </button>
+              <button 
+                type="button" 
+                class="combo-bundle-pill combo-tier-btn-${combo.id}" 
+                data-qty="4" 
+                onclick="window.selectComboTier('${combo.id}', 4)"
+                aria-label="4 Gift Sets for ₹2,999 Buy 3 Get 1 Free"
+              >
+                <span class="pill-radio"></span>
+                <span class="pill-name">4 Boxes <span class="pill-badge-deal best">👑 Buy 3, Get 1 FREE</span></span>
+                <span class="pill-price">${currency}2,999</span>
+              </button>
+            </div>
+          </div>
+
           <div class="combo-pricing-bar">
             <div class="combo-prices">
               <span class="combo-current-price" id="combo-price-${combo.id}">${currency}${activePrice.toLocaleString('en-IN')}</span>
@@ -1056,16 +1106,25 @@ function renderCombos(combos) {
               <button 
                 type="button" 
                 class="btn-order-wa" 
+                id="combo-wa-btn-${combo.id}"
                 onclick="triggerComboWhatsApp('${combo.id}')"
               >
-                <span>Order Gift Set on WhatsApp</span>
+                <span>Order 1 Gift Set on WhatsApp (${currency}999)</span>
               </button>
               <button 
                 type="button" 
                 class="btn-inquire-ig" 
+                id="combo-ig-btn-${combo.id}"
                 onclick="triggerComboInstagram('${combo.id}')"
               >
                 <span>Order Gift Set on Instagram</span>
+              </button>
+              <button 
+                type="button" 
+                class="btn-add-combo-sel" 
+                onclick="window.addComboToSelection('${combo.id}')"
+              >
+                <span>+ Add to Order List (Mix & Match Sets)</span>
               </button>
             </div>
           </div>
@@ -1584,36 +1643,116 @@ window.triggerInstagramInquiry = function(productId) {
   window.SocialCheckout.inquireOnInstagram(product, size);
 };
 
+window.selectedComboTiers = window.selectedComboTiers || {};
+
+window.selectComboTier = function(comboId, qty) {
+  window.selectedComboTiers[comboId] = qty;
+  const currency = (window.NURAAN_CONFIG && window.NURAAN_CONFIG.currencySymbol) || "₹";
+
+  // Update pill active classes
+  const pills = document.querySelectorAll(`.combo-tier-btn-${comboId}`);
+  pills.forEach(pill => {
+    const pillQty = Number(pill.getAttribute('data-qty'));
+    pill.classList.toggle('active', pillQty === qty);
+  });
+
+  let price = 999;
+  let mrp = 2499;
+  let saveText = `SAVE ${currency}1,500 (60% OFF)`;
+  let btnWaText = `Order 1 Gift Set on WhatsApp (${currency}999)`;
+
+  if (qty === 2) {
+    price = 1699;
+    mrp = 4998;
+    saveText = `SAVE ${currency}3,299 (30% OFF 2ND BOX)`;
+    btnWaText = `Order 2 Gift Sets on WhatsApp (${currency}1,699)`;
+  } else if (qty === 4) {
+    price = 2999;
+    mrp = 9996;
+    saveText = `👑 BUY 3, GET 1 FREE (SAVE ${currency}6,997)`;
+    btnWaText = `Order 4 Gift Sets on WhatsApp (${currency}2,999)`;
+  }
+
+  const priceEl = document.getElementById(`combo-price-${comboId}`);
+  if (priceEl) priceEl.textContent = `${currency}${price.toLocaleString('en-IN')}`;
+
+  const mrpEl = document.getElementById(`combo-mrp-${comboId}`);
+  if (mrpEl) mrpEl.textContent = `${currency}${mrp.toLocaleString('en-IN')}`;
+
+  const saveEl = document.getElementById(`combo-save-${comboId}`);
+  if (saveEl) saveEl.textContent = saveText;
+
+  const btnWa = document.getElementById(`combo-wa-btn-${comboId}`);
+  if (btnWa) {
+    const span = btnWa.querySelector('span');
+    if (span) span.textContent = btnWaText;
+  }
+};
+
+window.addComboToSelection = function(comboId) {
+  const combo = (window.NURAAN_COMBOS || []).find(c => c.id === comboId);
+  if (!combo) return;
+  const qty = (window.selectedComboTiers && window.selectedComboTiers[comboId]) || 1;
+
+  for (let i = 0; i < qty; i++) {
+    window.selectionList.push({
+      id: `${combo.id}-set-${Date.now()}-${i}`,
+      comboId: combo.id,
+      name: combo.name,
+      collection: 'Curated Gift Set',
+      size: '6 × 3ml Gift Coffret',
+      price: 999,
+      bottleColor: '#C5A059',
+      isGiftSet: true
+    });
+  }
+  window.updateSelectionUI();
+  window.openSelectionDrawer();
+  if (window.SocialCheckout && window.SocialCheckout.showToast) {
+    window.SocialCheckout.showToast(`✓ Added ${qty} × ${combo.name} to your Order List!`, 'success');
+  }
+};
+
 window.triggerComboWhatsApp = function(comboId) {
   const combo = (window.NURAAN_COMBOS || []).find(c => c.id === comboId);
   if (!combo) return;
-  const price = combo.price || 999;
+  const qty = (window.selectedComboTiers && window.selectedComboTiers[comboId]) || 1;
+  let price = 999;
+  if (qty === 2) price = 1699;
+  else if (qty === 4) price = 2999;
+  else if (qty > 1) price = qty * 999;
+
   trackEvent('whatsapp_combo_click', {
     item_name: combo.name,
     item_category: 'Gift Set',
     combo_id: combo.id,
     combo_name: combo.name,
-    size: '3ml',
+    quantity: qty,
     value: price,
     currency: 'INR'
   });
-  window.SocialCheckout.orderComboOnWhatsApp(combo, '3ml');
+  window.SocialCheckout.orderComboOnWhatsApp(combo, qty);
 };
 
 window.triggerComboInstagram = function(comboId) {
   const combo = (window.NURAAN_COMBOS || []).find(c => c.id === comboId);
   if (!combo) return;
-  const price = combo.price || 999;
+  const qty = (window.selectedComboTiers && window.selectedComboTiers[comboId]) || 1;
+  let price = 999;
+  if (qty === 2) price = 1699;
+  else if (qty === 4) price = 2999;
+  else if (qty > 1) price = qty * 999;
+
   trackEvent('instagram_combo_click', {
     item_name: combo.name,
     item_category: 'Gift Set',
     combo_id: combo.id,
     combo_name: combo.name,
-    size: '3ml',
+    quantity: qty,
     value: price,
     currency: 'INR'
   });
-  window.SocialCheckout.inquireComboOnInstagram(combo, '3ml');
+  window.SocialCheckout.inquireComboOnInstagram(combo, qty);
 };
 
 /**
@@ -2376,7 +2515,11 @@ window.closeSelectionDrawer = function() {
 window.updateSelectionUI = function() {
   const currency = (window.NURAAN_CONFIG && window.NURAAN_CONFIG.currencySymbol) || "₹";
   const count = window.selectionList.length;
-  const total = window.selectionList.reduce((acc, item) => acc + item.price, 0);
+  
+  // Calculate dynamic volume tiers & cross-set bundling
+  const summary = (window.SocialCheckout && window.SocialCheckout.calculateCartSummary) 
+    ? window.SocialCheckout.calculateCartSummary(window.selectionList) 
+    : { grossSubtotal: 0, finalPayable: 0, totalDiscount: 0, n12: 0, nSets: 0 };
 
   // 1. Update Card buttons
   (window.NURAAN_CATALOG || []).forEach(product => {
@@ -2409,13 +2552,59 @@ window.updateSelectionUI = function() {
       const pillCount = document.getElementById("pill-selection-count");
       if (pillCount) pillCount.textContent = count;
       const pillTotal = document.getElementById("pill-selection-total");
-      if (pillTotal) pillTotal.textContent = `${currency}${total.toLocaleString('en-IN')}`;
+      if (pillTotal) pillTotal.textContent = `${currency}${summary.finalPayable.toLocaleString('en-IN')}`;
     } else {
       pill.classList.remove("active");
     }
   }
 
-  // 4. Update Drawer Items
+  // 4. Update Wardrobe Progress (12ml bottles gamification)
+  const wardrobeCard = document.getElementById("drawer-wardrobe-progress");
+  if (wardrobeCard) {
+    if (summary.n12 > 0) {
+      wardrobeCard.style.display = "block";
+      const countEl = document.getElementById("drawer-wardrobe-count");
+      if (countEl) countEl.textContent = `${summary.n12} of 6 Added`;
+      const barEl = document.getElementById("drawer-wardrobe-bar");
+      if (barEl) barEl.style.width = `${Math.min(100, Math.round((summary.n12 / 6) * 100))}%`;
+      const msgEl = document.getElementById("drawer-wardrobe-msg");
+      if (msgEl) {
+        let msg = "";
+        if (summary.n12 === 1) msg = "💡 Add 2 more bottles to unlock 15% OFF your entire cart!";
+        else if (summary.n12 === 2) msg = "💡 Add 1 more bottle to unlock 15% OFF your entire cart!";
+        else if (summary.n12 === 3) msg = "🎉 15% OFF Unlocked! Add 1 more to reach 20% OFF!";
+        else if (summary.n12 === 4) msg = "🔥 20% OFF Unlocked! Add 2 more to get 30% OFF + Luxury Presentation Coffret!";
+        else if (summary.n12 === 5) msg = "⚡ 25% OFF Unlocked! Just 1 more bottle for the Full Wardrobe 30% OFF!";
+        else msg = "👑 CONNOISSEUR TIER UNLOCKED: 30% OFF Full 6-Bottle Wardrobe + Luxury Box!";
+        msgEl.innerHTML = `<span>${msg}</span>`;
+      }
+    } else {
+      wardrobeCard.style.display = "none";
+    }
+  }
+
+  // 5. Update Universal Gift Set Progress
+  const giftCard = document.getElementById("drawer-giftset-progress");
+  if (giftCard) {
+    if (summary.nSets > 0) {
+      giftCard.style.display = "block";
+      const badgeEl = document.getElementById("drawer-giftset-badge");
+      if (badgeEl) badgeEl.textContent = `${summary.nSets} Gift Set${summary.nSets > 1 ? 's' : ''}`;
+      const msgEl = document.getElementById("drawer-giftset-msg");
+      if (msgEl) {
+        let msg = "";
+        if (summary.nSets === 1) msg = "💡 Add any other Gift Set (Arabic, Oudh, etc.) to get 30% OFF the 2nd box (2 for ₹1,699)!";
+        else if (summary.nSets === 2) msg = "⚡ Tier Unlocked: 2 Boxes @ ₹1,699! Add 2 more to unlock BUY 3, GET 1 FREE (4 sets for ₹2,999)!";
+        else if (summary.nSets === 3) msg = "🚨 LOSS AVERSION ALERT: Add 1 more Gift Set for just ₹301 more (Buy 3, Get 1 FREE @ ₹2,999)!";
+        else msg = `👑 BUY 3, GET 1 FREE UNLOCKED! You are getting ${summary.nSets} luxury coffrets at maximum bundle savings!`;
+        msgEl.innerHTML = `<span>${msg}</span>`;
+      }
+    } else {
+      giftCard.style.display = "none";
+    }
+  }
+
+  // 6. Update Drawer Items
   const itemsContainer = document.getElementById("drawer-items-list");
   if (itemsContainer) {
     if (count === 0) {
@@ -2429,25 +2618,41 @@ window.updateSelectionUI = function() {
         </div>
       `;
     } else {
-      itemsContainer.innerHTML = window.selectionList.map((item, idx) => `
-        <div class="drawer-item-card">
-          <div class="drawer-item-swatch" style="--item-color: ${item.bottleColor};"></div>
-          <div class="drawer-item-info">
-            <div class="drawer-item-name">${item.name}</div>
-            <div class="drawer-item-format">${item.size === '12ml' ? '12ml Luxury Single' : '3ml Discovery Option'} • ${item.collection}</div>
-            <div class="drawer-item-price">${currency}${item.price.toLocaleString('en-IN')}</div>
+      itemsContainer.innerHTML = window.selectionList.map((item, idx) => {
+        const isSet = Boolean(item.isGiftSet || item.isCombo || (item.size && item.size.toLowerCase().includes('set')));
+        const formatLabel = isSet ? '6 × 3ml Precision Coffret' : (item.size === '12ml' ? '12ml Luxury Single' : '3ml Discovery Option');
+        return `
+          <div class="drawer-item-card">
+            <div class="drawer-item-swatch" style="--item-color: ${item.bottleColor || '#C5A059'};"></div>
+            <div class="drawer-item-info">
+              <div class="drawer-item-name">${item.name}</div>
+              <div class="drawer-item-format">${formatLabel} • ${item.collection || 'Nuraan'}</div>
+              <div class="drawer-item-price">${currency}${(item.price || 999).toLocaleString('en-IN')}</div>
+            </div>
+            <button type="button" class="drawer-item-remove-btn" onclick="removeFromSelection(${idx})" aria-label="Remove item">✕</button>
           </div>
-          <button type="button" class="drawer-item-remove-btn" onclick="removeFromSelection(${idx})" aria-label="Remove item">✕</button>
-        </div>
-      `).join("");
+        `;
+      }).join("");
     }
   }
 
-  // 5. Update Drawer Totals
+  // 7. Update Drawer Totals
   const drawerSubtotal = document.getElementById("drawer-subtotal");
-  if (drawerSubtotal) drawerSubtotal.textContent = `${currency}${total.toLocaleString('en-IN')}`;
+  if (drawerSubtotal) drawerSubtotal.textContent = `${currency}${summary.grossSubtotal.toLocaleString('en-IN')}`;
+
+  const discountRow = document.getElementById("drawer-discount-row");
+  const discountVal = document.getElementById("drawer-discount-val");
+  if (discountRow && discountVal) {
+    if (summary.totalDiscount > 0) {
+      discountRow.style.display = "flex";
+      discountVal.textContent = `-${currency}${summary.totalDiscount.toLocaleString('en-IN')}`;
+    } else {
+      discountRow.style.display = "none";
+    }
+  }
+
   const drawerTotal = document.getElementById("drawer-total-amount");
-  if (drawerTotal) drawerTotal.textContent = `${currency}${total.toLocaleString('en-IN')}`;
+  if (drawerTotal) drawerTotal.textContent = `${currency}${summary.finalPayable.toLocaleString('en-IN')}`;
 
   const drawerWaBtn = document.getElementById("drawer-wa-btn");
   if (drawerWaBtn) drawerWaBtn.disabled = count === 0;
@@ -2456,13 +2661,17 @@ window.updateSelectionUI = function() {
 };
 
 window.triggerSelectionWhatsApp = function() {
-  const total = window.selectionList.reduce((acc, item) => acc + item.price, 0);
-  window.SocialCheckout.orderSelectionListOnWhatsApp(window.selectionList, total);
+  const summary = (window.SocialCheckout && window.SocialCheckout.calculateCartSummary) 
+    ? window.SocialCheckout.calculateCartSummary(window.selectionList) 
+    : { finalPayable: 0 };
+  window.SocialCheckout.orderSelectionListOnWhatsApp(window.selectionList, summary.finalPayable);
 };
 
 window.triggerSelectionInstagram = function() {
-  const total = window.selectionList.reduce((acc, item) => acc + item.price, 0);
-  window.SocialCheckout.inquireSelectionListOnInstagram(window.selectionList, total);
+  const summary = (window.SocialCheckout && window.SocialCheckout.calculateCartSummary) 
+    ? window.SocialCheckout.calculateCartSummary(window.selectionList) 
+    : { finalPayable: 0 };
+  window.SocialCheckout.inquireSelectionListOnInstagram(window.selectionList, summary.finalPayable);
 };
 
 // ==============================================================================

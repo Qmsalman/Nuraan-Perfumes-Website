@@ -69,38 +69,56 @@ Thank you!`;
   },
 
   /**
-   * Order a Curated Gift Set on WhatsApp
+   * Order a Curated Gift Set on WhatsApp with Multi-Box Volume Tier Support
    */
-  orderComboOnWhatsApp: function(combo, size) {
+  orderComboOnWhatsApp: function(combo, bundleQty = 1) {
     const config = window.NURAAN_CONFIG || {};
     const phone = config.whatsappNumber || "918591059608";
     const brandName = config.brandName || "Nuraan Perfumes";
     const currency = config.currencySymbol || "₹";
 
-    const activePrice = combo.price || 999;
-    const activeMRP = combo.mrp || 2499;
-    const formatName = "6 × 3ml Precision Roll-on Luxury Gift Coffret";
+    const qty = Number(bundleQty) || 1;
+    let activePrice = 999;
+    let activeMRP = 2499;
+    let tierNote = "Standard Luxury Gift Coffret Offer";
 
+    if (qty === 2) {
+      activePrice = 1699;
+      activeMRP = 4998;
+      tierNote = "✦ Special Bundle: 30% Off 2nd Box (Save ₹3,299)";
+    } else if (qty === 4) {
+      activePrice = 2999;
+      activeMRP = 9996;
+      tierNote = "👑 VIP Offer: Buy 3, Get 1 FREE (Save ₹6,997)";
+    } else if (qty > 1) {
+      activePrice = qty * 999;
+      activeMRP = qty * 2499;
+    }
+
+    const formatName = `${qty} × (6 × 3ml Precision Roll-on Luxury Gift Coffret)`;
     const itemsList = combo.itemsIncluded ? combo.itemsIncluded.join(", ") : "";
 
     const message = 
 `✦ *GIFT SET ORDER — ${brandName.toUpperCase()}* ✦
 
 Hello Nuraan Perfumes,
-I would like to order this curated Gift Set:
+I would like to order this curated Gift Set offer:
 
 • *Set Name:* ${combo.name}
+• *Quantity:* ${qty} Gift Set${qty > 1 ? 's' : ''}
 • *Format:* ${formatName}
-• *Attars Included:* ${itemsList}
-• *Price:* ${currency}${activePrice.toLocaleString('en-IN')} (MRP: ${currency}${activeMRP.toLocaleString('en-IN')})
-• *Set Code:* #${combo.id.toUpperCase()}
+• *Offer Applied:* ${tierNote}
+• *Attars in Set:* ${itemsList}
+• *Total Payable:* ${currency}${activePrice.toLocaleString('en-IN')} (MRP: ${currency}${activeMRP.toLocaleString('en-IN')})
+• *Shipping:* Free Express All-India Dispatch
 
-Please share UPI details and dispatch schedule.
+Please share your UPI / GPay details and estimated dispatch schedule.
 
 *Shipping Information:*
 Name: 
 Delivery Address: 
 City & Pincode: 
+Contact Phone: 
 
 Thank you!`;
 
@@ -112,14 +130,18 @@ Thank you!`;
   /**
    * Inquire about a Curated Gift Set on Instagram DM
    */
-  inquireComboOnInstagram: function(combo, size) {
+  inquireComboOnInstagram: function(combo, bundleQty = 1) {
     const config = window.NURAAN_CONFIG || {};
     const igHandle = config.instagramHandle || "nuraan_perfumes";
     const currency = config.currencySymbol || "₹";
 
-    const activePrice = combo.price || 999;
-    const formatLabel = "6 × 3ml Luxury Gift Set";
+    const qty = Number(bundleQty) || 1;
+    let activePrice = 999;
+    if (qty === 2) activePrice = 1699;
+    else if (qty === 4) activePrice = 2999;
+    else if (qty > 1) activePrice = qty * 999;
 
+    const formatLabel = `${qty} × 6 × 3ml Luxury Gift Set${qty > 1 ? 's' : ''}`;
     const summary = `Nuraan Perfumes Order: ${combo.name} (${formatLabel}) - ${currency}${activePrice.toLocaleString('en-IN')}`;
 
     SocialCheckout.copyToClipboard(summary, function() {
@@ -202,6 +224,122 @@ Thank you!`;
   },
 
   /**
+   * Unified Cart Volume Discounts & Bundle Calculation Engine
+   * • 12ml Wardrobe Gamification:
+   *   1-2 bottles: 0% discount
+   *   3 bottles: 15% discount
+   *   4 bottles: 20% discount
+   *   5 bottles: 25% discount
+   *   6+ bottles: 30% discount + Shipped in Bespoke 6-Bottle Luxury Presentation Coffret (₹67 box included free)
+   * • Universal Gift Set Cross-Set Bundling:
+   *   1 set: ₹999
+   *   2 sets: ₹1,699 (30% off 2nd box — saves ₹299)
+   *   3 sets: ₹2,698 (nudge to add 4th)
+   *   4 sets: ₹2,999 (Buy 3, Get 1 FREE — saves ₹997)
+   *   5+ sets: ₹2,999 + (n - 4) * ₹750
+   */
+  calculateCartSummary: function(items) {
+    const list = items || [];
+    const bottles12ml = [];
+    const giftSets = [];
+    const otherItems = [];
+
+    list.forEach(item => {
+      const isSet = Boolean(
+        item.isGiftSet || 
+        item.isCombo || 
+        (item.size && (item.size.toLowerCase().includes('set') || item.size.toLowerCase().includes('coffret') || item.size.toLowerCase().includes('box'))) ||
+        (item.name && item.name.toLowerCase().includes('gift set'))
+      );
+
+      if (isSet) {
+        giftSets.push(item);
+      } else if (item.size === '12ml') {
+        bottles12ml.push(item);
+      } else {
+        otherItems.push(item);
+      }
+    });
+
+    // 1. 12ml bottles calculations
+    const n12 = bottles12ml.length;
+    const subtotal12ml = bottles12ml.reduce((sum, b) => sum + (Number(b.price) || 0), 0);
+    let disc12Pct = 0;
+    let disc12Label = '';
+
+    if (n12 >= 6) {
+      disc12Pct = 0.30;
+      disc12Label = '30% Off (6-Bottle Luxury Wardrobe Coffret Tier)';
+    } else if (n12 === 5) {
+      disc12Pct = 0.25;
+      disc12Label = '25% Off (5-Bottle Wardrobe Tier)';
+    } else if (n12 === 4) {
+      disc12Pct = 0.20;
+      disc12Label = '20% Off (4-Bottle Wardrobe Tier)';
+    } else if (n12 === 3) {
+      disc12Pct = 0.15;
+      disc12Label = '15% Off (3-Bottle Wardrobe Tier)';
+    }
+
+    const disc12Amount = Math.round(subtotal12ml * disc12Pct);
+    const payable12ml = subtotal12ml - disc12Amount;
+
+    // 2. Gift sets calculations (Universal pooling across all variants)
+    const nSets = giftSets.length;
+    const subtotalSets = nSets * 999;
+    let payableSets = 0;
+    let discSetsLabel = '';
+
+    if (nSets === 0) {
+      payableSets = 0;
+    } else if (nSets === 1) {
+      payableSets = 999;
+      discSetsLabel = 'Standard Gift Set Offer';
+    } else if (nSets === 2) {
+      payableSets = 1699;
+      discSetsLabel = '30% Off 2nd Box (2-Set Bundle Offer)';
+    } else if (nSets === 3) {
+      payableSets = 2698;
+      discSetsLabel = '2-Set Bundle + 1 Box';
+    } else if (nSets === 4) {
+      payableSets = 2999;
+      discSetsLabel = '👑 Buy 3, Get 1 FREE (Complete 4-Set Collection)';
+    } else {
+      payableSets = 2999 + ((nSets - 4) * 750);
+      discSetsLabel = `Complete 4-Set Collection + ${nSets - 4} Extra @ ₹750/ea`;
+    }
+
+    const discSetsAmount = subtotalSets - payableSets;
+
+    // 3. Other items
+    const subtotalOther = otherItems.reduce((sum, o) => sum + (Number(o.price) || 0), 0);
+
+    const grossSubtotal = subtotal12ml + subtotalSets + subtotalOther;
+    const totalDiscount = disc12Amount + discSetsAmount;
+    const finalPayable = payable12ml + payableSets + subtotalOther;
+
+    return {
+      bottles12ml,
+      giftSets,
+      otherItems,
+      n12,
+      nSets,
+      subtotal12ml,
+      disc12Pct,
+      disc12Label,
+      disc12Amount,
+      payable12ml,
+      subtotalSets,
+      discSetsAmount,
+      discSetsLabel,
+      payableSets,
+      grossSubtotal,
+      totalDiscount,
+      finalPayable
+    };
+  },
+
+  /**
    * Order a Multi-Item Scent Selection List on WhatsApp
    */
   orderSelectionListOnWhatsApp: function(items, totalAmount) {
@@ -215,21 +353,51 @@ Thank you!`;
       return;
     }
 
+    const summary = SocialCheckout.calculateCartSummary(items);
+
     let itemsFormatted = "";
     items.forEach((item, idx) => {
-      const sizeTag = item.size === '12ml' ? '12ml Luxury Single' : '3ml Discovery Option';
-      itemsFormatted += `  ${idx + 1}. *${item.name}* (${item.collection} Collection)\n     • Format: ${sizeTag} — ${currency}${item.price.toLocaleString('en-IN')}\n`;
+      const isSet = Boolean(
+        item.isGiftSet || 
+        item.isCombo || 
+        (item.size && (item.size.toLowerCase().includes('set') || item.size.toLowerCase().includes('coffret') || item.size.toLowerCase().includes('box'))) ||
+        (item.name && item.name.toLowerCase().includes('gift set'))
+      );
+      const sizeTag = isSet ? '6 × 3ml Precision Coffret' : (item.size === '12ml' ? '12ml Precision Roll-on' : '3ml Discovery Option');
+      const unitP = item.price || (isSet ? 999 : 499);
+      itemsFormatted += `  ${idx + 1}. *${item.name}* (${sizeTag}) — ${currency}${unitP.toLocaleString('en-IN')}\n`;
     });
+
+    let discountBreakdown = "";
+    if (summary.totalDiscount > 0) {
+      discountBreakdown += `\n• *Gross Subtotal:* ${currency}${summary.grossSubtotal.toLocaleString('en-IN')}\n`;
+      if (summary.disc12Amount > 0) {
+        discountBreakdown += `• *12ml Wardrobe Discount (${summary.disc12Label}):* -${currency}${summary.disc12Amount.toLocaleString('en-IN')}\n`;
+      }
+      if (summary.discSetsAmount > 0) {
+        discountBreakdown += `• *Gift Set Bundle Savings (${summary.discSetsLabel}):* -${currency}${summary.discSetsAmount.toLocaleString('en-IN')}\n`;
+      }
+    }
+
+    let packagingNote = "";
+    if (summary.n12 >= 6) {
+      packagingNote = "• *Packaging:* Shipped in our Bespoke 6-Bottle Luxury Presentation Coffret (Included Free)\n";
+    }
+
+    const countDetails = [];
+    if (summary.n12 > 0) countDetails.push(`${summary.n12} × 12ml Bottles`);
+    if (summary.nSets > 0) countDetails.push(`${summary.nSets} × Gift Sets`);
+    if (summary.otherItems.length > 0) countDetails.push(`${summary.otherItems.length} × Other Items`);
 
     const message = 
 `✦ *NEW MULTI-ITEM ORDER — ${brandName.toUpperCase()}* ✦
 
 Hello Nuraan Perfumes,
-I would like to place an order for the following ${items.length} attars from your collection:
+I would like to place an order for the following items:
 
 ${itemsFormatted}
-• *Total Items:* ${items.length} Bottles
-• *Total Order Value:* ${currency}${totalAmount.toLocaleString('en-IN')}
+• *Total Items:* ${items.length} Product${items.length > 1 ? 's' : ''} (${countDetails.join(', ')})${discountBreakdown}
+${packagingNote}• *Total Payable:* ${currency}${summary.finalPayable.toLocaleString('en-IN')}
 • *Shipping:* Free Express All-India Dispatch
 
 Please share your UPI / GPay / Bank details and confirm estimated delivery timeline.
@@ -260,11 +428,12 @@ Thank you!`;
       return;
     }
 
-    const itemSummaries = items.map(item => `${item.name} (${item.size})`).join(", ");
-    const summary = `Nuraan Perfumes Order List (${items.length} items • ${currency}${totalAmount.toLocaleString('en-IN')}): ${itemSummaries}`;
+    const summary = SocialCheckout.calculateCartSummary(items);
+    const itemSummaries = items.map(item => `${item.name} (${item.size || '3ml'})`).join(", ");
+    const summaryText = `Nuraan Perfumes Order List (${items.length} items • ${currency}${summary.finalPayable.toLocaleString('en-IN')}): ${itemSummaries}`;
 
-    SocialCheckout.copyToClipboard(summary, function() {
-      SocialCheckout.showToast(`✓ Copied your ${items.length}-attar order list! Opening @${igHandle}...`, "success");
+    SocialCheckout.copyToClipboard(summaryText, function() {
+      SocialCheckout.showToast(`✓ Copied your order list details! Opening @${igHandle}...`, "success");
       setTimeout(function() {
         window.open(`https://ig.me/m/${igHandle}`, '_blank');
       }, 750);
