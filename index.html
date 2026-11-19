@@ -139,7 +139,7 @@
 
   <!-- Stylesheets -->
   <link rel="stylesheet" href="styles/typography.css">
-  <link rel="stylesheet" href="styles/main.css">
+  <link rel="stylesheet" href="styles/main.css?v=2.2">
 </head>
 <body>
 
@@ -1152,6 +1152,29 @@
       </div>
 
       <div class="drawer-body">
+        <!-- 12ml 6-Bottle Wardrobe Progress Tracker -->
+        <div class="wardrobe-progress-card" id="drawer-wardrobe-progress" style="display: none;">
+          <div class="progress-header">
+            <span class="progress-title">✦ 6-Bottle Wardrobe Box</span>
+            <span class="progress-count" id="drawer-wardrobe-count">0 of 6 Added</span>
+          </div>
+          <div class="progress-bar-bg">
+            <div class="progress-bar-fill" id="drawer-wardrobe-bar" style="width: 0%;"></div>
+          </div>
+          <div class="unlocked-benefit" id="drawer-wardrobe-msg">
+            <span>💡 Add 3 bottles to unlock 15% OFF your entire cart!</span>
+          </div>
+        </div>
+
+        <!-- Universal Gift Set Bundle Tracker -->
+        <div class="giftset-bundle-card" id="drawer-giftset-progress" style="display: none;">
+          <div class="giftset-bundle-header">
+            <span class="giftset-bundle-title">✦ Gift Set Bundle Savings</span>
+            <span class="giftset-bundle-badge" id="drawer-giftset-badge">Tier Deal</span>
+          </div>
+          <div class="giftset-bundle-msg" id="drawer-giftset-msg"></div>
+        </div>
+
         <div class="drawer-items-list" id="drawer-items-list">
           <!-- Populated by scripts/app.js -->
         </div>
@@ -1159,15 +1182,19 @@
 
       <div class="drawer-footer">
         <div class="drawer-summary-row">
-          <span>Items Subtotal:</span>
+          <span>Items Gross Subtotal:</span>
           <span id="drawer-subtotal">₹0</span>
+        </div>
+        <div class="drawer-summary-row" id="drawer-discount-row" style="display: none; color: #059669; font-weight: 700;">
+          <span id="drawer-discount-label">Volume Savings:</span>
+          <span id="drawer-discount-val">-₹0</span>
         </div>
         <div class="drawer-summary-row">
           <span>All-India Shipping:</span>
           <span style="color: var(--wa-green); font-weight: 700;">FREE</span>
         </div>
         <div class="drawer-total-row">
-          <span>Estimated Total:</span>
+          <span>Total Payable:</span>
           <span id="drawer-total-amount">₹0</span>
         </div>
 
@@ -1392,11 +1419,11 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
   <!-- Application Scripts -->
-  <script src="scripts/config.js"></script>
-  <script src="scripts/catalog-data.js"></script>
-  <script src="scripts/social-checkout.js"></script>
-  <script src="scripts/app.js"></script>
-  <script src="scripts/3d-experience.js"></script>
-  <script src="scripts/sheets-sync.js"></script>
+  <script src="scripts/config.js?v=2.2"></script>
+  <script src="scripts/catalog-data.js?v=2.2"></script>
+  <script src="scripts/social-checkout.js?v=2.2"></script>
+  <script src="scripts/app.js?v=2.2"></script>
+  <script src="scripts/3d-experience.js?v=2.2"></script>
+  <script src="scripts/sheets-sync.js?v=2.2"></script>
 </body>
 </html>
