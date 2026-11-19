@@ -713,6 +713,24 @@ img {
   box-shadow: 0 2px 8px rgba(197, 160, 89, 0.15);
 }
 
+.diptyque-crest-box {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(197, 160, 89, 0.12);
+  border: 1px solid rgba(197, 160, 89, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent-gold);
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(197, 160, 89, 0.08);
+}
+
+.diptyque-crest-box svg {
+  stroke: var(--accent-gold);
+}
+
 .pillar-title {
   font-size: 0.96rem;
   font-weight: 700;
@@ -941,6 +959,21 @@ img {
   box-shadow: 0 2px 8px rgba(20, 23, 30, 0.15);
 }
 
+.compass-chip .diptyque-micro-icon {
+  width: 13px;
+  height: 13px;
+  stroke: var(--accent-gold);
+  stroke-width: 1.6;
+  fill: none;
+  flex-shrink: 0;
+  display: inline-block;
+  vertical-align: -1px;
+}
+
+.compass-chip.active .diptyque-micro-icon {
+  stroke: #F3E5AB;
+}
+
 .compass-active-bar {
   display: flex;
   align-items: center;
@@ -979,27 +1012,50 @@ img {
   margin: 8px 0 12px 0;
 }
 
+.diptyque-micro-icon {
+  width: 12px;
+  height: 12px;
+  stroke: var(--accent-gold);
+  stroke-width: 1.6;
+  fill: none;
+  flex-shrink: 0;
+  display: inline-block;
+  vertical-align: -1px;
+}
+
 .lifestyle-tag {
-  font-size: 0.7rem;
-  font-weight: 700;
-  padding: 3px 8px;
-  border-radius: 6px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 3px 9px;
+  border-radius: 14px;
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: 5px;
   letter-spacing: 0.02em;
+  background: #FFFFFF;
+  border: 1px solid var(--border-gold);
+  color: var(--color-text-main);
+  box-shadow: 0 1px 3px rgba(20, 23, 30, 0.04);
 }
 
 .lifestyle-tag.occ-tag {
-  background: rgba(197, 155, 39, 0.12);
-  color: #8C6A18;
-  border: 1px solid rgba(197, 155, 39, 0.28);
+  background: #FFFFFF;
+  color: var(--color-text-main);
+  border: 1px solid rgba(197, 160, 89, 0.35);
+}
+
+.lifestyle-tag.occ-tag .diptyque-micro-icon {
+  stroke: var(--accent-gold);
 }
 
 .lifestyle-tag.sea-tag {
-  background: rgba(43, 76, 89, 0.1);
-  color: #234E52;
-  border: 1px solid rgba(43, 76, 89, 0.22);
+  background: #FFFFFF;
+  color: var(--color-text-main);
+  border: 1px solid rgba(43, 76, 89, 0.25);
+}
+
+.lifestyle-tag.sea-tag .diptyque-micro-icon {
+  stroke: #2B4C59;
 }
 
 /* ==============================================================================
