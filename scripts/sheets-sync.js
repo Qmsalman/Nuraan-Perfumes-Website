@@ -396,6 +396,28 @@ const NuraanSheetsSync = {
           window.NURAAN_ENABLE_3D_UNBOXING = val.toUpperCase() === 'TRUE';
           break;
         }
+        case 'reviews_enabled':
+        case 'reviews_section_enabled':
+        case 'enable_reviews': {
+          const isEnabled = val.toLowerCase() === 'true' || val.toLowerCase() === 'yes' || val.toLowerCase() === 'enable' || val.toLowerCase() === '1';
+          config.reviewsSectionEnabled = isEnabled;
+          const revSec = document.getElementById('reviews-section');
+          const bentoLink = document.getElementById('bentoReviewLink');
+          if (revSec) {
+            revSec.style.display = isEnabled ? 'block' : 'none';
+          }
+          if (bentoLink) {
+            if (isEnabled) {
+              bentoLink.classList.remove('is-disabled-link');
+              bentoLink.innerHTML = '<span>✦ Read Verified Customer Stories ➔</span>';
+            } else {
+              bentoLink.classList.add('is-disabled-link');
+              bentoLink.innerHTML = '<span>✦ Reviews Coming Soon</span>';
+            }
+          }
+          console.log(`[Nuraan Sheets Sync] ✓ Reviews section enabled: ${isEnabled}`);
+          break;
+        }
       }
 
       // Check if key is a product photo destination (e.g., photo_garnet_540, photo_regent)

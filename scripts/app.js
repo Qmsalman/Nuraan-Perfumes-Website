@@ -133,24 +133,24 @@ function renderBrandHeader() {
 const productSelectedSizes = {};
 
 /**
- * Indian Consumer Occasion & Season Helpers
+ * Indian Consumer Occasion & Season Helpers (Clean Luxury Styling)
  */
 function formatOccasion(occ) {
   switch ((occ || '').toLowerCase()) {
-    case 'office': return '👔 Office Wear';
-    case 'casual': return '👕 Casual Wear';
-    case 'party': return '🎉 Party Wear';
-    case 'travelling': return '✈️ Travelling';
+    case 'office': return '✦ Office Wear';
+    case 'casual': return '✦ Casual Wear';
+    case 'party': return '✦ Evening & Party';
+    case 'travelling': return '✦ Travel';
     default: return occ;
   }
 }
 
 function formatSeason(sea) {
   switch ((sea || '').toLowerCase()) {
-    case 'summer': return '☀️ Summer Wear';
-    case 'winter': return '❄️ Winter Wear';
-    case 'rainy': return '🌧️ Rainy Season';
-    case 'all-season': return '⛅ All Season';
+    case 'summer': return '✦ Summer';
+    case 'winter': return '✦ Winter';
+    case 'rainy': return '✦ Monsoon';
+    case 'all-season': return '✦ All Season';
     default: return sea;
   }
 }
@@ -317,7 +317,7 @@ function renderCatalog(products) {
             onclick="event.stopPropagation(); openNotesModal('${product.id}')"
             aria-label="View ${product.name} Notes & Scent Pyramid"
           >
-            <span>✨</span>
+            <span>✦</span>
             <span class="nudge-label">View Fragrance Notes & Pyramid</span>
             <span>▸</span>
           </button>
@@ -341,7 +341,7 @@ function renderCatalog(products) {
 
             ${inspInfo.badgeText ? `
               <div class="card-inspired-tag" title="Inspired by ${inspInfo.badgeText}">
-                <span class="inspired-sparkle">✨</span>
+                <span class="inspired-sparkle">✦</span>
                 <span class="inspired-text">Inspired by <strong>${inspInfo.badgeText}</strong></span>
               </div>
             ` : ''}
@@ -2562,6 +2562,12 @@ window.updateSelectionUI = function() {
     }
   }
 
+  // 3B. Update Floating Mobile Dock Badge
+  const dockBadge = document.getElementById("dock-selection-badge");
+  if (dockBadge) {
+    dockBadge.textContent = count;
+  }
+
   // 4. Update Wardrobe Progress (12ml bottles gamification)
   const wardrobeCard = document.getElementById("drawer-wardrobe-progress");
   if (wardrobeCard) {
@@ -2866,3 +2872,172 @@ function initTrackingDeepLink() {
 document.addEventListener("DOMContentLoaded", () => {
   initTrackingDeepLink();
 });
+
+// ==============================================================================
+// 14. MULTI-SELECT SIGNATURE SCENT FINDER & FAQ ACCORDION CONTROLLERS
+// ==============================================================================
+const siteQuizState = {
+  step1: ['sweet', 'fresh'],
+  step2: ['office', 'dates'],
+  step3: 'long'
+};
+
+window.openScentFinderModal = function() {
+  const modal = document.getElementById('scent-finder-modal');
+  if (modal) {
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+    goToSiteQuizStep(1);
+  }
+};
+
+window.closeScentFinderModal = function() {
+  const modal = document.getElementById('scent-finder-modal');
+  if (modal) {
+    modal.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+};
+
+window.toggleSiteQuizOption = function(elem, step, val) {
+  elem.classList.toggle('selected');
+  const arr = (step === 1) ? siteQuizState.step1 : siteQuizState.step2;
+  const idx = arr.indexOf(val);
+  if (idx > -1) {
+    arr.splice(idx, 1);
+  } else {
+    arr.push(val);
+  }
+};
+
+window.selectSiteQuizSingle = function(elem, step, val) {
+  elem.closest('.quiz-options-grid').querySelectorAll('.quiz-option-btn').forEach(b => b.classList.remove('selected'));
+  elem.classList.add('selected');
+  siteQuizState.step3 = val;
+};
+
+window.goToSiteQuizStep = function(stepNum) {
+  document.querySelectorAll('#scent-finder-modal .quiz-step-pane').forEach(p => p.style.display = 'none');
+  const pane = document.getElementById(`siteQuizStep${stepNum}`);
+  if (pane) pane.style.display = 'block';
+  const pct = (stepNum / 3) * 100;
+  const bar = document.getElementById('siteQuizProgress');
+  if (bar) bar.style.width = `${pct}%`;
+};
+
+window.showSiteQuizResult = function() {
+  document.querySelectorAll('#scent-finder-modal .quiz-step-pane').forEach(p => p.style.display = 'none');
+  const res = document.getElementById('siteQuizResult');
+  if (res) res.classList.add('active');
+
+  const chipsContainer = document.getElementById('siteResultChipsList');
+  const chips = [];
+
+  if (siteQuizState.step2.includes('office')) chips.push('✦ Daily Office Wear');
+  if (siteQuizState.step2.includes('dates')) chips.push('✦ Evening Dates');
+  if (siteQuizState.step2.includes('weddings')) chips.push('✦ Weddings & Celebrations');
+  if (siteQuizState.step2.includes('prayer')) chips.push('✦ Meditation & Reflection');
+
+  if (siteQuizState.step1.includes('sweet')) chips.push('✦ Sweet & Warm');
+  if (siteQuizState.step1.includes('fresh')) chips.push('✦ Fresh & Crisp');
+  if (siteQuizState.step1.includes('smoky')) chips.push('✦ Smoky Birch Wood');
+  if (siteQuizState.step1.includes('royal')) chips.push('✦ Royal Assam Oud');
+
+  if (siteQuizState.step3 === 'long') chips.push('✦ Long-Lasting Trail');
+  if (siteQuizState.step3 === 'subtle') chips.push('✦ Personal & Subtle');
+
+  if (chipsContainer) {
+    chipsContainer.innerHTML = chips.map(c => `<span class="result-chip">${c}</span>`).join('');
+  }
+
+  // Populate Recommendations Grid
+  const recsGrid = document.getElementById('siteRecommendationsGrid');
+  if (recsGrid) {
+    const isRoyal = siteQuizState.step1.includes('royal');
+    const isSmoky = siteQuizState.step1.includes('smoky');
+    const isFresh = siteQuizState.step1.includes('fresh');
+
+    const topBottle = isRoyal ? { id: 'surkh-oud', name: 'Surkh Oud', price: 699, desc: 'Aged Assam agarwood & spiced Taif rose. Pure opulent projection.' }
+                    : isSmoky ? { id: 'monarch', name: 'Monarch', price: 499, desc: 'Fruity pineapple, birch smoke & royal musk. A confident beast-mode sillage.' }
+                    : { id: 'garnet-540', name: 'Garnet 540', price: 499, desc: 'Sweet saffron, amber crystals & cedar warmth. Delicious, warm, and gets compliments everywhere.' };
+
+    const secondBottle = isFresh ? { id: 'regent', name: 'Regent', price: 499, desc: 'Italian orange blossom, black pepper & Mysore sandalwood. Gentlemanly freshness.' }
+                       : { id: 'cedar', name: 'Cedar', price: 499, desc: 'Calm mountain cedarwood, spiced cypress & warm tonka. Clean and grounding.' };
+
+    const giftBox = isRoyal ? { name: 'Oud Gift Set', price: 999, desc: 'Experience Surkh Oud, Velvet Oud, Safwan Oud, and 3 more in a royal box.' }
+                            : { name: 'French Gift Set', price: 999, desc: 'Includes Garnet 540 and Regent, plus Monarch, Cedar, Victor & Rumo in a coffret.' };
+
+    recsGrid.innerHTML = `
+      <div class="rec-card primary">
+        <div>
+          <span class="rec-badge rec-badge-gold">✦ #1 TOP MATCH</span>
+          <h4 class="rec-bottle-name">${topBottle.name}</h4>
+          <p class="rec-bottle-desc">${topBottle.desc}</p>
+        </div>
+        <div>
+          <div class="rec-price-row">
+            <span class="rec-price">₹${topBottle.price}</span>
+            <span class="rec-mrp">₹1,299</span>
+            <span style="font-size: 0.72rem; color: #059669; font-weight: 700;">12ml Flacon</span>
+          </div>
+          <button type="button" class="btn-rec-wa" onclick="triggerWhatsAppOrder('${topBottle.id}')">
+            Order on WhatsApp
+          </button>
+        </div>
+      </div>
+
+      <div class="rec-card">
+        <div>
+          <span class="rec-badge rec-badge-blue">✦ FRESH DAILY PAIR</span>
+          <h4 class="rec-bottle-name">${secondBottle.name}</h4>
+          <p class="rec-bottle-desc">${secondBottle.desc}</p>
+        </div>
+        <div>
+          <div class="rec-price-row">
+            <span class="rec-price">₹${secondBottle.price}</span>
+            <span class="rec-mrp">₹1,299</span>
+            <span style="font-size: 0.72rem; color: #059669; font-weight: 700;">12ml Flacon</span>
+          </div>
+          <button type="button" class="btn-rec-wa" onclick="triggerWhatsAppOrder('${secondBottle.id}')">
+            Order on WhatsApp
+          </button>
+        </div>
+      </div>
+
+      <div class="rec-card" style="background: #FFFDF9;">
+        <div>
+          <span class="rec-badge rec-badge-green">✦ BEST VALUE (6-PACK BOX)</span>
+          <h4 class="rec-bottle-name">${giftBox.name}</h4>
+          <p class="rec-bottle-desc">${giftBox.desc}</p>
+        </div>
+        <div>
+          <div class="rec-price-row">
+            <span class="rec-price">₹${giftBox.price}</span>
+            <span class="rec-mrp">₹2,499</span>
+            <span style="font-size: 0.72rem; color: #059669; font-weight: 700;">6 × 3ml Box</span>
+          </div>
+          <a href="#combos" class="btn-rec-wa" onclick="closeScentFinderModal()" style="text-decoration: none;">
+            View Gift Set (₹999)
+          </a>
+        </div>
+      </div>
+    `;
+  }
+};
+
+window.resetSiteQuiz = function() {
+  const res = document.getElementById('siteQuizResult');
+  if (res) res.classList.remove('active');
+  goToSiteQuizStep(1);
+};
+
+// FAQ Accordion Toggle
+window.toggleFaq = function(header) {
+  const item = header.closest('.faq-item');
+  if (!item) return;
+  const isActive = item.classList.contains('active');
+  document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('active'));
+  if (!isActive) {
+    item.classList.add('active');
+  }
+};

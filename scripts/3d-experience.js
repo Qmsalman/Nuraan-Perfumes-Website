@@ -292,17 +292,120 @@
   };
 
   // ==============================================================================
-  // 4. GLOBAL EXPORT & AUTO-INITIALIZATION
+  // 4. 21ST.DEV OLFACTORY COMPARISON SLIDER ENGINE (WITH REGAL GLIDE)
+  // ==============================================================================
+  const CompareSlider = {
+    init: function() {
+      const container = document.getElementById('compareSlider');
+      if (!container) return;
+
+      const oilSide = document.getElementById('oilSide');
+      const divider = document.getElementById('dividerLine');
+      const handle = document.getElementById('sliderHandle');
+      const pill = document.getElementById('sliderInstruction');
+      if (!oilSide || !divider || !handle) return;
+
+      let isDragging = false;
+      let hasInteracted = false;
+
+      const updateSlider = (clientX) => {
+        const rect = container.getBoundingClientRect();
+        if (rect.width === 0) return;
+        let pos = (clientX - rect.left) / rect.width;
+        pos = Math.max(0.08, Math.min(0.92, pos));
+        const pct = (pos * 100).toFixed(1);
+
+        oilSide.style.clipPath = `polygon(${pct}% 0, 100% 0, 100% 100%, ${pct}% 100%)`;
+        divider.style.left = `${pct}%`;
+        handle.style.left = `${pct}%`;
+
+        if (!hasInteracted && pill) {
+          hasInteracted = true;
+          pill.classList.add('hidden');
+        }
+      };
+
+      // Slow dignified regal drift on viewport intersection
+      const playSlowRegalGlide = () => {
+        if (hasInteracted) return;
+        let count = 0;
+        let cur = 50;
+        const totalSteps = 120; // 2.4s
+
+        const interval = setInterval(() => {
+          if (hasInteracted) {
+            clearInterval(interval);
+            return;
+          }
+          count++;
+          const progress = count / totalSteps;
+          const offset = Math.sin(progress * Math.PI * 2) * 12;
+          cur = 50 + offset;
+
+          if (count >= totalSteps) {
+            clearInterval(interval);
+            cur = 50;
+          }
+
+          const pct = cur.toFixed(1);
+          oilSide.style.clipPath = `polygon(${pct}% 0, 100% 0, 100% 100%, ${pct}% 100%)`;
+          divider.style.left = `${pct}%`;
+          handle.style.left = `${pct}%`;
+        }, 20);
+      };
+
+      // Trigger once on view
+      if ('IntersectionObserver' in window) {
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              setTimeout(playSlowRegalGlide, 400);
+              observer.disconnect();
+            }
+          });
+        }, { threshold: 0.3 });
+        observer.observe(container);
+      } else {
+        setTimeout(playSlowRegalGlide, 800);
+      }
+
+      // Pointer listeners
+      container.addEventListener('mousedown', (e) => {
+        isDragging = true;
+        updateSlider(e.clientX);
+      });
+      window.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+        updateSlider(e.clientX);
+      });
+      window.addEventListener('mouseup', () => { isDragging = false; });
+
+      container.addEventListener('touchstart', (e) => {
+        isDragging = true;
+        if (e.touches.length > 0) updateSlider(e.touches[0].clientX);
+      }, { passive: true });
+      window.addEventListener('touchmove', (e) => {
+        if (!isDragging) return;
+        if (e.touches.length > 0) updateSlider(e.touches[0].clientX);
+      }, { passive: true });
+      window.addEventListener('touchend', () => { isDragging = false; });
+    }
+  };
+
+  // ==============================================================================
+  // 5. GLOBAL EXPORT & AUTO-INITIALIZATION
   // ==============================================================================
   window.Nuraan3D = {
     SingleBottle3D: SingleBottle3D,
     CarouselBoxUnboxing: CarouselBoxUnboxing,
     SpecularGlare: SpecularGlare,
+    CompareSlider: CompareSlider,
     toggleComboUnbox: CarouselBoxUnboxing.toggleUnbox,
     initAll: function() {
       CarouselBoxUnboxing.init();
       SingleBottle3D.init();
       SpecularGlare.init();
+      CompareSlider.init();
     }
   };
 
