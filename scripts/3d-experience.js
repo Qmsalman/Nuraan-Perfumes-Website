@@ -252,15 +252,57 @@
   };
 
   // ==============================================================================
-  // 3. GLOBAL EXPORT & AUTO-INITIALIZATION
+  // 3. 21ST.DEV SPECULAR GLARE REFLECTION TRACKER
+  // Passes dynamic pointer coordinates (--mouse-x, --mouse-y) to CSS for luxury sheen
+  // ==============================================================================
+  const SpecularGlare = {
+    init: function() {
+      this.attachCards();
+
+      // MutationObserver for dynamically rendered cards in combos-grid or fragrance-grid
+      const combosGrid = document.getElementById('combos-grid');
+      if (combosGrid && window.MutationObserver) {
+        const obs = new MutationObserver(() => this.attachCards());
+        obs.observe(combosGrid, { childList: true });
+      }
+
+      const fragGrid = document.getElementById('fragrance-grid');
+      if (fragGrid && window.MutationObserver) {
+        const obs2 = new MutationObserver(() => this.attachCards());
+        obs2.observe(fragGrid, { childList: true });
+      }
+    },
+
+    attachCards: function() {
+      const cards = document.querySelectorAll('.combo-card, .product-card, .guide-card, .bundle-tier-card');
+      cards.forEach(card => {
+        if (card._hasGlareBound) return;
+        card._hasGlareBound = true;
+        card.classList.add('specular-card');
+
+        card.addEventListener('mousemove', (e) => {
+          const rect = card.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+          card.style.setProperty('--mouse-x', `${x}px`);
+          card.style.setProperty('--mouse-y', `${y}px`);
+        }, { passive: true });
+      });
+    }
+  };
+
+  // ==============================================================================
+  // 4. GLOBAL EXPORT & AUTO-INITIALIZATION
   // ==============================================================================
   window.Nuraan3D = {
     SingleBottle3D: SingleBottle3D,
     CarouselBoxUnboxing: CarouselBoxUnboxing,
+    SpecularGlare: SpecularGlare,
     toggleComboUnbox: CarouselBoxUnboxing.toggleUnbox,
     initAll: function() {
       CarouselBoxUnboxing.init();
       SingleBottle3D.init();
+      SpecularGlare.init();
     }
   };
 
