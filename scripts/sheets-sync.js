@@ -489,17 +489,17 @@ const NuraanSheetsSync = {
         const pNameLower = productNameCol.toLowerCase().trim();
         const product = catalog.find(p => p.name.toLowerCase() === pNameLower || pNameLower.includes(p.name.toLowerCase()));
         if (product) {
-          // Check if row is in 3ml or 12ml table
-          // In 3ml table (rows 35-56), Column J (index 9) is 3ml Selling Price
-          // In 12ml table (rows 59-81), Column J (index 9) is 12ml Selling Price
+          // In Pricing Structure:
+          // Rows 30-51: 3ml Selling Price in Column J (index 9)
+          // Rows 53-74: 12ml Selling Price in Column J (index 9)
           const priceRaw = row[9];
           if (priceRaw) {
             const priceVal = parseInt(String(priceRaw).replace(/[^0-9]/g, ''), 10);
             if (priceVal && !isNaN(priceVal)) {
-              if (r < 57) {
-                product.price3mlOption = priceVal;
-              } else {
+              if (r >= 52) {
                 product.price12ml = priceVal;
+              } else if (r >= 29) {
+                product.price3mlOption = priceVal;
               }
             }
           }

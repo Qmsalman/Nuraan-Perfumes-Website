@@ -1057,7 +1057,7 @@ function renderCombos(combos) {
 
           <!-- 3-Tier Multi-Box Bundle Selector -->
           <div class="combo-bundle-selector">
-            <span class="bundle-selector-label">Select Quantity & Save:</span>
+            <span class="bundle-selector-label">Choose Quantity & Bundle Savings:</span>
             <div class="combo-bundle-pills">
               <button 
                 type="button" 
@@ -1067,7 +1067,7 @@ function renderCombos(combos) {
                 aria-label="1 Gift Set for ₹999"
               >
                 <span class="pill-radio"></span>
-                <span class="pill-name">1 Box</span>
+                <span class="pill-name">1 Box <span class="pill-context-hint">(${combo.name})</span></span>
                 <span class="pill-price">${currency}999</span>
               </button>
               <button 
@@ -1078,7 +1078,7 @@ function renderCombos(combos) {
                 aria-label="2 Gift Sets for ₹1,699 with 30% Off 2nd box"
               >
                 <span class="pill-radio"></span>
-                <span class="pill-name">2 Boxes <span class="pill-badge-deal">30% Off 2nd</span></span>
+                <span class="pill-name">2 Boxes <span class="pill-context-hint">(Mix & Match)</span> <span class="pill-badge-deal">30% Off 2nd</span></span>
                 <span class="pill-price">${currency}1,699</span>
               </button>
               <button 
@@ -1089,7 +1089,7 @@ function renderCombos(combos) {
                 aria-label="4 Gift Sets for ₹2,999 Buy 3 Get 1 Free"
               >
                 <span class="pill-radio"></span>
-                <span class="pill-name">4 Boxes <span class="pill-badge-deal best">👑 Buy 3, Get 1 FREE</span></span>
+                <span class="pill-name">All 4 Sets <span class="pill-context-hint">(Complete Library)</span> <span class="pill-badge-deal best">👑 Buy 3, Get 1 FREE</span></span>
                 <span class="pill-price">${currency}2,999</span>
               </button>
             </div>
@@ -1109,7 +1109,15 @@ function renderCombos(combos) {
                 id="combo-wa-btn-${combo.id}"
                 onclick="triggerComboWhatsApp('${combo.id}')"
               >
-                <span>Order 1 Gift Set on WhatsApp (${currency}999)</span>
+                <span>Order ${combo.name} on WhatsApp (${currency}999)</span>
+              </button>
+              <button 
+                type="button" 
+                class="btn-add-combo-sel" 
+                onclick="window.addComboToSelection('${combo.id}')"
+                style="background: rgba(197, 160, 89, 0.12); border: 1.5px solid var(--accent-gold); color: var(--accent-gold-dark); font-weight: 800; padding: 11px;"
+              >
+                <span>🎨 Mix & Match with Other Gift Sets in Cart ➔</span>
               </button>
               <button 
                 type="button" 
@@ -1117,14 +1125,7 @@ function renderCombos(combos) {
                 id="combo-ig-btn-${combo.id}"
                 onclick="triggerComboInstagram('${combo.id}')"
               >
-                <span>Order Gift Set on Instagram</span>
-              </button>
-              <button 
-                type="button" 
-                class="btn-add-combo-sel" 
-                onclick="window.addComboToSelection('${combo.id}')"
-              >
-                <span>+ Add to Order List (Mix & Match Sets)</span>
+                <span>Order on Instagram</span>
               </button>
             </div>
           </div>
@@ -1656,21 +1657,24 @@ window.selectComboTier = function(comboId, qty) {
     pill.classList.toggle('active', pillQty === qty);
   });
 
+  const combo = (window.NURAAN_COMBOS || []).find(c => c.id === comboId);
+  const comboName = combo ? combo.name : 'Gift Set';
+
   let price = 999;
   let mrp = 2499;
   let saveText = `SAVE ${currency}1,500 (60% OFF)`;
-  let btnWaText = `Order 1 Gift Set on WhatsApp (${currency}999)`;
+  let btnWaText = `Order ${comboName} on WhatsApp (${currency}999)`;
 
   if (qty === 2) {
     price = 1699;
     mrp = 4998;
     saveText = `SAVE ${currency}3,299 (30% OFF 2ND BOX)`;
-    btnWaText = `Order 2 Gift Sets on WhatsApp (${currency}1,699)`;
+    btnWaText = `Order 2 Sets (Mix & Match) on WhatsApp (${currency}1,699)`;
   } else if (qty === 4) {
     price = 2999;
     mrp = 9996;
     saveText = `👑 BUY 3, GET 1 FREE (SAVE ${currency}6,997)`;
-    btnWaText = `Order 4 Gift Sets on WhatsApp (${currency}2,999)`;
+    btnWaText = `Order All 4 Gift Sets on WhatsApp (${currency}2,999)`;
   }
 
   const priceEl = document.getElementById(`combo-price-${comboId}`);
@@ -2589,15 +2593,34 @@ window.updateSelectionUI = function() {
     if (summary.nSets > 0) {
       giftCard.style.display = "block";
       const badgeEl = document.getElementById("drawer-giftset-badge");
-      if (badgeEl) badgeEl.textContent = `${summary.nSets} Gift Set${summary.nSets > 1 ? 's' : ''}`;
+      if (badgeEl) badgeEl.textContent = `${summary.nSets} of 4 Sets Added`;
       const msgEl = document.getElementById("drawer-giftset-msg");
       if (msgEl) {
         let msg = "";
-        if (summary.nSets === 1) msg = "💡 Add any other Gift Set (Arabic, Oudh, etc.) to get 30% OFF the 2nd box (2 for ₹1,699)!";
-        else if (summary.nSets === 2) msg = "⚡ Tier Unlocked: 2 Boxes @ ₹1,699! Add 2 more to unlock BUY 3, GET 1 FREE (4 sets for ₹2,999)!";
-        else if (summary.nSets === 3) msg = "🚨 LOSS AVERSION ALERT: Add 1 more Gift Set for just ₹301 more (Buy 3, Get 1 FREE @ ₹2,999)!";
-        else msg = `👑 BUY 3, GET 1 FREE UNLOCKED! You are getting ${summary.nSets} luxury coffrets at maximum bundle savings!`;
-        msgEl.innerHTML = `<span>${msg}</span>`;
+        if (summary.nSets === 1) msg = "💡 <strong>Mix & Match Deal:</strong> Add any 2nd Gift Set below to get 30% OFF the 2nd box (2 Sets for ₹1,699)!";
+        else if (summary.nSets === 2) msg = "⚡ <strong>Tier Unlocked:</strong> 2 Sets @ ₹1,699! Add 2 more sets to unlock <strong>BUY 3, GET 1 FREE (4 sets for ₹2,999)</strong>!";
+        else if (summary.nSets === 3) msg = "🚨 <strong>Loss-Aversion Alert:</strong> Add 1 more Gift Set for just ₹301 more to unlock <strong>BUY 3, GET 1 FREE @ ₹2,999</strong>!";
+        else msg = `👑 <strong>COMPLETE 4-SET COLLECTION UNLOCKED!</strong> You are getting ${summary.nSets} luxury coffrets at maximum bundle savings!`;
+
+        const availableSets = [
+          { id: 'combo-french', label: 'French Set' },
+          { id: 'combo-arabic', label: 'Arabic Set' },
+          { id: 'combo-women', label: "Women's Set" },
+          { id: 'combo-oud', label: 'Oud Set' }
+        ];
+
+        const chips = availableSets.map(s => {
+          const countInCart = window.selectionList.filter(item => item.comboId === s.id).length;
+          return `<button type="button" class="btn-drawer-quick-set ${countInCart > 0 ? 'added' : ''}" onclick="window.addComboToSelection('${s.id}')">+ ${s.label} ${countInCart > 0 ? `(${countInCart})` : ''}</button>`;
+        }).join('');
+
+        msgEl.innerHTML = `
+          <div style="margin-bottom: 8px;">${msg}</div>
+          <div class="drawer-quick-sets-bar">
+            <span class="quick-sets-label">✦ Quick Mix & Match Sets:</span>
+            <div class="quick-sets-chips">${chips}</div>
+          </div>
+        `;
       }
     } else {
       giftCard.style.display = "none";

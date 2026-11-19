@@ -82,14 +82,17 @@ Thank you!`;
     let activeMRP = 2499;
     let tierNote = "Standard Luxury Gift Coffret Offer";
 
+    let mixMatchNote = "";
     if (qty === 2) {
       activePrice = 1699;
       activeMRP = 4998;
       tierNote = "✦ Special Bundle: 30% Off 2nd Box (Save ₹3,299)";
+      mixMatchNote = `• *Mix & Match:* 2 Boxes (Please confirm if you want 2 × ${combo.name} or want to Mix & Match with Arabic, Oud, or Women's sets)\n`;
     } else if (qty === 4) {
       activePrice = 2999;
       activeMRP = 9996;
       tierNote = "👑 VIP Offer: Buy 3, Get 1 FREE (Save ₹6,997)";
+      mixMatchNote = `• *Mix & Match:* Complete 4-Coffret Library (1 × French, 1 × Arabic, 1 × Women's, 1 × Oud — or specify your preferred 4 sets)\n`;
     } else if (qty > 1) {
       activePrice = qty * 999;
       activeMRP = qty * 2499;
@@ -104,11 +107,11 @@ Thank you!`;
 Hello Nuraan Perfumes,
 I would like to order this curated Gift Set offer:
 
-• *Set Name:* ${combo.name}
+• *Set Selected:* ${combo.name}
 • *Quantity:* ${qty} Gift Set${qty > 1 ? 's' : ''}
 • *Format:* ${formatName}
 • *Offer Applied:* ${tierNote}
-• *Attars in Set:* ${itemsList}
+${mixMatchNote}• *Attars in Set:* ${itemsList}
 • *Total Payable:* ${currency}${activePrice.toLocaleString('en-IN')} (MRP: ${currency}${activeMRP.toLocaleString('en-IN')})
 • *Shipping:* Free Express All-India Dispatch
 
