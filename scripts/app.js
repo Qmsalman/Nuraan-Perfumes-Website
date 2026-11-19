@@ -133,26 +133,45 @@ function renderBrandHeader() {
 const productSelectedSizes = {};
 
 /**
- * Indian Consumer Occasion & Season Helpers (Clean Luxury Styling)
+ * Indian Consumer Occasion & Season Helpers (Option 2: Royal Apothecary Diptyque Etchings)
  */
-function formatOccasion(occ) {
-  switch ((occ || '').toLowerCase()) {
-    case 'office': return '✦ Office Wear';
-    case 'casual': return '✦ Casual Wear';
-    case 'party': return '✦ Evening & Party';
-    case 'travelling': return '✦ Travel';
-    default: return occ;
-  }
+const DIPTYQUE_ICONS = {
+  office: `<svg class="diptyque-micro-icon" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>`,
+  casual: `<svg class="diptyque-micro-icon" viewBox="0 0 24 24"><path d="M20.38 3.46L16 2 12 5.5 8 2l-4.38 1.46a2 2 0 0 0-1.34 1.63L1 10.5 4 12l1-4.5V20a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7.5l1 4.5 3-1.5-1.28-5.41a2 2 0 0 0-1.34-1.63z"/></svg>`,
+  party: `<svg class="diptyque-micro-icon" viewBox="0 0 24 24"><path d="M8 22h8M12 11v11M5 3h14l-2 8H7L5 3z"/></svg>`,
+  travelling: `<svg class="diptyque-micro-icon" viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>`,
+  summer: `<svg class="diptyque-micro-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>`,
+  winter: `<svg class="diptyque-micro-icon" viewBox="0 0 24 24"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>`,
+  rainy: `<svg class="diptyque-micro-icon" viewBox="0 0 24 24"><path d="M16 13v8M8 13v8M12 15v8M20 16.58A5 5 0 0 0 18 7h-1.26A8 8 0 1 0 4 15.25"/></svg>`,
+  'all-season': `<svg class="diptyque-micro-icon" viewBox="0 0 24 24"><path d="M9 3h6M10 3v3l-4 8a3 3 0 0 0 3 4h6a3 3 0 0 0 3-4l-4-8V3"/></svg>`
+};
+
+function formatOccasion(occ, plainText = false) {
+  const key = (occ || '').toLowerCase().trim();
+  let label = 'Special Occasion';
+  if (key === 'office') label = 'Office Wear';
+  else if (key === 'casual') label = 'Casual Wear';
+  else if (key === 'party') label = 'Evening & Party';
+  else if (key === 'travelling') label = 'Travel';
+  else if (occ) label = occ.charAt(0).toUpperCase() + occ.slice(1);
+
+  if (plainText) return label;
+  const icon = DIPTYQUE_ICONS[key] || '';
+  return `${icon}<span>${label}</span>`;
 }
 
-function formatSeason(sea) {
-  switch ((sea || '').toLowerCase()) {
-    case 'summer': return '✦ Summer';
-    case 'winter': return '✦ Winter';
-    case 'rainy': return '✦ Monsoon';
-    case 'all-season': return '✦ All Season';
-    default: return sea;
-  }
+function formatSeason(sea, plainText = false) {
+  const key = (sea || '').toLowerCase().trim();
+  let label = 'All Season';
+  if (key === 'summer') label = 'Summer';
+  else if (key === 'winter') label = 'Winter';
+  else if (key === 'rainy') label = 'Monsoon';
+  else if (key === 'all-season') label = 'All Season';
+  else if (sea) label = sea.charAt(0).toUpperCase() + sea.slice(1);
+
+  if (plainText) return label;
+  const icon = DIPTYQUE_ICONS[key] || '';
+  return `${icon}<span>${label}</span>`;
 }
 
 /**
@@ -1089,7 +1108,7 @@ function renderCombos(combos) {
                 aria-label="4 Gift Sets for ₹2,999 Buy 3 Get 1 Free"
               >
                 <span class="pill-radio"></span>
-                <span class="pill-name">All 4 Sets <span class="pill-context-hint">(Complete Library)</span> <span class="pill-badge-deal best">👑 Buy 3, Get 1 FREE</span></span>
+                <span class="pill-name">All 4 Sets <span class="pill-context-hint">(Complete Library)</span> <span class="pill-badge-deal best">Buy 3, Get 1 FREE</span></span>
                 <span class="pill-price">${currency}2,999</span>
               </button>
             </div>
@@ -1117,7 +1136,7 @@ function renderCombos(combos) {
                 onclick="window.addComboToSelection('${combo.id}')"
                 style="background: rgba(197, 160, 89, 0.12); border: 1.5px solid var(--accent-gold); color: var(--accent-gold-dark); font-weight: 800; padding: 11px;"
               >
-                <span>🎨 Mix & Match with Other Gift Sets in Cart ➔</span>
+                <span>Mix & Match with Other Gift Sets in Cart ➔</span>
               </button>
               <button 
                 type="button" 
@@ -1673,7 +1692,7 @@ window.selectComboTier = function(comboId, qty) {
   } else if (qty === 4) {
     price = 2999;
     mrp = 9996;
-    saveText = `👑 BUY 3, GET 1 FREE (SAVE ${currency}6,997)`;
+    saveText = `BUY 3, GET 1 FREE (SAVE ${currency}6,997)`;
     btnWaText = `Order All 4 Gift Sets on WhatsApp (${currency}2,999)`;
   }
 
@@ -1903,8 +1922,8 @@ function applyFilters(query = "") {
     if (isCompassFiltering) {
       compassBar.style.display = "flex";
       if (matchCountEl) {
-        const occLabel = currentOccasion !== 'all' ? formatOccasion(currentOccasion) : '';
-        const seaLabel = currentSeason !== 'all' ? formatSeason(currentSeason) : '';
+        const occLabel = currentOccasion !== 'all' ? formatOccasion(currentOccasion, true) : '';
+        const seaLabel = currentSeason !== 'all' ? formatSeason(currentSeason, true) : '';
         const filterSummary = [occLabel, seaLabel].filter(Boolean).join(" & ");
         matchCountEl.textContent = `${filtered.length} Attar${filtered.length === 1 ? '' : 's'} Found for ${filterSummary}`;
       }
@@ -1925,7 +1944,7 @@ function applyFilters(query = "") {
       if (expandWrapper) {
         expandWrapper.innerHTML = `
           <button type="button" class="btn-primary-brass" onclick="toggleShowAllAttars()" style="padding: 14px 34px; font-size: 0.92rem; box-shadow: 0 8px 24px rgba(197, 160, 89, 0.25); border-radius: 30px; cursor: pointer;">
-            <span>✨ Explore All Attars (${totalCount - 6} More)</span>
+            <span>Explore All Attars (${totalCount - 6} More)</span>
             <span style="margin-left: 6px;">▾</span>
           </button>
         `;
@@ -2032,11 +2051,11 @@ window.openNotesModal = function(productId) {
   
   const occEl = document.getElementById("modal-occasion");
   if (occEl) {
-    occEl.textContent = (product.occasions || []).map(formatOccasion).join(" • ") || "All Occasions";
+    occEl.innerHTML = (product.occasions || []).map(o => `<span class="lifestyle-tag occ-tag">${formatOccasion(o)}</span>`).join(" ") || "All Occasions";
   }
   const seaEl = document.getElementById("modal-season");
   if (seaEl) {
-    seaEl.textContent = (product.seasons || []).map(formatSeason).join(" • ") || product.season || "All Season";
+    seaEl.innerHTML = (product.seasons || []).map(s => `<span class="lifestyle-tag sea-tag">${formatSeason(s)}</span>`).join(" ") || product.season || "All Season";
   }
 
   document.getElementById("modal-bottle-container").innerHTML = renderProceduralBottle(product);
@@ -2065,7 +2084,7 @@ window.openNotesModal = function(productId) {
     if (modalSavingsHighlightEl) {
       const inspName = product.inspiration || 'Designer Retail';
       modalSavingsHighlightEl.innerHTML = `
-        <span>💎 <strong>Designer Benchmark (${inspName}):</strong> Retail MRP ~${currency}${product.originalMrp.toLocaleString('en-IN')}.<br>
+        <span><strong>Designer Benchmark (${inspName}):</strong> Retail MRP ~${currency}${product.originalMrp.toLocaleString('en-IN')}.<br>
         You pay <strong>${currency}${modalPriceVal.toLocaleString('en-IN')}</strong> — <strong>Save ${currency}${savingsAmt.toLocaleString('en-IN')} (${savingsPct}%)</strong> in 100% pure alcohol-free perfume oil.</span>
       `;
       modalSavingsHighlightEl.style.display = 'block';
@@ -2265,7 +2284,7 @@ const RITUAL_DATA = {
       "Lightly dab your wrists together—strictly touch without rubbing or friction.",
       "Allow 30 seconds for your body warmth to awaken the sparkling opening top notes."
     ],
-    tags: ["✋ Radial Artery", "🚫 Never Rub (Preserves Notes)", "⏱️ 14+ Hours Anchor"]
+    tags: ["Radial Artery", "Never Rub (Preserves Notes)", "14+ Hours Anchor"]
   },
   2: {
     kicker: "RITUAL 02 • INTIMATE CONVECTION SILLAGE",
@@ -2279,7 +2298,7 @@ const RITUAL_DATA = {
       "Touch lightly along the carotid pulse groove on the sides of the neck.",
       "Enjoy an intimate projection aura that greets anyone entering your conversational space."
     ],
-    tags: ["👂 Carotid Pulse", "💨 Upward Convection Aura", "👑 Royal Awadhi Technique"]
+    tags: ["Carotid Pulse", "Upward Convection Aura", "Royal Awadhi Technique"]
   },
   3: {
     kicker: "RITUAL 03 • PROTECTED WARMTH TRAP",
@@ -2293,7 +2312,7 @@ const RITUAL_DATA = {
       "Bend arm gently once to spread the pure oil evenly along the skin fold.",
       "Ideal for evening occasions, deep ouds, and opulent amber compositions."
     ],
-    tags: ["💪 Antecubital Fold", "⏳ Anchors Oud & Resins", "🛡️ Shielded from Handwashing"]
+    tags: ["Antecubital Fold", "Anchors Oud & Resins", "Shielded from Handwashing"]
   },
   4: {
     kicker: "RITUAL 04 • PALM-WARMED CONDITIONING AURA",
@@ -2307,7 +2326,7 @@ const RITUAL_DATA = {
       "Rub palms together gently for 3 seconds to warm and spread the pure oil.",
       "Lightly comb palms downward through the beard and hair ends for an all-day luxury halo."
     ],
-    tags: ["🧔 0% Alcohol (Non-Drying)", "🤲 Warm in Palms First", "✨ 24–48H Hair Sillage"]
+    tags: ["0% Alcohol (Non-Drying)", "Warm in Palms First", "24–48H Hair Sillage"]
   },
   5: {
     kicker: "RITUAL 05 • 72H+ LONGEVITY WITHOUT STAINING",
@@ -2321,7 +2340,7 @@ const RITUAL_DATA = {
       "Alternatively, prepare an Awadhi Faha (फाहा): scent a tiny wisp of raw cotton and tuck it into your shirt chest pocket.",
       "Your attire will hold the regal sillage for days, even through mild temperature changes."
     ],
-    tags: ["👔 Inner Collar Seams", "🪙 Awadhi Cotton Faha (फाहा)", "⏳ 72H+ Fabric Longevity"]
+    tags: ["Inner Collar Seams", "Awadhi Cotton Faha (फाहा)", "72H+ Fabric Longevity"]
   }
 };
 
@@ -2465,7 +2484,7 @@ window.toggleSelection = function(productId) {
       price: price,
       bottleColor: product.bottleColor || "#C59B27"
     });
-    window.SocialCheckout.showToast(`✓ Added "${product.name} (${currentSize})" to your order list! ✨`, "success");
+    window.SocialCheckout.showToast(`✓ Added "${product.name} (${currentSize})" to your order list!`, "success");
     trackEvent('add_to_cart', {
       item_id: product.id,
       item_name: product.name,
@@ -2580,12 +2599,12 @@ window.updateSelectionUI = function() {
       const msgEl = document.getElementById("drawer-wardrobe-msg");
       if (msgEl) {
         let msg = "";
-        if (summary.n12 === 1) msg = "💡 Add 2 more bottles to unlock 15% OFF your entire cart!";
-        else if (summary.n12 === 2) msg = "💡 Add 1 more bottle to unlock 15% OFF your entire cart!";
-        else if (summary.n12 === 3) msg = "🎉 15% OFF Unlocked! Add 1 more to reach 20% OFF!";
-        else if (summary.n12 === 4) msg = "🔥 20% OFF Unlocked! Add 2 more to get 30% OFF + Luxury Presentation Coffret!";
-        else if (summary.n12 === 5) msg = "⚡ 25% OFF Unlocked! Just 1 more bottle for the Full Wardrobe 30% OFF!";
-        else msg = "👑 CONNOISSEUR TIER UNLOCKED: 30% OFF Full 6-Bottle Wardrobe + Luxury Box!";
+        if (summary.n12 === 1) msg = "Add 2 more bottles to unlock 15% OFF your entire cart!";
+        else if (summary.n12 === 2) msg = "Add 1 more bottle to unlock 15% OFF your entire cart!";
+        else if (summary.n12 === 3) msg = "15% OFF Unlocked! Add 1 more to reach 20% OFF!";
+        else if (summary.n12 === 4) msg = "20% OFF Unlocked! Add 2 more to get 30% OFF + Luxury Presentation Coffret!";
+        else if (summary.n12 === 5) msg = "25% OFF Unlocked! Just 1 more bottle for the Full Wardrobe 30% OFF!";
+        else msg = "CONNOISSEUR TIER UNLOCKED: 30% OFF Full 6-Bottle Wardrobe + Luxury Box!";
         msgEl.innerHTML = `<span>${msg}</span>`;
       }
     } else {
@@ -2603,10 +2622,10 @@ window.updateSelectionUI = function() {
       const msgEl = document.getElementById("drawer-giftset-msg");
       if (msgEl) {
         let msg = "";
-        if (summary.nSets === 1) msg = "💡 <strong>Mix & Match Deal:</strong> Add any 2nd Gift Set below to get 30% OFF the 2nd box (2 Sets for ₹1,699)!";
-        else if (summary.nSets === 2) msg = "⚡ <strong>Tier Unlocked:</strong> 2 Sets @ ₹1,699! Add 2 more sets to unlock <strong>BUY 3, GET 1 FREE (4 sets for ₹2,999)</strong>!";
-        else if (summary.nSets === 3) msg = "🚨 <strong>Loss-Aversion Alert:</strong> Add 1 more Gift Set for just ₹301 more to unlock <strong>BUY 3, GET 1 FREE @ ₹2,999</strong>!";
-        else msg = `👑 <strong>COMPLETE 4-SET COLLECTION UNLOCKED!</strong> You are getting ${summary.nSets} luxury coffrets at maximum bundle savings!`;
+        if (summary.nSets === 1) msg = "<strong>Mix & Match Deal:</strong> Add any 2nd Gift Set below to get 30% OFF the 2nd box (2 Sets for ₹1,699)!";
+        else if (summary.nSets === 2) msg = "<strong>Tier Unlocked:</strong> 2 Sets @ ₹1,699! Add 2 more sets to unlock <strong>BUY 3, GET 1 FREE (4 sets for ₹2,999)</strong>!";
+        else if (summary.nSets === 3) msg = "<strong>Special Privilege:</strong> Add 1 more Gift Set for just ₹301 more to unlock <strong>BUY 3, GET 1 FREE @ ₹2,999</strong>!";
+        else msg = `<strong>COMPLETE 4-SET COLLECTION UNLOCKED!</strong> You are getting ${summary.nSets} luxury coffrets at maximum bundle savings!`;
 
         const availableSets = [
           { id: 'combo-french', label: 'French Set' },
@@ -2639,7 +2658,9 @@ window.updateSelectionUI = function() {
     if (count === 0) {
       itemsContainer.innerHTML = `
         <div class="drawer-empty-state">
-          <p style="font-size: 2.2rem; margin-bottom: 8px;">🛍️</p>
+          <div style="margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; width: 56px; height: 56px; border-radius: 50%; background: rgba(197, 160, 89, 0.1); border: 1px solid var(--border-gold); color: var(--accent-gold);">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+          </div>
           <h4 style="font-size: 1.1rem; margin-bottom: 6px; color: var(--color-text-main);">Your Selection is Empty</h4>
           <p style="color: var(--color-text-muted); font-size: 0.82rem; line-height: 1.5; max-width: 260px; margin: 0 auto;">
             Tap <strong>"+ Add to Order List"</strong> on any fragrance card to build your personalized multi-bottle order.

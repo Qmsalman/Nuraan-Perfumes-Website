@@ -91,7 +91,7 @@ Thank you!`;
     } else if (qty === 4) {
       activePrice = 2999;
       activeMRP = 9996;
-      tierNote = "👑 VIP Offer: Buy 3, Get 1 FREE (Save ₹6,997)";
+      tierNote = "VIP Offer: Buy 3, Get 1 FREE (Save ₹6,997)";
       mixMatchNote = `• *Mix & Match:* Complete 4-Coffret Library (1 × French, 1 × Arabic, 1 × Women's, 1 × Oud — or specify your preferred 4 sets)\n`;
     } else if (qty > 1) {
       activePrice = qty * 999;
@@ -306,7 +306,7 @@ Thank you!`;
       discSetsLabel = '2-Set Bundle + 1 Box';
     } else if (nSets === 4) {
       payableSets = 2999;
-      discSetsLabel = '👑 Buy 3, Get 1 FREE (Complete 4-Set Collection)';
+      discSetsLabel = 'Buy 3, Get 1 FREE (Complete 4-Set Collection)';
     } else {
       payableSets = 2999 + ((nSets - 4) * 750);
       discSetsLabel = `Complete 4-Set Collection + ${nSets - 4} Extra @ ₹750/ea`;
@@ -506,7 +506,7 @@ Thank you!`;
     toast.className = `nuraan-toast nuraan-toast-${type}`;
     toast.innerHTML = `
       <div class="toast-content">
-        <span class="toast-icon">✨</span>
+        <span class="toast-icon">✦</span>
         <span class="toast-message">${message}</span>
       </div>
     `;
