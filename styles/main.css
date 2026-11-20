@@ -7116,6 +7116,32 @@ img {
   padding: 9px 10px;
   font-size: 0.78rem;
 }
+.btn-rec-cart.added {
+  background: #059669 !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 2px 8px rgba(5, 150, 105, 0.3) !important;
+}
+.btn-rec-ig {
+  flex: 1;
+  padding: 9px 8px;
+  font-size: 0.76rem;
+  border-radius: 8px;
+  border: 1px solid rgba(197, 160, 89, 0.35);
+  background: #FFFFFF;
+  color: #8A6D3B;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.btn-rec-ig:hover {
+  background: rgba(197, 160, 89, 0.12);
+  border-color: #8A6D3B;
+  color: #5D4037;
+}
 
 /* Unified 1-Click Quick Add Bundle Buttons (No inner sub-badge) */
 .btn-perk-quickadd {
