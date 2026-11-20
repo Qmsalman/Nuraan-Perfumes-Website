@@ -523,4 +523,8 @@ Thank you!`;
   }
 };
 
+// Aliases for standard API invocations
+SocialCheckout.checkoutViaWhatsApp = SocialCheckout.orderSelectionListOnWhatsApp;
+SocialCheckout.checkoutViaInstagram = SocialCheckout.inquireSelectionListOnInstagram;
+
 window.SocialCheckout = SocialCheckout;
