@@ -17,6 +17,7 @@ const NURAAN_CATALOG = [
   // ==========================================
   {
     id: "garnet-540",
+    sku: "NP-FR-G540-12ML",
     name: "Garnet 540",
     inspiration: "BR 540",
     fragranticaDna: "BR 540 Profile",
@@ -60,10 +61,11 @@ const NURAAN_CATALOG = [
     occasions: ["party","casual"],
     seasons: ["winter","rainy","all-season"],
     price3mlOption: 299,
-    image: "assets/images/garnet-540.jpg"
+    image: "https://lh3.googleusercontent.com/d/1BKUDVS--ztGtcUxquXg8RoJfXDJNQz1t=w600-h600-c-rw"
   },
   {
     id: "regent",
+    sku: "NP-FR-REG-12ML",
     name: "Regent",
     inspiration: "Icon",
     fragranticaDna: "Icon Profile",
@@ -107,10 +109,11 @@ const NURAAN_CATALOG = [
     occasions: ["office","casual"],
     seasons: ["all-season","summer","rainy"],
     price3mlOption: 299,
-    image: "assets/images/regent.jpg"
+    image: "https://lh3.googleusercontent.com/d/1ggylPmzq_py5DoG5pApu-SmVdPXye2mv=w600-h600-c-rw"
   },
   {
     id: "monarch",
+    sku: "NP-FR-MON-12ML",
     name: "Monarch",
     inspiration: "Aventus",
     fragranticaDna: "Aventus Profile",
@@ -154,10 +157,11 @@ const NURAAN_CATALOG = [
     occasions: ["office","party","travelling"],
     seasons: ["all-season","summer","rainy"],
     price3mlOption: 299,
-    image: "assets/images/monarch.jpg"
+    image: "https://lh3.googleusercontent.com/d/1QJ0AXuvr5XSvDwg-C9Rx35GaA1cBdDxx=w600-h600-c-rw"
   },
   {
     id: "cedar",
+    sku: "NP-FR-CED-12ML",
     name: "Cedar",
     inspiration: "Tam Dao",
     fragranticaDna: "Tam Dao Profile",
@@ -201,10 +205,11 @@ const NURAAN_CATALOG = [
     occasions: ["office","casual","travelling"],
     seasons: ["summer","rainy","all-season"],
     price3mlOption: 299,
-    image: "assets/images/cedar.jpg"
+    image: "https://lh3.googleusercontent.com/d/1P6vAaRh4O7P_xG_NecAeVgCkWskt3I9A=w600-h600-c-rw"
   },
   {
     id: "victor",
+    sku: "NP-FR-VIC-12ML",
     name: "Victor",
     inspiration: "9 PM",
     fragranticaDna: "9 PM Profile",
@@ -248,10 +253,11 @@ const NURAAN_CATALOG = [
     occasions: ["casual","party","office"],
     seasons: ["summer","all-season","rainy"],
     price3mlOption: 299,
-    image: "assets/images/victor.jpg"
+    image: "https://lh3.googleusercontent.com/d/1zzqhGZ0vAg2VsDNu2U5Rr1UkztIKZSRi=w600-h600-c-rw"
   },
   {
     id: "rumo",
+    sku: "NP-FR-RUM-12ML",
     name: "Rumo",
     inspiration: "Cheirosa 62",
     fragranticaDna: "Cheirosa 62 Profile",
@@ -295,7 +301,7 @@ const NURAAN_CATALOG = [
     occasions: ["party","casual","travelling"],
     seasons: ["winter","rainy"],
     price3mlOption: 299,
-    image: "assets/images/rumo.jpg"
+    image: "https://lh3.googleusercontent.com/d/1MLYfIj1qbItAp-yaWKpOoOO0r6jJ2rar=w600-h600-c-rw"
   },
 
   // ==========================================
@@ -303,6 +309,7 @@ const NURAAN_CATALOG = [
   // ==========================================
   {
     id: "musk-safa",
+    sku: "NP-AR-SAFA-12ML",
     name: "Musk Safa",
     inspiration: "Musk Rijali",
     fragranticaDna: "Musk Rijali Profile",
@@ -346,10 +353,11 @@ const NURAAN_CATALOG = [
     occasions: ["casual","office","travelling"],
     seasons: ["summer","all-season","rainy"],
     price3mlOption: 299,
-    image: "assets/images/musk-safa.jpg"
+    image: "https://lh3.googleusercontent.com/d/1regQ8SdUGCe1N9WQnpZ3_A4c_v2LuDdW=w600-h600-c-rw"
   },
   {
     id: "shaan",
+    sku: "NP-AR-SHA-12ML",
     name: "Shaan",
     inspiration: "Al-Wisam Day",
     fragranticaDna: "Al Wisam Day Profile",
@@ -393,10 +401,11 @@ const NURAAN_CATALOG = [
     occasions: ["office","casual","party"],
     seasons: ["summer","rainy","all-season"],
     price3mlOption: 299,
-    image: "assets/images/shaan.jpg"
+    image: "https://lh3.googleusercontent.com/d/1tpfhc9XnPD1DWiuVpmA1sKKG_SmF1g8_=w600-h600-c-rw"
   },
   {
     id: "wazir",
+    sku: "NP-AR-WAZ-12ML",
     name: "Wazir",
     inspiration: "Kaaf",
     fragranticaDna: "Kaaf Profile",
@@ -440,10 +449,11 @@ const NURAAN_CATALOG = [
     occasions: ["office","travelling","casual"],
     seasons: ["summer","rainy","all-season"],
     price3mlOption: 299,
-    image: "assets/images/wazir.jpg"
+    image: "https://lh3.googleusercontent.com/d/1_8FEqnzMiXOOV4ISnw116KlqOmm6mj-L=w600-h600-c-rw"
   },
   {
     id: "nishan",
+    sku: "NP-AR-NIS-12ML",
     name: "Nishan",
     inspiration: "Liquid Brun",
     fragranticaDna: "Liquid Brun Profile",
@@ -487,10 +497,11 @@ const NURAAN_CATALOG = [
     occasions: ["party","casual"],
     seasons: ["winter","rainy"],
     price3mlOption: 299,
-    image: "assets/images/nishan.jpg"
+    image: "https://lh3.googleusercontent.com/d/1Ygijxf_Oc1DSNaYWy_giJSB0D1zk9ywq=w600-h600-c-rw"
   },
   {
     id: "malik",
+    sku: "NP-AR-MAL-12ML",
     name: "Malik",
     inspiration: "Marj",
     fragranticaDna: "Marj Profile",
@@ -534,10 +545,11 @@ const NURAAN_CATALOG = [
     occasions: ["party","office"],
     seasons: ["winter","rainy"],
     price3mlOption: 299,
-    image: "assets/images/malik.jpg"
+    image: "https://lh3.googleusercontent.com/d/1Qrc_Gb10pOkaJwbv6CM_jQuLLhF0D_ci=w600-h600-c-rw"
   },
   {
     id: "raqeeq",
+    sku: "NP-AR-RAQ-12ML",
     name: "Raqeeq",
     inspiration: "Khofooq",
     fragranticaDna: "Khofooq Profile",
@@ -581,7 +593,7 @@ const NURAAN_CATALOG = [
     occasions: ["casual","office","travelling"],
     seasons: ["summer","all-season"],
     price3mlOption: 299,
-    image: "assets/images/raqeeq.jpg"
+    image: "https://lh3.googleusercontent.com/d/1Ny875qio5amqfyUhQ9lznH1aGcR3tVBz=w600-h600-c-rw"
   },
 
   // ==========================================
@@ -589,6 +601,7 @@ const NURAAN_CATALOG = [
   // ==========================================
   {
     id: "velvet-oud",
+    sku: "NP-OD-VO-12ML",
     name: "Velvet Oud",
     inspiration: "Purple Oud",
     fragranticaDna: "Purple Oud Profile",
@@ -632,10 +645,11 @@ const NURAAN_CATALOG = [
     occasions: ["party","casual"],
     seasons: ["winter","rainy","all-season"],
     price3mlOption: 299,
-    image: "assets/images/velvet-oud.jpg"
+    image: "https://lh3.googleusercontent.com/d/1UrYww2nBT8KIK10ERMTJbWkWcZkxqrOo=w600-h600-c-rw"
   },
   {
     id: "garden-bloom",
+    sku: "NP-WM-GB-12ML",
     name: "Garden Bloom",
     inspiration: "Flora",
     fragranticaDna: "Flora Profile",
@@ -679,10 +693,11 @@ const NURAAN_CATALOG = [
     occasions: ["casual","party","office"],
     seasons: ["summer","rainy","all-season"],
     price3mlOption: 299,
-    image: "assets/images/garden-bloom.jpg"
+    image: "https://lh3.googleusercontent.com/d/1dA9RTua-TXOY-6S5meq8nG-VhyPYR1QX=w600-h600-c-rw"
   },
   {
     id: "black-night",
+    sku: "NP-WM-BN-12ML",
     name: "Black Night",
     inspiration: "Black Opium",
     fragranticaDna: "Black Opium Profile",
@@ -726,10 +741,11 @@ const NURAAN_CATALOG = [
     occasions: ["party"],
     seasons: ["winter","rainy"],
     price3mlOption: 299,
-    image: "assets/images/black-night.jpg"
+    image: "https://lh3.googleusercontent.com/d/1m2Mq1FicZzQjMuqIt36crS8g9nHXwiEH=w600-h600-c-rw"
   },
   {
     id: "golden-musk",
+    sku: "NP-WM-GM-12ML",
     name: "Golden Musk",
     inspiration: "Aurum",
     fragranticaDna: "Aurum Profile",
@@ -773,10 +789,11 @@ const NURAAN_CATALOG = [
     occasions: ["casual","party","travelling"],
     seasons: ["all-season","summer","rainy"],
     price3mlOption: 299,
-    image: "assets/images/golden-musk.jpg"
+    image: "https://lh3.googleusercontent.com/d/1QIkYwm4opsyzxF-_DZ9pfkk9SdVM21Uw=w600-h600-c-rw"
   },
   {
     id: "island-kiss",
+    sku: "NP-WM-IK-12ML",
     name: "Island Kiss",
     inspiration: "Island Kiss",
     fragranticaDna: "Island Kiss Profile",
@@ -820,7 +837,7 @@ const NURAAN_CATALOG = [
     occasions: ["casual","travelling"],
     seasons: ["summer"],
     price3mlOption: 299,
-    image: "assets/images/island-kiss.jpg"
+    image: "https://lh3.googleusercontent.com/d/1uPUn7RztgIYcaUq1GtbznB2HRCXW2usj=w600-h600-c-rw"
   },
 
   // ==========================================
@@ -828,6 +845,7 @@ const NURAAN_CATALOG = [
   // ==========================================
   {
     id: "bayan",
+    sku: "NP-OD-BAY-12ML",
     name: "Bayan",
     inspiration: "Kalemat",
     fragranticaDna: "Kalemat Profile",
@@ -871,10 +889,11 @@ const NURAAN_CATALOG = [
     occasions: ["party","casual"],
     seasons: ["winter","rainy"],
     price3mlOption: 299,
-    image: "assets/images/bayan.jpg"
+    image: "https://lh3.googleusercontent.com/d/1g_NM3DffPV9TGDvugPlV1WixzUEPGkZK=w600-h600-c-rw"
   },
   {
     id: "camel-oud",
+    sku: "NP-OD-CO-12ML",
     name: "Camel Oud",
     inspiration: "Camel Oud",
     fragranticaDna: "Caramel Oriental Oud Accord",
@@ -918,10 +937,11 @@ const NURAAN_CATALOG = [
     occasions: ["travelling","party"],
     seasons: ["winter","all-season"],
     price3mlOption: 299,
-    image: "assets/images/camel-oud.jpg"
+    image: "https://lh3.googleusercontent.com/d/1uSYYq0OD64LLhGr4QL545Xbwh-ZOfpg3=w600-h600-c-rw"
   },
   {
     id: "amir-majlis",
+    sku: "NP-OD-AM-12ML",
     name: "Amir Majlis",
     inspiration: "Bin Shaikh",
     fragranticaDna: "Bin Shaikh Profile",
@@ -965,10 +985,11 @@ const NURAAN_CATALOG = [
     occasions: ["party","casual"],
     seasons: ["winter","rainy"],
     price3mlOption: 299,
-    image: "assets/images/amir-majlis.jpg"
+    image: "https://lh3.googleusercontent.com/d/1HRLg0DE5NbSMMarF7LpM5sNu63NYo50v=w600-h600-c-rw"
   },
   {
     id: "safwan-oud",
+    sku: "NP-OD-SO-12ML",
     name: "Safwan Oud",
     inspiration: "Arabian Tobacco",
     fragranticaDna: "Arabian Tobacco Profile",
@@ -1012,10 +1033,11 @@ const NURAAN_CATALOG = [
     occasions: ["party","office"],
     seasons: ["winter","rainy"],
     price3mlOption: 299,
-    image: "assets/images/safwan-oud.jpg"
+    image: "https://lh3.googleusercontent.com/d/1igsNytsMxlxj1htYv_3ghwxaCKYVyNBW=w600-h600-c-rw"
   },
   {
     id: "surkh-oud",
+    sku: "NP-OD-SUR-12ML",
     name: "Surkh Oud",
     inspiration: "Red Tobacco",
     fragranticaDna: "Red Tobacco Profile",
@@ -1059,7 +1081,7 @@ const NURAAN_CATALOG = [
     occasions: ["party","travelling"],
     seasons: ["winter","rainy","all-season"],
     price3mlOption: 299,
-    image: "assets/images/surkh-oud.jpg"
+    image: "https://lh3.googleusercontent.com/d/1tpfhc9XnPD1DWiuVpmA1sKKG_SmF1g8_=w600-h600-c-rw"
   }
 ];
 
@@ -1070,6 +1092,7 @@ const NURAAN_CATALOG = [
 const NURAAN_COMBOS = [
   {
     id: "combo-french",
+    sku: "NP-SET-FR-6X3",
     name: "French Gift Set",
     collection: "French",
     badge: "Nuraan's French Pick",
@@ -1086,6 +1109,7 @@ const NURAAN_COMBOS = [
   },
   {
     id: "combo-arabic",
+    sku: "NP-SET-AR-6X3",
     name: "Arabic Gift Set",
     collection: "Arabic",
     badge: "Nuraan's Arabic Pick",
@@ -1102,6 +1126,7 @@ const NURAAN_COMBOS = [
   },
   {
     id: "combo-women",
+    sku: "NP-SET-WM-6X3",
     name: "Women's Gift Set",
     collection: "Women",
     badge: "Nuraan's Women's Pick",
@@ -1118,6 +1143,7 @@ const NURAAN_COMBOS = [
   },
   {
     id: "combo-oud",
+    sku: "NP-SET-OD-6X3",
     name: "Oud Gift Set",
     collection: "Oud",
     badge: "Nuraan's Oud Pick",

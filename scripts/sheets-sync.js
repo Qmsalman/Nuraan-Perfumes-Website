@@ -432,13 +432,55 @@ const NuraanSheetsSync = {
           console.log(`[Nuraan Sheets Sync] ✓ Reviews section enabled: ${isEnabled}`);
           break;
         }
+        case 'offer_zone_enabled':
+        case 'enable_offer_zone':
         case 'introductory_offer_enabled':
         case 'inaugural_offer_enabled':
         case 'introductory_offer':
         case 'enable_introductory_offer': {
           const isEnabled = val.toLowerCase() === 'true' || val.toLowerCase() === 'yes' || val.toLowerCase() === 'enable' || val.toLowerCase() === '1';
           config.introductoryOfferEnabled = isEnabled;
-          console.log(`[Nuraan Sheets Sync] ✓ Introductory Offer enabled: ${isEnabled}`);
+          console.log(`[Nuraan Sheets Sync] ✓ Offer Zone enabled: ${isEnabled}`);
+          break;
+        }
+        case 'offer_name':
+        case 'offer_campaign_name': {
+          if (val) {
+            config.introductoryBadgeText = val;
+            console.log(`[Nuraan Sheets Sync] ✓ Offer Name set: ${val}`);
+          }
+          break;
+        }
+        case 'offer_price_12ml_classic': {
+          const num = parseInt(val.replace(/[^0-9]/g, ''), 10);
+          if (num && !isNaN(num)) {
+            config.offerPrice12mlClassic = num;
+            console.log(`[Nuraan Sheets Sync] ✓ Offer Price Classic 12ml: ${num}`);
+          }
+          break;
+        }
+        case 'offer_price_12ml_reserve': {
+          const num = parseInt(val.replace(/[^0-9]/g, ''), 10);
+          if (num && !isNaN(num)) {
+            config.offerPrice12mlReserve = num;
+            console.log(`[Nuraan Sheets Sync] ✓ Offer Price Reserve Oud 12ml: ${num}`);
+          }
+          break;
+        }
+        case 'offer_price_curated_combos': {
+          const num = parseInt(val.replace(/[^0-9]/g, ''), 10);
+          if (num && !isNaN(num)) {
+            config.offerPriceCombos = num;
+            console.log(`[Nuraan Sheets Sync] ✓ Offer Price Combos: ${num}`);
+          }
+          break;
+        }
+        case 'offer_price_custom_box': {
+          const num = parseInt(val.replace(/[^0-9]/g, ''), 10);
+          if (num && !isNaN(num)) {
+            config.customBox3mlPrice = num;
+            console.log(`[Nuraan Sheets Sync] ✓ Offer Price Custom Box: ${num}`);
+          }
           break;
         }
         case 'offer_banner_enabled':
@@ -500,6 +542,19 @@ const NuraanSheetsSync = {
       }
     }
     console.log(`[Nuraan Sheets Sync] ✓ Synced live settings from Website Control Panel.`);
+    // Real-time DOM Refresh after syncing Offer Zone & Control Panel values
+    if (typeof window.renderCatalog === 'function' && window.NURAAN_CATALOG) {
+      window.renderCatalog(window.NURAAN_CATALOG);
+    }
+    if (typeof window.renderCombos === 'function' && window.NURAAN_COMBOS) {
+      window.renderCombos(window.NURAAN_COMBOS);
+    }
+    if (typeof window.initOfferBanner === 'function') {
+      window.initOfferBanner();
+    }
+    if (typeof window.updateCustomBoxTotal === 'function') {
+      window.updateCustomBoxTotal();
+    }
   },
 
   /**

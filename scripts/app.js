@@ -1389,6 +1389,7 @@ function renderCustomBoxPillTray() {
         onclick="toggleAttarInCustomBox('${product.id}', event)"
       >
         ${product.image ? `<img src="${product.image}" alt="${product.name}" class="picker-pill-thumb" loading="lazy" />` : `<span>✦</span>`}
+        <span class="picker-pill-gem" style="display: none; width: 10px; height: 10px; border-radius: 50%; background: ${product.bottleColor || '#C59B27'}; border: 1px solid #D4AF37;"></span>
         <span class="picker-pill-name">${product.name}</span>
       </button>
     `;
@@ -3001,15 +3002,17 @@ window.showSiteQuizResult = function() {
     const isSmoky = siteQuizState.step1.includes('smoky');
     const isFresh = siteQuizState.step1.includes('fresh');
 
-    const topBottle = isRoyal ? { id: 'surkh-oud', name: 'Surkh Oud', price: 699, desc: 'Aged Assam agarwood & spiced Taif rose. Pure opulent projection.' }
-                    : isSmoky ? { id: 'monarch', name: 'Monarch', price: 499, desc: 'Fruity pineapple, birch smoke & royal musk. A confident beast-mode sillage.' }
-                    : { id: 'garnet-540', name: 'Garnet 540', price: 499, desc: 'Sweet saffron, amber crystals & cedar warmth. Delicious, warm, and gets compliments everywhere.' };
+    const cfg = window.NURAAN_CONFIG || {};
+    const isOffer = Boolean(cfg.introductoryOfferEnabled);
+    const topBottle = isRoyal ? { id: 'surkh-oud', name: 'Surkh Oud', price: isOffer ? (cfg.offerPrice12mlReserve || 599) : 699, regularPrice: 699, desc: 'Aged Assam agarwood & spiced Taif rose. Pure opulent projection.' }
+                    : isSmoky ? { id: 'monarch', name: 'Monarch', price: isOffer ? (cfg.offerPrice12mlClassic || 399) : 499, regularPrice: 499, desc: 'Fruity pineapple, birch smoke & royal musk. A confident beast-mode sillage.' }
+                    : { id: 'garnet-540', name: 'Garnet 540', price: isOffer ? (cfg.offerPrice12mlClassic || 399) : 499, regularPrice: 499, desc: 'Sweet saffron, amber crystals & cedar warmth. Delicious, warm, and gets compliments everywhere.' };
 
-    const secondBottle = isFresh ? { id: 'regent', name: 'Regent', price: 499, desc: 'Italian orange blossom, black pepper & Mysore sandalwood. Gentlemanly freshness.' }
-                       : { id: 'cedar', name: 'Cedar', price: 499, desc: 'Calm mountain cedarwood, spiced cypress & warm tonka. Clean and grounding.' };
+    const secondBottle = isFresh ? { id: 'regent', name: 'Regent', price: isOffer ? (cfg.offerPrice12mlClassic || 399) : 499, regularPrice: 499, desc: 'Italian orange blossom, black pepper & Mysore sandalwood. Gentlemanly freshness.' }
+                       : { id: 'cedar', name: 'Cedar', price: isOffer ? (cfg.offerPrice12mlClassic || 399) : 499, regularPrice: 499, desc: 'Calm mountain cedarwood, spiced cypress & warm tonka. Clean and grounding.' };
 
-    const giftBox = isRoyal ? { name: 'Oud Gift Set', price: 999, desc: 'Experience Surkh Oud, Velvet Oud, Safwan Oud, and 3 more in a royal box.' }
-                            : { name: 'French Gift Set', price: 999, desc: 'Includes Garnet 540 and Regent, plus Monarch, Cedar, Victor & Rumo in a coffret.' };
+    const giftBox = isRoyal ? { id: 'combo-oud', name: 'Oud Gift Set', price: isOffer ? (cfg.offerPriceCombos || 749) : 999, regularPrice: 999, desc: 'Experience Surkh Oud, Velvet Oud, Safwan Oud, and 3 more in a royal box.' }
+                            : { id: 'combo-french', name: 'French Gift Set', price: isOffer ? (cfg.offerPriceCombos || 749) : 999, regularPrice: 999, desc: 'Includes Garnet 540 and Regent, plus Monarch, Cedar, Victor & Rumo in a coffret.' };
 
     recsGrid.innerHTML = `
       <div class="rec-card primary">
@@ -3021,12 +3024,17 @@ window.showSiteQuizResult = function() {
         <div>
           <div class="rec-price-row">
             <span class="rec-price">₹${topBottle.price}</span>
-            <span class="rec-mrp">₹1,299</span>
-            <span style="font-size: 0.72rem; color: #059669; font-weight: 700;">12ml Flacon</span>
+            <span class="rec-mrp">₹${topBottle.regularPrice}</span>
+            <span style="font-size: 0.72rem; color: #059669; font-weight: 700;">12ml Roll-on</span>
           </div>
-          <button type="button" class="btn-rec-wa" onclick="triggerWhatsAppOrder('${topBottle.id}')">
-            Order on WhatsApp
-          </button>
+          <div class="rec-card-dual-actions">
+            <button type="button" class="btn-rec-cart" onclick="window.addAndOpenCart('${topBottle.id}', 'single')">
+              <span>+ Add to Cart</span>
+            </button>
+            <button type="button" class="btn-rec-wa" onclick="triggerWhatsAppOrder('${topBottle.id}')">
+              <span>WhatsApp</span>
+            </button>
+          </div>
         </div>
       </div>
 
@@ -3039,12 +3047,17 @@ window.showSiteQuizResult = function() {
         <div>
           <div class="rec-price-row">
             <span class="rec-price">₹${secondBottle.price}</span>
-            <span class="rec-mrp">₹1,299</span>
-            <span style="font-size: 0.72rem; color: #059669; font-weight: 700;">12ml Flacon</span>
+            <span class="rec-mrp">₹${secondBottle.regularPrice}</span>
+            <span style="font-size: 0.72rem; color: #059669; font-weight: 700;">12ml Roll-on</span>
           </div>
-          <button type="button" class="btn-rec-wa" onclick="triggerWhatsAppOrder('${secondBottle.id}')">
-            Order on WhatsApp
-          </button>
+          <div class="rec-card-dual-actions">
+            <button type="button" class="btn-rec-cart" onclick="window.addAndOpenCart('${secondBottle.id}', 'single')">
+              <span>+ Add to Cart</span>
+            </button>
+            <button type="button" class="btn-rec-wa" onclick="triggerWhatsAppOrder('${secondBottle.id}')">
+              <span>WhatsApp</span>
+            </button>
+          </div>
         </div>
       </div>
 
@@ -3057,12 +3070,17 @@ window.showSiteQuizResult = function() {
         <div>
           <div class="rec-price-row">
             <span class="rec-price">₹${giftBox.price}</span>
-            <span class="rec-mrp">₹2,499</span>
+            <span class="rec-mrp">₹${giftBox.regularPrice}</span>
             <span style="font-size: 0.72rem; color: #059669; font-weight: 700;">6 × 3ml Box</span>
           </div>
-          <a href="#combos" class="btn-rec-wa" onclick="closeScentFinderModal()" style="text-decoration: none;">
-            View Gift Set (₹999)
-          </a>
+          <div class="rec-card-dual-actions">
+            <button type="button" class="btn-rec-cart" onclick="window.addAndOpenCart('${giftBox.id}', 'set')">
+              <span>+ Add to Cart</span>
+            </button>
+            <a href="#combos" class="btn-rec-wa" onclick="closeScentFinderModal()" style="text-decoration: none; text-align: center;">
+              <span>View Set</span>
+            </a>
+          </div>
         </div>
       </div>
     `;
@@ -3149,3 +3167,23 @@ function initOfferBanner() {
   }
 }
 window.initOfferBanner = initOfferBanner;
+
+/**
+ * 1-Click Recommendation Add to Cart & Open Drawer
+ */
+window.addAndOpenCart = function(id, type) {
+  if (type === 'set') {
+    if (typeof window.addComboToSelection === 'function') {
+      window.addComboToSelection(id);
+    }
+  } else {
+    if (typeof window.toggleSelection === 'function') {
+      const isAlreadyIn = window.selectionList.some(item => item.id === id);
+      if (!isAlreadyIn) {
+        window.toggleSelection(id);
+      }
+    }
+  }
+  if (typeof closeScentFinderModal === 'function') closeScentFinderModal();
+  if (typeof openSelectionDrawer === 'function') openSelectionDrawer();
+};
