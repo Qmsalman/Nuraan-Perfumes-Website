@@ -48,6 +48,30 @@ Thank you!`;
   },
 
   /**
+   * Helper to launch Instagram DM reliably on both mobile and desktop without popup blocking
+   */
+  openInstagramDM: function(igHandle, summaryText, successMessage) {
+    const dmUrl = `https://ig.me/m/${igHandle}`;
+    SocialCheckout.copyToClipboard(summaryText, function() {
+      SocialCheckout.showToast(successMessage || `✓ Copied order details! Opening Instagram DM...`, "success");
+    });
+    // Launch synchronously within the active touch/click gesture context
+    try {
+      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+      if (isMobile) {
+        window.location.href = dmUrl;
+      } else {
+        const opened = window.open(dmUrl, '_blank');
+        if (!opened || opened.closed || typeof opened.closed === 'undefined') {
+          window.location.href = dmUrl;
+        }
+      }
+    } catch (e) {
+      window.location.href = dmUrl;
+    }
+  },
+
+  /**
    * Inquire about a fragrance on Instagram DM with auto-copied summary
    */
   inquireOnInstagram: function(product, sizeType = '12ml') {
@@ -59,13 +83,7 @@ Thank you!`;
     const currency = config.currencySymbol || "₹";
 
     const summary = `Nuraan Perfumes Inquiry: ${product.name} [Code: #${product.id}] - ${sizeLabel} (${currency}${price})`;
-
-    SocialCheckout.copyToClipboard(summary, function() {
-      SocialCheckout.showToast(`✓ Copied "${product.name}" summary! Opening @${igHandle}...`, "success");
-      setTimeout(function() {
-        window.open(`https://ig.me/m/${igHandle}`, '_blank');
-      }, 750);
-    });
+    SocialCheckout.openInstagramDM(igHandle, summary, `✓ Copied "${product.name}" summary! Opening Instagram DM...`);
   },
 
   /**
@@ -147,12 +165,7 @@ Thank you!`;
     const formatLabel = `${qty} × 6 × 3ml Luxury Gift Set${qty > 1 ? 's' : ''}`;
     const summary = `Nuraan Perfumes Order: ${combo.name} (${formatLabel}) - ${currency}${activePrice.toLocaleString('en-IN')}`;
 
-    SocialCheckout.copyToClipboard(summary, function() {
-      SocialCheckout.showToast(`✓ Copied "${combo.name} (${formatLabel})" details! Opening @${igHandle}...`, "success");
-      setTimeout(function() {
-        window.open(`https://ig.me/m/${igHandle}`, '_blank');
-      }, 750);
-    });
+    SocialCheckout.openInstagramDM(igHandle, summary, `✓ Copied "${combo.name}" details! Opening Instagram DM...`);
   },
 
   /**
@@ -218,12 +231,7 @@ Thank you!`;
     const activePrice = price || config.customBox3mlPrice || 999;
     const summary = `Nuraan Perfumes Inquiry: Custom 6 × 3ml Gift Set [${selectedAttars.join(', ')}] - ${currency}${activePrice}`;
 
-    SocialCheckout.copyToClipboard(summary, function() {
-      SocialCheckout.showToast(`✓ Copied your ${selectedAttars.length}-attar custom gift set details! Opening @${igHandle}...`, "success");
-      setTimeout(function() {
-        window.open(`https://ig.me/m/${igHandle}`, '_blank');
-      }, 750);
-    });
+    SocialCheckout.openInstagramDM(igHandle, summary, `✓ Copied custom gift set details! Opening Instagram DM...`);
   },
 
   /**
@@ -352,7 +360,7 @@ Thank you!`;
     const currency = config.currencySymbol || "₹";
 
     if (!items || items.length === 0) {
-      SocialCheckout.showToast("Your Scent Selection is empty! Add attars to your list first.", "error");
+      SocialCheckout.showToast("Your Cart is empty! Add items to your cart first.", "error");
       return;
     }
 
@@ -427,20 +435,15 @@ Thank you!`;
     const currency = config.currencySymbol || "₹";
 
     if (!items || items.length === 0) {
-      SocialCheckout.showToast("Your Scent Selection is empty! Add attars to your list first.", "error");
+      SocialCheckout.showToast("Your Cart is empty! Add items to your cart first.", "error");
       return;
     }
 
     const summary = SocialCheckout.calculateCartSummary(items);
     const itemSummaries = items.map(item => `${item.name} (${item.size || '3ml'})`).join(", ");
-    const summaryText = `Nuraan Perfumes Order List (${items.length} items • ${currency}${summary.finalPayable.toLocaleString('en-IN')}): ${itemSummaries}`;
+    const summaryText = `Nuraan Perfumes Cart Inquiry (${items.length} items • ${currency}${summary.finalPayable.toLocaleString('en-IN')}): ${itemSummaries}`;
 
-    SocialCheckout.copyToClipboard(summaryText, function() {
-      SocialCheckout.showToast(`✓ Copied your order list details! Opening @${igHandle}...`, "success");
-      setTimeout(function() {
-        window.open(`https://ig.me/m/${igHandle}`, '_blank');
-      }, 750);
-    });
+    SocialCheckout.openInstagramDM(igHandle, summaryText, `✓ Copied cart summary! Opening Instagram DM...`);
   },
 
   /**

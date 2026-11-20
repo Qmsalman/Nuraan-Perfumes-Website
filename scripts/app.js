@@ -27,6 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
 function initApp() {
   renderBrandHeader();
   initHeroBanner();
+    initOfferBanner();
   applyFilters();
   renderCombos(window.NURAAN_COMBOS || []);
   initCustomBoxBuilder();
@@ -207,7 +208,7 @@ function getInspirationInfo(product) {
     'surkh-oud': 'Red Tobacco'
   };
 
-  let scent = cleanModelMap[product.id] || (product.inspiration || '').trim();
+  let scent = (product.inspiration || '').trim() || cleanModelMap[product.id] || '';
 
   // Strip URLs if any
   if (scent.startsWith('http://') || scent.startsWith('https://') || scent.includes('fragrantica.com')) {
@@ -278,7 +279,20 @@ function renderCatalog(products) {
     }
     const currentSize = productSelectedSizes[product.id];
     const is12ml = currentSize === '12ml';
-    const activePrice = is12ml ? product.price12ml : product.price3mlOption;
+    let activePrice = is12ml ? product.price12ml : product.price3mlOption;
+    let regularPrice = activePrice;
+    let isOfferActive = false;
+    if (window.NURAAN_CONFIG && window.NURAAN_CONFIG.introductoryOfferEnabled && is12ml) {
+      if (product.category === 'Oud' || (product.collection && product.collection.toLowerCase().includes('oud')) || product.price12ml >= 699) {
+        activePrice = window.NURAAN_CONFIG.offerPrice12mlReserve || 599;
+        regularPrice = product.price12ml || 699;
+        isOfferActive = true;
+      } else {
+        activePrice = window.NURAAN_CONFIG.offerPrice12mlClassic || 399;
+        regularPrice = product.price12ml || 499;
+        isOfferActive = true;
+      }
+    }
 
     const accordsHtml = (product.accords || [])
       .map(accord => `<span class="accord-pill">${accord}</span>`)
@@ -375,11 +389,12 @@ function renderCatalog(products) {
             <div class="compact-price-wrap">
               <div class="compact-price-line">
                 <span class="compact-price" id="compact-price-val-${product.id}">${currency}${activePrice.toLocaleString('en-IN')}</span>
+                ${isOfferActive ? `<span class="compact-regular-price">${currency}${regularPrice}</span>` : ''}
                 ${hasSavings ? `<span class="compact-original-mrp">${currency}${product.originalMrp.toLocaleString('en-IN')}</span>` : ''}
               </div>
               <div class="compact-size-line">
-                <span class="compact-size-label">12ml</span>
-                ${hasSavings ? `<span class="compact-savings-badge">Save ${savingsPct}%</span>` : ''}
+                <span class="compact-size-label">12ml Precision Roll-on</span>
+                ${isOfferActive ? `<span class="compact-offer-badge">Inaugural Offer</span>` : (hasSavings ? `<span class="compact-savings-badge">Save ${savingsPct}%</span>` : '')}
               </div>
             </div>
             
@@ -458,12 +473,13 @@ function renderCatalog(products) {
               <div class="price-val-row">
                 <span class="price-currency">${currency}</span>
                 <span class="price-val" id="price-val-${product.id}">${activePrice.toLocaleString('en-IN')}</span>
+                ${isOfferActive ? `<span class="price-regular-val">${currency}${regularPrice}</span>` : ''}
                 ${hasSavings ? `
                   <span class="price-original-mrp">MRP ${currency}${product.originalMrp.toLocaleString('en-IN')}</span>
-                  <span class="price-savings-badge">Save ${savingsPct}%</span>
+                  <span class="price-savings-badge">${isOfferActive ? '✦ Inaugural Launch Offer' : `Save ${savingsPct}%`}</span>
                 ` : ''}
               </div>
-              <span class="price-note">12ml Roll-On • Free Dispatch</span>
+              <span class="price-note">12ml Precision Roll-on • Free Dispatch</span>
             </div>
 
             <div class="card-order-controls">
@@ -473,10 +489,10 @@ function renderCatalog(products) {
                 class="btn-add-selection" 
                 id="btn-sel-${product.id}"
                 onclick="toggleSelection('${product.id}')"
-                aria-label="Add to Order List"
+                aria-label="Add to Cart"
               >
                 <span class="selection-icon">+</span>
-                <span class="selection-label">Add to Order List</span>
+                <span class="selection-label">Add to Cart</span>
               </button>
 
               <!-- Instant Order Dual Buttons (WhatsApp Left, Instagram Right) -->
@@ -967,8 +983,9 @@ function renderCombos(combos) {
   const currency = (window.NURAAN_CONFIG && window.NURAAN_CONFIG.currencySymbol) || "₹";
 
   container.innerHTML = combos.map(combo => {
-    // Lock gift set price strictly to 999 (prevent sheet legacy 1299 overwrite)
-    const activePrice = (combo.price && combo.price !== 1299) ? combo.price : 999;
+    const isIntroOffer = Boolean(window.NURAAN_CONFIG && window.NURAAN_CONFIG.introductoryOfferEnabled);
+    const activePrice = isIntroOffer ? (window.NURAAN_CONFIG.offerPriceCombos || 749) : ((combo.price && combo.price !== 1299) ? combo.price : 999);
+    const regularPrice = (combo.price && combo.price !== 1299) ? combo.price : 999;
     const activeMRP = (combo.mrp && combo.mrp !== 3299) ? combo.mrp : 2499;
     const activeSavings = activeMRP - activePrice;
 
@@ -1074,78 +1091,48 @@ function renderCombos(combos) {
             </ul>
           </div>
 
-          <!-- 3-Tier Multi-Box Bundle Selector -->
-          <div class="combo-bundle-selector">
-            <span class="bundle-selector-label">Choose Quantity & Bundle Savings:</span>
-            <div class="combo-bundle-pills">
-              <button 
-                type="button" 
-                class="combo-bundle-pill combo-tier-btn-${combo.id} active" 
-                data-qty="1" 
-                onclick="window.selectComboTier('${combo.id}', 1)"
-                aria-label="1 Gift Set for ₹999"
-              >
-                <span class="pill-radio"></span>
-                <span class="pill-name">1 Box <span class="pill-context-hint">(${combo.name})</span></span>
-                <span class="pill-price">${currency}999</span>
-              </button>
-              <button 
-                type="button" 
-                class="combo-bundle-pill combo-tier-btn-${combo.id}" 
-                data-qty="2" 
-                onclick="window.selectComboTier('${combo.id}', 2)"
-                aria-label="2 Gift Sets for ₹1,699 with 30% Off 2nd box"
-              >
-                <span class="pill-radio"></span>
-                <span class="pill-name">2 Boxes <span class="pill-context-hint">(Mix & Match)</span> <span class="pill-badge-deal">30% Off 2nd</span></span>
-                <span class="pill-price">${currency}1,699</span>
-              </button>
-              <button 
-                type="button" 
-                class="combo-bundle-pill combo-tier-btn-${combo.id}" 
-                data-qty="4" 
-                onclick="window.selectComboTier('${combo.id}', 4)"
-                aria-label="4 Gift Sets for ₹2,999 Buy 3 Get 1 Free"
-              >
-                <span class="pill-radio"></span>
-                <span class="pill-name">All 4 Sets <span class="pill-context-hint">(Complete Library)</span> <span class="pill-badge-deal best">Buy 3, Get 1 FREE</span></span>
-                <span class="pill-price">${currency}2,999</span>
-              </button>
-            </div>
-          </div>
-
           <div class="combo-pricing-bar">
             <div class="combo-prices">
-              <span class="combo-current-price" id="combo-price-${combo.id}">${currency}${activePrice.toLocaleString('en-IN')}</span>
-              <span class="combo-mrp" id="combo-mrp-${combo.id}">${currency}${activeMRP.toLocaleString('en-IN')}</span>
-              <span class="combo-shipping">Free Express Dispatch</span>
+              <div class="combo-price-stack">
+                <span class="combo-current-price" id="combo-price-${combo.id}">${currency}${activePrice.toLocaleString('en-IN')}</span>
+                ${isIntroOffer ? `<span class="combo-regular-price">${currency}${regularPrice}</span>` : ''}
+                <span class="combo-mrp" id="combo-mrp-${combo.id}">MRP ${currency}${activeMRP.toLocaleString('en-IN')}</span>
+              </div>
+              <div class="combo-perk-tags">
+                ${isIntroOffer ? `<span class="badge-inaugural">✦ Inaugural Launch Offer</span>` : ''}
+                <span class="combo-mixmatch-hint">✦ Mix & Match: Add 2nd Set in Cart for 30% OFF</span>
+              </div>
             </div>
 
             <div class="combo-cta-buttons" style="display: flex; flex-direction: column; gap: 8px;">
               <button 
                 type="button" 
-                class="btn-order-wa" 
-                id="combo-wa-btn-${combo.id}"
-                onclick="triggerComboWhatsApp('${combo.id}')"
-              >
-                <span>Order ${combo.name} on WhatsApp (${currency}999)</span>
-              </button>
-              <button 
-                type="button" 
                 class="btn-add-combo-sel" 
                 onclick="window.addComboToSelection('${combo.id}')"
-                style="background: rgba(197, 160, 89, 0.12); border: 1.5px solid var(--accent-gold); color: var(--accent-gold-dark); font-weight: 800; padding: 11px;"
+                style="background: var(--accent-gold); color: #000; font-weight: 800; padding: 12px; border-radius: 8px; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;"
               >
-                <span>Mix & Match with Other Gift Sets in Cart ➔</span>
+                <span>+ Add to Cart (${currency}${activePrice.toLocaleString('en-IN')})</span>
               </button>
-              <button 
-                type="button" 
-                class="btn-inquire-ig" 
-                id="combo-ig-btn-${combo.id}"
-                onclick="triggerComboInstagram('${combo.id}')"
-              >
-                <span>Order on Instagram</span>
-              </button>
+              <div style="display: flex; gap: 8px;">
+                <button 
+                  type="button" 
+                  class="btn-order-wa" 
+                  id="combo-wa-btn-${combo.id}"
+                  onclick="triggerComboWhatsApp('${combo.id}')"
+                  style="flex: 1;"
+                >
+                  <span>WhatsApp</span>
+                </button>
+                <button 
+                  type="button" 
+                  class="btn-inquire-ig" 
+                  id="combo-ig-btn-${combo.id}"
+                  onclick="triggerComboInstagram('${combo.id}')"
+                  style="flex: 1;"
+                >
+                  <span>Instagram DM</span>
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -1355,7 +1342,9 @@ function renderCustomBoxSlots() {
         <div class="builder-slot filled" style="--slot-color: ${item.bottleColor || '#C59B27'};">
           <button class="slot-remove-btn" onclick="removeAttarFromCustomBox(${i})" aria-label="Remove">✕</button>
           <span class="slot-num-badge">Slot ${i + 1}</span>
-          <div class="slot-filled-bottle"></div>
+          <div class="slot-filled-bottle">
+            ${item.image ? `<img src="${item.image}" alt="${item.name}" class="slot-bottle-photo" />` : ''}
+          </div>
           <span class="slot-filled-name">${item.name}</span>
         </div>
       `;
@@ -1399,8 +1388,8 @@ function renderCustomBoxPillTray() {
         data-pill-id="${product.id}"
         onclick="toggleAttarInCustomBox('${product.id}', event)"
       >
-        <span>✦</span>
-        <span>${product.name}</span>
+        ${product.image ? `<img src="${product.image}" alt="${product.name}" class="picker-pill-thumb" loading="lazy" />` : `<span>✦</span>`}
+        <span class="picker-pill-name">${product.name}</span>
       </button>
     `;
   }).join("");
@@ -2058,9 +2047,43 @@ window.openNotesModal = function(productId) {
     seaEl.innerHTML = (product.seasons || []).map(s => `<span class="lifestyle-tag sea-tag">${formatSeason(s)}</span>`).join(" ") || product.season || "All Season";
   }
 
-  document.getElementById("modal-bottle-container").innerHTML = renderProceduralBottle(product);
+  const bottleContainer = document.getElementById("modal-bottle-container");
+  if (bottleContainer) {
+    if (product.image2) {
+      bottleContainer.innerHTML = `
+        <div class="modal-gallery-container">
+          <div class="modal-active-img-wrap">
+            <img src="${product.image}" alt="${product.name}" class="modal-product-img" id="modal-active-display-img" />
+          </div>
+          <div class="modal-thumbs-row">
+            <button type="button" class="modal-thumb-btn active" onclick="window.switchModalImage('${product.image}', this)">
+              <img src="${product.image}" alt="View 1" />
+            </button>
+            <button type="button" class="modal-thumb-btn" onclick="window.switchModalImage('${product.image2}', this)">
+              <img src="${product.image2}" alt="View 2" />
+            </button>
+          </div>
+        </div>
+      `;
+    } else {
+      bottleContainer.innerHTML = renderProceduralBottle(product);
+    }
+  }
 
-  const modalPriceVal = is12ml ? product.price12ml : product.price3mlOption;
+  let modalPriceVal = is12ml ? product.price12ml : product.price3mlOption;
+  let regularModalPrice = modalPriceVal;
+  let isOfferActive = false;
+  if (window.NURAAN_CONFIG && window.NURAAN_CONFIG.introductoryOfferEnabled && is12ml) {
+    if (product.category === 'Oud' || (product.collection && product.collection.toLowerCase().includes('oud')) || product.price12ml >= 699) {
+      modalPriceVal = window.NURAAN_CONFIG.offerPrice12mlReserve || 599;
+      regularModalPrice = product.price12ml || 699;
+      isOfferActive = true;
+    } else {
+      modalPriceVal = window.NURAAN_CONFIG.offerPrice12mlClassic || 399;
+      regularModalPrice = product.price12ml || 499;
+      isOfferActive = true;
+    }
+  }
   document.getElementById("modal-price").textContent = `${currency}${modalPriceVal.toLocaleString('en-IN')}`;
   document.getElementById("modal-format").textContent = is12ml ? "12ml Luxury Roll-On Single" : "3ml Discovery Option";
 
@@ -2109,10 +2132,10 @@ window.openNotesModal = function(productId) {
     const isSelected = window.selectionList.some(item => item.id === productId && item.size === (is12ml ? '12ml' : '3ml'));
     if (isSelected) {
       modalSelBtn.classList.add("added");
-      modalSelBtn.innerHTML = `<span class="selection-icon">✓</span><span class="selection-label">In Order List (${is12ml ? '12ml' : '3ml'}) • Remove</span>`;
+      modalSelBtn.innerHTML = `<span class="selection-icon">✓</span><span class="selection-label">In Cart (${is12ml ? '12ml' : '3ml'}) • Remove</span>`;
     } else {
       modalSelBtn.classList.remove("added");
-      modalSelBtn.innerHTML = `<span class="selection-icon">+</span><span class="selection-label">Add to Order List</span>`;
+      modalSelBtn.innerHTML = `<span class="selection-icon">+</span><span class="selection-label">Add to Cart</span>`;
     }
   }
 
@@ -2552,10 +2575,10 @@ window.updateSelectionUI = function() {
       const isSelected = window.selectionList.some(item => item.id === product.id && item.size === currentSize);
       if (isSelected) {
         btn.classList.add("added");
-        btn.innerHTML = `<span class="selection-icon">✓</span><span class="selection-label">In Order List (${currentSize}) • Remove</span>`;
+        btn.innerHTML = `<span class="selection-icon">✓</span><span class="selection-label">In Cart (${currentSize}) • Remove</span>`;
       } else {
         btn.classList.remove("added");
-        btn.innerHTML = `<span class="selection-icon">+</span><span class="selection-label">Add to Order List</span>`;
+        btn.innerHTML = `<span class="selection-icon">+</span><span class="selection-label">Add to Cart</span>`;
       }
     }
   });
@@ -2661,9 +2684,9 @@ window.updateSelectionUI = function() {
           <div style="margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; width: 56px; height: 56px; border-radius: 50%; background: rgba(197, 160, 89, 0.1); border: 1px solid var(--border-gold); color: var(--accent-gold);">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
           </div>
-          <h4 style="font-size: 1.1rem; margin-bottom: 6px; color: var(--color-text-main);">Your Selection is Empty</h4>
+          <h4 style="font-size: 1.1rem; margin-bottom: 6px; color: var(--color-text-main);">Your Cart is Empty</h4>
           <p style="color: var(--color-text-muted); font-size: 0.82rem; line-height: 1.5; max-width: 260px; margin: 0 auto;">
-            Tap <strong>"+ Add to Order List"</strong> on any fragrance card to build your personalized multi-bottle order.
+            Tap <strong>"+ Add to Cart"</strong> on any fragrance card to build your personalized multi-bottle order.
           </p>
         </div>
       `;
@@ -3062,3 +3085,67 @@ window.toggleFaq = function(header) {
     item.classList.add('active');
   }
 };
+
+/**
+ * 1-Click Quick Add Bundle System
+ * Adds curated gift sets directly to Cart with instant discount tiers and opens cart drawer
+ */
+window.quickAddBundle = function(qty) {
+  const combos = window.NURAAN_COMBOS || [];
+  if (qty === 2) {
+    const french = combos.find(c => c.id === 'combo-french') || combos[0];
+    const arabic = combos.find(c => c.id === 'combo-arabic') || combos[1];
+    if (french && !window.selectionList.some(i => i.id === french.id)) {
+      window.addComboToSelection(french.id);
+    }
+    if (arabic && !window.selectionList.some(i => i.id === arabic.id)) {
+      window.addComboToSelection(arabic.id);
+    }
+    if (typeof showToast === 'function') {
+      showToast("Added 2 Gift Sets to Cart with 30% OFF 2nd Box!");
+    }
+    window.openSelectionDrawer();
+  } else if (qty === 4) {
+    combos.forEach(c => {
+      if (!window.selectionList.some(i => i.id === c.id)) {
+        window.addComboToSelection(c.id);
+      }
+    });
+    if (typeof showToast === 'function') {
+      showToast("Added Complete 4-Set Collection (Buy 3, Get 1 FREE)!");
+    }
+    window.openSelectionDrawer();
+  }
+};
+
+window.switchModalImage = function(src, btn) {
+  const activeImg = document.getElementById("modal-active-display-img");
+  if (activeImg) activeImg.src = src;
+  const parent = btn ? btn.parentElement : null;
+  if (parent) {
+    parent.querySelectorAll('.modal-thumb-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  }
+};
+
+/**
+ * Dynamic Offer Banner Initializer (Controlled via Google Sheets Control Panel)
+ */
+function initOfferBanner() {
+  const container = document.getElementById("offer-banner-container");
+  const img = document.getElementById("offer-banner-img");
+  const link = document.getElementById("offer-banner-link");
+  if (!container || !img || !link) return;
+
+  const cfg = window.NURAAN_CONFIG || {};
+  if (cfg.offerBannerEnabled && cfg.offerBannerImage) {
+    img.src = cfg.offerBannerImage;
+    if (cfg.offerBannerLink) {
+      link.href = cfg.offerBannerLink;
+    }
+    container.style.display = "block";
+  } else {
+    container.style.display = "none";
+  }
+}
+window.initOfferBanner = initOfferBanner;

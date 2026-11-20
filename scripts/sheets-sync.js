@@ -177,6 +177,8 @@ const NuraanSheetsSync = {
     const colInspiration = headers.findIndex(h => h === "inspiration" || (h.includes("inspiration") && !h.includes("dna")));
     const colDna = headers.findIndex(h => (h.includes("dnainspiration") || h === "dna" || h.startsWith("dna")) && !h.includes("fragrantica"));
     const colFragrantica = headers.findIndex(h => h.includes("fragranticareference") || h.includes("fragrantica"));
+    const colImage2 = findCol(["image2", "photo2", "secondphoto", "boxphoto", "photo_2", "image_2"]);
+    const colDesc = findCol(["description", "desc", "story"]);
 
     let count = 0;
     for (let r = 1; r < rows.length; r++) {
@@ -236,6 +238,18 @@ const NuraanSheetsSync = {
         }
         if (colFragrantica !== -1 && row[colFragrantica]) {
           product.fragranticaUrl = row[colFragrantica].trim();
+        }
+        if (colImage2 !== -1 && row[colImage2]) {
+          product.image2 = NuraanSheetsSync.convertGoogleDriveUrl(row[colImage2].trim());
+        }
+        if (colDesc !== -1 && row[colDesc]) {
+          let rawDesc = row[colDesc].trim();
+          // Sanitize roll-on wording consistency
+          rawDesc = rawDesc
+            .replace(/stainless-steel\s+roll-on/gi, 'precision roll-on')
+            .replace(/stainless\s+steel/gi, 'precision')
+            .replace(/glass\s+roll-on/gi, 'precision roll-on');
+          product.description = rawDesc;
         }
         count++;
       }
@@ -418,17 +432,70 @@ const NuraanSheetsSync = {
           console.log(`[Nuraan Sheets Sync] ✓ Reviews section enabled: ${isEnabled}`);
           break;
         }
+        case 'introductory_offer_enabled':
+        case 'inaugural_offer_enabled':
+        case 'introductory_offer':
+        case 'enable_introductory_offer': {
+          const isEnabled = val.toLowerCase() === 'true' || val.toLowerCase() === 'yes' || val.toLowerCase() === 'enable' || val.toLowerCase() === '1';
+          config.introductoryOfferEnabled = isEnabled;
+          console.log(`[Nuraan Sheets Sync] ✓ Introductory Offer enabled: ${isEnabled}`);
+          break;
+        }
+        case 'offer_banner_enabled':
+        case 'enable_offer_banner': {
+          const isEnabled = val.toLowerCase() === 'true' || val.toLowerCase() === 'yes' || val.toLowerCase() === 'enable' || val.toLowerCase() === '1';
+          config.offerBannerEnabled = isEnabled;
+          const bannerEl = document.getElementById('offer-banner-container');
+          if (bannerEl) bannerEl.style.display = isEnabled ? 'block' : 'none';
+          console.log(`[Nuraan Sheets Sync] ✓ Offer Banner enabled: ${isEnabled}`);
+          break;
+        }
+        case 'offer_banner_image':
+        case 'offer_banner_photo':
+        case 'offer_banner_url': {
+          if (val) {
+            const converted = NuraanSheetsSync.convertGoogleDriveUrl(val);
+            config.offerBannerImage = converted;
+            const imgEl = document.getElementById('offer-banner-img');
+            if (imgEl) imgEl.src = converted;
+          }
+          break;
+        }
+        case 'offer_banner_link': {
+          if (val) {
+            config.offerBannerLink = val;
+            const linkEl = document.getElementById('offer-banner-link');
+            if (linkEl) linkEl.href = val;
+          }
+          break;
+        }
       }
 
       // Check if key is a product photo destination (e.g., photo_garnet_540, photo_regent)
       if (key.startsWith('photo_')) {
-        const rawId = key.replace('photo_', '').trim();
+        let isImage2 = false;
+        let rawId = key.replace('photo_', '').trim();
+        if (rawId.endsWith('_2') || rawId.endsWith('-2')) {
+          isImage2 = true;
+          rawId = rawId.replace(/[-_]2$/, '').trim();
+        }
         const normId = rawId.replace(/_/g, '-');
         const catalog = window.NURAAN_CATALOG || [];
         const prod = catalog.find(p => p.id === normId || p.id.replace(/-/g, '_') === rawId);
         if (prod && val) {
-          prod.image = NuraanSheetsSync.convertGoogleDriveUrl(val);
-          console.log(`[Nuraan Sheets Sync] ✓ Mapped Google Drive photo for ${prod.name}: ${prod.image}`);
+          if (isImage2) {
+            prod.image2 = NuraanSheetsSync.convertGoogleDriveUrl(val);
+            console.log(`[Nuraan Sheets Sync] ✓ Mapped Image 2 for ${prod.name}: ${prod.image2}`);
+          } else {
+            prod.image = NuraanSheetsSync.convertGoogleDriveUrl(val);
+            // Check adjacent cell (Column E index 4) for Image 2
+            const valNext = (row[4] || '').trim();
+            if (valNext && (valNext.startsWith('http://') || valNext.startsWith('https://') || valNext.startsWith('//') || valNext.includes('drive.google.com'))) {
+              prod.image2 = NuraanSheetsSync.convertGoogleDriveUrl(valNext);
+              console.log(`[Nuraan Sheets Sync] ✓ Mapped Image 2 (adjacent cell) for ${prod.name}: ${prod.image2}`);
+            }
+            console.log(`[Nuraan Sheets Sync] ✓ Mapped Google Drive photo for ${prod.name}: ${prod.image}`);
+          }
         }
       }
     }

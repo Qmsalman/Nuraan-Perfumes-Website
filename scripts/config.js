@@ -34,12 +34,28 @@ const NURAAN_CONFIG = {
   // Default Promotional Announcement Bar
   announcement: "✦ 100% Pure Alcohol-Free Attars • Precision Roll-on Bottles • Inquire & Order via WhatsApp & Instagram ✦",
 
+  // Introductory Launch Offer Configuration (/founder-cfo & /founder-offer)
+  introductoryOfferEnabled: true,
+  introductoryBadgeText: "Inaugural Launch Offer",
+  regularPrice12mlClassic: 499,
+  offerPrice12mlClassic: 399,
+  regularPrice12mlReserve: 699,
+  offerPrice12mlReserve: 599,
+  regularPriceCombos: 999,
+  offerPriceCombos: 749,
+
+  // Promotional Banner Controller (Controlled via Google Sheet Website Control Panel)
+  offerBannerEnabled: false,
+  offerBannerImage: "",
+  offerBannerLink: "#catalog",
+  offerBannerHeadline: "Special Inaugural Launch Privilege",
+
   // Default Pricing for Curated 6-Piece Gift Sets (6 × 3ml Precision Roll-Ons)
-  defaultCuratedBoxPrice: 999,
+  defaultCuratedBoxPrice: 749,
   defaultCuratedBoxMRP: 2499,
   
   // Custom "Build Your Own" 6-Piece Gift Set Price:
-  customBox3mlPrice: 999,   // Price for Custom 6-Piece Box (Pick any 6 attars)
+  customBox3mlPrice: 749,   // Inaugural Launch Price for Custom 6-Piece Box
   customBoxMRP: 2499,
 
   // Google Sheets Live Sync (Pricing & Olfactory Notes)
