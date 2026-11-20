@@ -1312,14 +1312,47 @@ window.setCustomBoxSize = function(size) {
   updateCustomBoxTotal();
 };
 
+function getCustomBoxActivePrice() {
+  const config = window.NURAAN_CONFIG || {};
+  const isOffer = Boolean(config.introductoryOfferEnabled);
+  const regularPrice = config.regularCustomBox3mlPrice || 999;
+  return (isOffer && config.offerPriceCustomBox) ? config.offerPriceCustomBox : regularPrice;
+}
+window.getCustomBoxActivePrice = getCustomBoxActivePrice;
+
 function updateCustomBoxTotal() {
   const config = window.NURAAN_CONFIG || {};
   const currency = config.currencySymbol || "₹";
-  const activePrice = config.customBox3mlPrice || 999;
+  const isOffer = Boolean(config.introductoryOfferEnabled);
+  const activePrice = getCustomBoxActivePrice();
+  const regularPrice = config.regularCustomBox3mlPrice || 999;
+  const mrp = config.customBoxMRP || 2499;
 
   const totalEl = document.getElementById("custom-box-total");
   if (totalEl) {
     totalEl.textContent = `${currency}${activePrice.toLocaleString('en-IN')}`;
+  }
+
+  // Synchronize header price & discount badge dynamically
+  const headerPriceEl = document.getElementById("custom-box-header-price");
+  if (headerPriceEl) {
+    headerPriceEl.textContent = `${currency}${activePrice.toLocaleString('en-IN')}`;
+  }
+
+  const subPriceEl = document.getElementById("custom-box-sub-price");
+  if (subPriceEl) {
+    subPriceEl.textContent = `${currency}${activePrice.toLocaleString('en-IN')}`;
+  }
+
+  const headerBadgeEl = document.getElementById("custom-box-header-badge");
+  if (headerBadgeEl) {
+    const savingsPercent = Math.round(((mrp - activePrice) / mrp) * 100);
+    if (isOffer && config.offerPriceCustomBox && activePrice < regularPrice) {
+      const badgeText = config.introductoryBadgeText ? ` (${config.introductoryBadgeText})` : ' (Offer)';
+      headerBadgeEl.textContent = `Save ${savingsPercent}%${badgeText}`;
+    } else {
+      headerBadgeEl.textContent = `Save ${savingsPercent}%`;
+    }
   }
 
   const formatNotice = document.getElementById("custom-format-notice");
@@ -1531,8 +1564,7 @@ window.clearCustomBox = function() {
 };
 
 window.triggerCustomBoxWhatsApp = function() {
-  const config = window.NURAAN_CONFIG || {};
-  const price = config.customBox3mlPrice || 999;
+  const price = getCustomBoxActivePrice();
   const sizeLabel = "6 × 3ml Precision Roll-ons";
   const names = customBoxState.selectedAttars.map(p => p.name);
 
@@ -1549,8 +1581,7 @@ window.triggerCustomBoxWhatsApp = function() {
 };
 
 window.triggerCustomBoxInstagram = function() {
-  const config = window.NURAAN_CONFIG || {};
-  const price = config.customBox3mlPrice || 999;
+  const price = getCustomBoxActivePrice();
   const sizeLabel = "6 × 3ml Precision Roll-ons";
   const names = customBoxState.selectedAttars.map(p => p.name);
 

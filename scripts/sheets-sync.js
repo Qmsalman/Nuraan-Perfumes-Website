@@ -361,7 +361,10 @@ const NuraanSheetsSync = {
         case 'custom_gift_set_price': {
           const num = parseInt(val.replace(/[^0-9]/g, ''), 10);
           const targetCustom = (num === 1399 || !num || isNaN(num)) ? 999 : num;
-          config.customBox3mlPrice = targetCustom;
+          config.regularCustomBox3mlPrice = targetCustom;
+          if (!config.introductoryOfferEnabled) {
+            config.customBox3mlPrice = targetCustom;
+          }
           break;
         }
         case 'combo_french_photo': {
@@ -478,7 +481,10 @@ const NuraanSheetsSync = {
         case 'offer_price_custom_box': {
           const num = parseInt(val.replace(/[^0-9]/g, ''), 10);
           if (num && !isNaN(num)) {
-            config.customBox3mlPrice = num;
+            config.offerPriceCustomBox = num;
+            if (config.introductoryOfferEnabled) {
+              config.customBox3mlPrice = num;
+            }
             console.log(`[Nuraan Sheets Sync] ✓ Offer Price Custom Box: ${num}`);
           }
           break;
@@ -541,7 +547,15 @@ const NuraanSheetsSync = {
         }
       }
     }
-    console.log(`[Nuraan Sheets Sync] ✓ Synced live settings from Website Control Panel.`);
+
+    // Guarantee that active custom box price strictly mirrors master offer switch state
+    if (config.introductoryOfferEnabled && config.offerPriceCustomBox) {
+      config.customBox3mlPrice = config.offerPriceCustomBox;
+    } else {
+      config.customBox3mlPrice = config.regularCustomBox3mlPrice || 999;
+    }
+
+    console.log(`[Nuraan Sheets Sync] ✓ Synced live settings from Website Control Panel. Effective Custom Box Price: ₹${config.customBox3mlPrice} (Offer Mode: ${Boolean(config.introductoryOfferEnabled)})`);
     // Real-time DOM Refresh after syncing Offer Zone & Control Panel values
     if (typeof window.renderCatalog === 'function' && window.NURAAN_CATALOG) {
       window.renderCatalog(window.NURAAN_CATALOG);
@@ -611,8 +625,8 @@ const NuraanSheetsSync = {
       const secondCol = (row[1] || '').toLowerCase().trim();
 
       // Check combo box row
-      if (firstCol === 'combo') {
-        const comboObj = combos.find(c => secondCol.includes(c.collection.toLowerCase()) || c.name.toLowerCase().includes(secondCol));
+      if (firstCol === 'combo' || secondCol.includes('discovery box')) {
+        const comboObj = combos.find(c => secondCol.includes(c.collection.toLowerCase()) || c.name.toLowerCase().includes(secondCol) || (c.collection && secondCol.includes(c.collection.toLowerCase())));
         if (comboObj) {
           // Column J is 3ml Selling Price (index 9)
           const priceRaw = row[9] || row[10];
@@ -620,8 +634,25 @@ const NuraanSheetsSync = {
             const priceVal = parseInt(String(priceRaw).replace(/[^0-9]/g, ''), 10);
             if (priceVal && !isNaN(priceVal)) {
               const finalPrice = (priceVal === 1299) ? 999 : priceVal;
+              comboObj.regularPrice = finalPrice;
               comboObj.price = finalPrice;
               comboObj.price3ml = finalPrice;
+            }
+          }
+        }
+      }
+
+      // Check Custom Box row in Pricing Structure if present
+      if (secondCol.includes('custom') && (secondCol.includes('box') || secondCol.includes('gift') || secondCol.includes('set'))) {
+        const priceRaw = row[9] || row[10];
+        if (priceRaw) {
+          const priceVal = parseInt(String(priceRaw).replace(/[^0-9]/g, ''), 10);
+          if (priceVal && !isNaN(priceVal)) {
+            const finalPrice = (priceVal === 1399 || priceVal === 1299) ? 999 : priceVal;
+            const cfg = window.NURAAN_CONFIG || {};
+            cfg.regularCustomBox3mlPrice = finalPrice;
+            if (!cfg.introductoryOfferEnabled) {
+              cfg.customBox3mlPrice = finalPrice;
             }
           }
         }
