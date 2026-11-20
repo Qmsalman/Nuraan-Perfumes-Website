@@ -78,6 +78,33 @@ function initHeroBanner() {
 }
 
 /**
+ * Open official Instagram profile with automatic native app deep linking on mobile
+ */
+window.openInstagramProfile = function(event) {
+  if (event) {
+    try { event.preventDefault(); } catch(e) {}
+  }
+  const config = window.NURAAN_CONFIG || {};
+  const handle = config.instagramHandle || 'nuraan_perfumes';
+  let webUrl = (config.instagramUrl && config.instagramUrl.includes('instagram.com/'))
+    ? config.instagramUrl
+    : `https://www.instagram.com/${handle}/`;
+  const cleanWebUrl = webUrl.split('?')[0].replace(/\/+$/, '') + '/';
+
+  const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent || '');
+  if (isMobile) {
+    // Attempt deep link to Instagram native app first
+    window.location.href = `instagram://user?username=${handle}`;
+    // Fallback timer if app isn't installed or fails to open
+    setTimeout(() => {
+      window.location.href = cleanWebUrl;
+    }, 600);
+  } else {
+    window.open(cleanWebUrl, '_blank', 'noopener,noreferrer');
+  }
+};
+
+/**
  * Update dynamic brand text from config
  */
 function renderBrandHeader() {
@@ -93,11 +120,13 @@ function renderBrandHeader() {
     headerWa.href = `https://wa.me/${config.whatsappNumber}?text=${encodeURIComponent("Hello Nuraan Perfumes, I would like to inquire about your pure attars.")}`;
   }
 
-  const igUrl = config.instagramUrl || (config.instagramHandle ? `https://instagram.com/${config.instagramHandle}` : "https://www.instagram.com/nuraan_perfumes/");
+  const rawIgUrl = config.instagramUrl || (config.instagramHandle ? `https://www.instagram.com/${config.instagramHandle}/` : "https://www.instagram.com/nuraan_perfumes/");
+  const igUrl = rawIgUrl.split('?')[0].replace(/\/+$/, '') + '/';
 
   const headerIg = document.getElementById("header-ig-btn");
   if (headerIg) {
     headerIg.href = igUrl;
+    headerIg.onclick = function(e) { window.openInstagramProfile(e); return false; };
   }
 
   const footerWaNumber = document.getElementById("footer-wa-number");
@@ -110,6 +139,7 @@ function renderBrandHeader() {
   if (footerIgHandle) {
     footerIgHandle.href = igUrl;
     footerIgHandle.textContent = `@${config.instagramHandle || 'nuraan_perfumes'}`;
+    footerIgHandle.onclick = function(e) { window.openInstagramProfile(e); return false; };
   }
 
   // Floating Social Dock & Mobile Sticky Dock
@@ -121,11 +151,19 @@ function renderBrandHeader() {
   const dockIg = document.getElementById("floating-dock-ig");
   if (dockIg) {
     dockIg.href = igUrl;
+    dockIg.onclick = function(e) { window.openInstagramProfile(e); return false; };
+  }
+
+  const floatingBtnIg = document.getElementById("floating-btn-ig");
+  if (floatingBtnIg) {
+    floatingBtnIg.href = igUrl;
+    floatingBtnIg.onclick = function(e) { window.openInstagramProfile(e); return false; };
   }
 
   const mobileIg = document.getElementById("mobile-sticky-ig");
   if (mobileIg) {
     mobileIg.href = igUrl;
+    mobileIg.onclick = function(e) { window.openInstagramProfile(e); return false; };
   }
 }
 
@@ -3087,15 +3125,9 @@ window.showSiteQuizResult = function() {
             <span class="rec-mrp">₹${topBottle.regularPrice}</span>
             <span style="font-size: 0.72rem; color: #059669; font-weight: 700;">12ml Roll-on</span>
           </div>
-          <div class="rec-card-dual-actions">
-            <button type="button" class="btn-rec-cart ${isTopInCart ? 'added' : ''}" onclick="window.toggleRecCart('${topBottle.id}', 'single', this)">
+          <div class="rec-card-single-action" style="margin-top: 10px;">
+            <button type="button" class="btn-rec-cart ${isTopInCart ? 'added' : ''}" style="width: 100%;" onclick="window.toggleRecCart('${topBottle.id}', 'single', this)">
               <span>${isTopInCart ? '✓ In Cart' : '+ Add to Cart'}</span>
-            </button>
-            <button type="button" class="btn-rec-wa" onclick="triggerWhatsAppOrder('${topBottle.id}')" title="Order on WhatsApp">
-              <span>WhatsApp</span>
-            </button>
-            <button type="button" class="btn-rec-ig" onclick="triggerInstagramInquiry('${topBottle.id}')" title="Inquire on Instagram">
-              <span>Instagram</span>
             </button>
           </div>
         </div>
@@ -3113,15 +3145,9 @@ window.showSiteQuizResult = function() {
             <span class="rec-mrp">₹${secondBottle.regularPrice}</span>
             <span style="font-size: 0.72rem; color: #059669; font-weight: 700;">12ml Roll-on</span>
           </div>
-          <div class="rec-card-dual-actions">
-            <button type="button" class="btn-rec-cart ${isSecondInCart ? 'added' : ''}" onclick="window.toggleRecCart('${secondBottle.id}', 'single', this)">
+          <div class="rec-card-single-action" style="margin-top: 10px;">
+            <button type="button" class="btn-rec-cart ${isSecondInCart ? 'added' : ''}" style="width: 100%;" onclick="window.toggleRecCart('${secondBottle.id}', 'single', this)">
               <span>${isSecondInCart ? '✓ In Cart' : '+ Add to Cart'}</span>
-            </button>
-            <button type="button" class="btn-rec-wa" onclick="triggerWhatsAppOrder('${secondBottle.id}')" title="Order on WhatsApp">
-              <span>WhatsApp</span>
-            </button>
-            <button type="button" class="btn-rec-ig" onclick="triggerInstagramInquiry('${secondBottle.id}')" title="Inquire on Instagram">
-              <span>Instagram</span>
             </button>
           </div>
         </div>
@@ -3139,15 +3165,9 @@ window.showSiteQuizResult = function() {
             <span class="rec-mrp">₹${giftBox.regularPrice}</span>
             <span style="font-size: 0.72rem; color: #059669; font-weight: 700;">6 × 3ml Box</span>
           </div>
-          <div class="rec-card-dual-actions">
-            <button type="button" class="btn-rec-cart ${isGiftBoxInCart ? 'added' : ''}" onclick="window.toggleRecCart('${giftBox.id}', 'set', this)">
+          <div class="rec-card-single-action" style="margin-top: 10px;">
+            <button type="button" class="btn-rec-cart ${isGiftBoxInCart ? 'added' : ''}" style="width: 100%;" onclick="window.toggleRecCart('${giftBox.id}', 'set', this)">
               <span>${isGiftBoxInCart ? '✓ In Cart' : '+ Add to Cart'}</span>
-            </button>
-            <button type="button" class="btn-rec-wa" onclick="triggerComboWhatsApp('${giftBox.id}')" title="Order on WhatsApp">
-              <span>WhatsApp</span>
-            </button>
-            <button type="button" class="btn-rec-ig" onclick="triggerComboInstagram('${giftBox.id}')" title="Inquire on Instagram">
-              <span>Instagram</span>
             </button>
           </div>
         </div>

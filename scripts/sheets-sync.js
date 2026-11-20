@@ -326,17 +326,24 @@ const NuraanSheetsSync = {
         case 'whatsapp_display':
           config.whatsappDisplayNumber = val;
           break;
-        case 'instagram_handle':
-          config.instagramHandle = val.replace(/^@/, '').trim();
-          config.instagramUrl = `https://www.instagram.com/${config.instagramHandle}/`;
+        case 'instagram_handle': {
+          const cleanHandle = val ? val.replace(/^@/, '').trim() : '';
+          if (cleanHandle) {
+            config.instagramHandle = cleanHandle;
+            config.instagramUrl = `https://www.instagram.com/${cleanHandle}/`;
+          }
           break;
+        }
         case 'instagram_url': {
           if (val) {
             const clean = val.split('?')[0].trim();
-            config.instagramUrl = clean.endsWith('/') ? clean : `${clean}/`;
-            const match = clean.match(/instagram\.com\/([a-zA-Z0-9_\.]+)/i);
-            if (match && match[1]) {
-              config.instagramHandle = match[1];
+            const normalized = clean.endsWith('/') ? clean : `${clean}/`;
+            if (normalized.includes('instagram.com/')) {
+              config.instagramUrl = normalized;
+              const match = normalized.match(/instagram\.com\/([a-zA-Z0-9_\.]+)/i);
+              if (match && match[1]) {
+                config.instagramHandle = match[1];
+              }
             }
           }
           break;
