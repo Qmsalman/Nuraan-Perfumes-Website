@@ -51,23 +51,35 @@ Thank you!`;
    * Helper to launch Instagram DM reliably on both mobile and desktop without popup blocking
    */
   openInstagramDM: function(igHandle, summaryText, successMessage) {
-    const dmUrl = `https://ig.me/m/${igHandle}`;
+    const handle = (igHandle || "nuraan_perfumes").replace(/^@/, '').trim();
+    const dmUrl = `https://www.instagram.com/direct/t/${handle}/`;
+    
+    // Copy pre-formatted order summary to clipboard so user can simply paste into Instagram DM
     SocialCheckout.copyToClipboard(summaryText, function() {
-      SocialCheckout.showToast(successMessage || `✓ Copied order details! Opening Instagram DM...`, "success");
+      SocialCheckout.showToast(successMessage || `✓ Copied inquiry to clipboard! Opening Instagram to message @${handle}...`, "success");
     });
-    // Launch synchronously within the active touch/click gesture context
-    try {
-      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-      if (isMobile) {
-        window.location.href = dmUrl;
-      } else {
-        const opened = window.open(dmUrl, '_blank');
+
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    if (isMobile) {
+      // On mobile phones, open native Instagram app directly with fallback
+      const appUrl = `instagram://user?username=${handle}`;
+      const start = Date.now();
+      window.location.href = appUrl;
+      setTimeout(() => {
+        if (Date.now() - start < 1500) {
+          window.location.href = dmUrl;
+        }
+      }, 600);
+    } else {
+      // On desktop, open direct message thread in a new tab
+      try {
+        const opened = window.open(dmUrl, '_blank', 'noopener,noreferrer');
         if (!opened || opened.closed || typeof opened.closed === 'undefined') {
           window.location.href = dmUrl;
         }
+      } catch (e) {
+        window.location.href = dmUrl;
       }
-    } catch (e) {
-      window.location.href = dmUrl;
     }
   },
 

@@ -93,7 +93,7 @@ function renderBrandHeader() {
     headerWa.href = `https://wa.me/${config.whatsappNumber}?text=${encodeURIComponent("Hello Nuraan Perfumes, I would like to inquire about your pure attars.")}`;
   }
 
-  const igUrl = config.instagramUrl || (config.instagramHandle ? `https://instagram.com/${config.instagramHandle}` : "https://www.instagram.com/nuraan_perfumes?srtk=MTh1Z241OHdwcm00Yw==");
+  const igUrl = config.instagramUrl || (config.instagramHandle ? `https://instagram.com/${config.instagramHandle}` : "https://www.instagram.com/nuraan_perfumes/");
 
   const headerIg = document.getElementById("header-ig-btn");
   if (headerIg) {
@@ -1734,7 +1734,7 @@ window.selectComboTier = function(comboId, qty) {
   }
 };
 
-window.addComboToSelection = function(comboId) {
+window.addComboToSelection = function(comboId, openDrawer = true) {
   const combo = (window.NURAAN_COMBOS || []).find(c => c.id === comboId);
   if (!combo) return;
   const qty = (window.selectedComboTiers && window.selectedComboTiers[comboId]) || 1;
@@ -1754,7 +1754,9 @@ window.addComboToSelection = function(comboId) {
     });
   }
   window.updateSelectionUI();
-  window.openSelectionDrawer();
+  if (openDrawer) {
+    window.openSelectionDrawer();
+  }
   if (window.SocialCheckout && window.SocialCheckout.showToast) {
     window.SocialCheckout.showToast(`✓ Added ${qty} × ${combo.name} to your Order List!`, 'success');
   }
@@ -2579,7 +2581,9 @@ window.clearSelection = function() {
 window.openSelectionDrawer = function() {
   const overlay = document.getElementById("selection-drawer-overlay");
   if (overlay) overlay.classList.add("open");
-  document.body.style.overflow = "hidden";
+  if (typeof document !== 'undefined' && document.body) {
+    document.body.style.overflow = "hidden";
+  }
   trackEvent('view_cart', {
     item_count: window.selectionList.length,
     total_value: window.selectionList.reduce((acc, i) => acc + (i.price || 0), 0),
@@ -2590,10 +2594,12 @@ window.openSelectionDrawer = function() {
 window.closeSelectionDrawer = function() {
   const overlay = document.getElementById("selection-drawer-overlay");
   if (overlay) overlay.classList.remove("open");
-  document.body.style.overflow = "";
+  if (typeof document !== 'undefined' && document.body) {
+    document.body.style.overflow = "";
+  }
 };
 
-window.updateSelectionUI = function() {
+function updateSelectionUI() {
   const currency = (window.NURAAN_CONFIG && window.NURAAN_CONFIG.currencySymbol) || "₹";
   const count = window.selectionList.length;
   
@@ -2779,7 +2785,8 @@ window.updateSelectionUI = function() {
   if (drawerWaBtn) drawerWaBtn.disabled = count === 0;
   const drawerIgBtn = document.getElementById("drawer-ig-btn");
   if (drawerIgBtn) drawerIgBtn.disabled = count === 0;
-};
+}
+window.updateSelectionUI = updateSelectionUI;
 
 window.triggerSelectionWhatsApp = function() {
   const summary = (window.SocialCheckout && window.SocialCheckout.calculateCartSummary) 
@@ -3053,15 +3060,19 @@ window.showSiteQuizResult = function() {
 
     const cfg = window.NURAAN_CONFIG || {};
     const isOffer = Boolean(cfg.introductoryOfferEnabled);
-    const topBottle = isRoyal ? { id: 'surkh-oud', name: 'Surkh Oud', price: isOffer ? (cfg.offerPrice12mlReserve || 599) : 699, regularPrice: 699, desc: 'Aged Assam agarwood & spiced Taif rose. Pure opulent projection.' }
-                    : isSmoky ? { id: 'monarch', name: 'Monarch', price: isOffer ? (cfg.offerPrice12mlClassic || 399) : 499, regularPrice: 499, desc: 'Fruity pineapple, birch smoke & royal musk. A confident beast-mode sillage.' }
-                    : { id: 'garnet-540', name: 'Garnet 540', price: isOffer ? (cfg.offerPrice12mlClassic || 399) : 499, regularPrice: 499, desc: 'Sweet saffron, amber crystals & cedar warmth. Delicious, warm, and gets compliments everywhere.' };
+    const topBottle = isRoyal ? { id: 'surkh-oud', name: 'Surkh Oud', price: isOffer ? (cfg.offerPrice12mlReserve || 649) : 699, regularPrice: 699, desc: 'Aged Assam agarwood & spiced Taif rose. Pure opulent projection.' }
+                    : isSmoky ? { id: 'monarch', name: 'Monarch', price: isOffer ? (cfg.offerPrice12mlClassic || 449) : 499, regularPrice: 499, desc: 'Fruity pineapple, birch smoke & royal musk. A confident beast-mode sillage.' }
+                    : { id: 'garnet-540', name: 'Garnet 540', price: isOffer ? (cfg.offerPrice12mlClassic || 449) : 499, regularPrice: 499, desc: 'Sweet saffron, amber crystals & cedar warmth. Delicious, warm, and gets compliments everywhere.' };
 
-    const secondBottle = isFresh ? { id: 'regent', name: 'Regent', price: isOffer ? (cfg.offerPrice12mlClassic || 399) : 499, regularPrice: 499, desc: 'Italian orange blossom, black pepper & Mysore sandalwood. Gentlemanly freshness.' }
-                       : { id: 'cedar', name: 'Cedar', price: isOffer ? (cfg.offerPrice12mlClassic || 399) : 499, regularPrice: 499, desc: 'Calm mountain cedarwood, spiced cypress & warm tonka. Clean and grounding.' };
+    const secondBottle = isFresh ? { id: 'regent', name: 'Regent', price: isOffer ? (cfg.offerPrice12mlClassic || 449) : 499, regularPrice: 499, desc: 'Italian orange blossom, black pepper & Mysore sandalwood. Gentlemanly freshness.' }
+                       : { id: 'cedar', name: 'Cedar', price: isOffer ? (cfg.offerPrice12mlClassic || 449) : 499, regularPrice: 499, desc: 'Calm mountain cedarwood, spiced cypress & warm tonka. Clean and grounding.' };
 
-    const giftBox = isRoyal ? { id: 'combo-oud', name: 'Oud Gift Set', price: isOffer ? (cfg.offerPriceCombos || 749) : 999, regularPrice: 999, desc: 'Experience Surkh Oud, Velvet Oud, Safwan Oud, and 3 more in a royal box.' }
-                            : { id: 'combo-french', name: 'French Gift Set', price: isOffer ? (cfg.offerPriceCombos || 749) : 999, regularPrice: 999, desc: 'Includes Garnet 540 and Regent, plus Monarch, Cedar, Victor & Rumo in a coffret.' };
+    const giftBox = isRoyal ? { id: 'combo-oud', name: 'Oud Gift Set', price: isOffer ? (cfg.offerPriceCombos || 899) : 999, regularPrice: 999, desc: 'Experience Surkh Oud, Velvet Oud, Safwan Oud, and 3 more in a royal box.' }
+                            : { id: 'combo-french', name: 'French Gift Set', price: isOffer ? (cfg.offerPriceCombos || 899) : 999, regularPrice: 999, desc: 'Includes Garnet 540 and Regent, plus Monarch, Cedar, Victor & Rumo in a coffret.' };
+
+    const isTopInCart = window.selectionList.some(item => item.id === topBottle.id);
+    const isSecondInCart = window.selectionList.some(item => item.id === secondBottle.id);
+    const isGiftBoxInCart = window.selectionList.some(item => item.comboId === giftBox.id);
 
     recsGrid.innerHTML = `
       <div class="rec-card primary">
@@ -3077,11 +3088,14 @@ window.showSiteQuizResult = function() {
             <span style="font-size: 0.72rem; color: #059669; font-weight: 700;">12ml Roll-on</span>
           </div>
           <div class="rec-card-dual-actions">
-            <button type="button" class="btn-rec-cart" onclick="window.addAndOpenCart('${topBottle.id}', 'single')">
-              <span>+ Add to Cart</span>
+            <button type="button" class="btn-rec-cart ${isTopInCart ? 'added' : ''}" onclick="window.toggleRecCart('${topBottle.id}', 'single', this)">
+              <span>${isTopInCart ? '✓ In Cart' : '+ Add to Cart'}</span>
             </button>
-            <button type="button" class="btn-rec-wa" onclick="triggerWhatsAppOrder('${topBottle.id}')">
+            <button type="button" class="btn-rec-wa" onclick="triggerWhatsAppOrder('${topBottle.id}')" title="Order on WhatsApp">
               <span>WhatsApp</span>
+            </button>
+            <button type="button" class="btn-rec-ig" onclick="triggerInstagramInquiry('${topBottle.id}')" title="Inquire on Instagram">
+              <span>Instagram</span>
             </button>
           </div>
         </div>
@@ -3100,11 +3114,14 @@ window.showSiteQuizResult = function() {
             <span style="font-size: 0.72rem; color: #059669; font-weight: 700;">12ml Roll-on</span>
           </div>
           <div class="rec-card-dual-actions">
-            <button type="button" class="btn-rec-cart" onclick="window.addAndOpenCart('${secondBottle.id}', 'single')">
-              <span>+ Add to Cart</span>
+            <button type="button" class="btn-rec-cart ${isSecondInCart ? 'added' : ''}" onclick="window.toggleRecCart('${secondBottle.id}', 'single', this)">
+              <span>${isSecondInCart ? '✓ In Cart' : '+ Add to Cart'}</span>
             </button>
-            <button type="button" class="btn-rec-wa" onclick="triggerWhatsAppOrder('${secondBottle.id}')">
+            <button type="button" class="btn-rec-wa" onclick="triggerWhatsAppOrder('${secondBottle.id}')" title="Order on WhatsApp">
               <span>WhatsApp</span>
+            </button>
+            <button type="button" class="btn-rec-ig" onclick="triggerInstagramInquiry('${secondBottle.id}')" title="Inquire on Instagram">
+              <span>Instagram</span>
             </button>
           </div>
         </div>
@@ -3123,13 +3140,31 @@ window.showSiteQuizResult = function() {
             <span style="font-size: 0.72rem; color: #059669; font-weight: 700;">6 × 3ml Box</span>
           </div>
           <div class="rec-card-dual-actions">
-            <button type="button" class="btn-rec-cart" onclick="window.addAndOpenCart('${giftBox.id}', 'set')">
-              <span>+ Add to Cart</span>
+            <button type="button" class="btn-rec-cart ${isGiftBoxInCart ? 'added' : ''}" onclick="window.toggleRecCart('${giftBox.id}', 'set', this)">
+              <span>${isGiftBoxInCart ? '✓ In Cart' : '+ Add to Cart'}</span>
             </button>
-            <a href="#combos" class="btn-rec-wa" onclick="closeScentFinderModal()" style="text-decoration: none; text-align: center;">
-              <span>View Set</span>
-            </a>
+            <button type="button" class="btn-rec-wa" onclick="triggerComboWhatsApp('${giftBox.id}')" title="Order on WhatsApp">
+              <span>WhatsApp</span>
+            </button>
+            <button type="button" class="btn-rec-ig" onclick="triggerComboInstagram('${giftBox.id}')" title="Inquire on Instagram">
+              <span>Instagram</span>
+            </button>
           </div>
+        </div>
+      </div>
+
+      <!-- Bottom Quiz Recommendations Action Bar -->
+      <div class="rec-footer-checkout-bar" style="grid-column: 1 / -1; margin-top: 18px; padding-top: 16px; border-top: 1px solid rgba(197, 160, 89, 0.3); display: flex; flex-direction: column; gap: 10px;">
+        <button type="button" class="btn-primary-brass" onclick="closeScentFinderModal(); openSelectionDrawer();" style="width: 100%; padding: 14px; font-weight: 800; display: flex; align-items: center; justify-content: center; gap: 8px; border-radius: 8px;">
+          <span>View Cart (<span id="rec-cart-count">${window.selectionList.length}</span> Items) & Proceed ➔</span>
+        </button>
+        <div style="display: flex; justify-content: space-between; align-items: center; padding: 0 4px;">
+          <button type="button" onclick="goToSiteQuizStep(1)" style="background: none; border: none; color: var(--color-text-muted); font-size: 0.82rem; cursor: pointer; text-decoration: underline;">
+            ↺ Retake Scent Quiz
+          </button>
+          <button type="button" onclick="closeScentFinderModal()" style="background: none; border: none; color: var(--color-text-muted); font-size: 0.82rem; cursor: pointer;">
+            Continue Browsing ✕
+          </button>
         </div>
       </div>
     `;
@@ -3231,21 +3266,51 @@ function initOfferBanner() {
 window.initOfferBanner = initOfferBanner;
 
 /**
- * 1-Click Recommendation Add to Cart & Open Drawer
+ * Recommendation Add to Cart Toggle (Keeps Quiz Modal open so user can add multiple items)
  */
-window.addAndOpenCart = function(id, type) {
+window.toggleRecCart = function(id, type, btnEl) {
   if (type === 'set') {
-    if (typeof window.addComboToSelection === 'function') {
-      window.addComboToSelection(id);
+    const existingIdx = window.selectionList.findIndex(item => item.comboId === id);
+    if (existingIdx !== -1) {
+      window.removeFromSelection(existingIdx);
+      if (btnEl) {
+        btnEl.classList.remove('added');
+        btnEl.innerHTML = `<span>+ Add to Cart</span>`;
+      }
+    } else {
+      window.addComboToSelection(id, false); // false = do not force-open cart drawer
+      if (btnEl) {
+        btnEl.classList.add('added');
+        btnEl.innerHTML = `<span class="selection-icon">✓</span> <span>In Cart</span>`;
+      }
     }
   } else {
-    if (typeof window.toggleSelection === 'function') {
-      const isAlreadyIn = window.selectionList.some(item => item.id === id);
-      if (!isAlreadyIn) {
-        window.toggleSelection(id);
+    const existingIdx = window.selectionList.findIndex(item => item.id === id);
+    if (existingIdx !== -1) {
+      window.removeFromSelection(existingIdx);
+      if (btnEl) {
+        btnEl.classList.remove('added');
+        btnEl.innerHTML = `<span>+ Add to Cart</span>`;
+      }
+    } else {
+      window.toggleSelection(id);
+      if (btnEl) {
+        btnEl.classList.add('added');
+        btnEl.innerHTML = `<span class="selection-icon">✓</span> <span>In Cart</span>`;
       }
     }
   }
-  if (typeof closeScentFinderModal === 'function') closeScentFinderModal();
-  if (typeof openSelectionDrawer === 'function') openSelectionDrawer();
+
+  // Update real-time cart item count in quiz recommendations bottom bar
+  const recCartCount = document.getElementById('rec-cart-count');
+  if (recCartCount) {
+    recCartCount.textContent = window.selectionList.length;
+  }
+};
+
+/**
+ * 1-Click Recommendation Add to Cart & Open Drawer (Legacy helper)
+ */
+window.addAndOpenCart = function(id, type) {
+  window.toggleRecCart(id, type);
 };

@@ -19,7 +19,7 @@ const NURAAN_CONFIG = {
   whatsappNumber: "918591059608",
   whatsappDisplayNumber: "+91 85910 59608",
   instagramHandle: "nuraan_perfumes",
-  instagramUrl: "https://www.instagram.com/nuraan_perfumes?srtk=MTh1Z241OHdwcm00Yw==",
+  instagramUrl: "https://www.instagram.com/nuraan_perfumes/",
   googleMapsUrl: "https://www.google.com/maps/place/Nuraan+Perfumes/data=!4m2!3m1!1s0x3be7c39092405663:0xb15275cbcba777f4",
 
   // Hero Section Custom Banner Image (Leave empty to use built-in luxury artwork, or paste Google Drive / CDN link)

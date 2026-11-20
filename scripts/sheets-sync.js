@@ -328,15 +328,16 @@ const NuraanSheetsSync = {
           break;
         case 'instagram_handle':
           config.instagramHandle = val.replace(/^@/, '').trim();
-          if (!config.instagramUrl) {
-            config.instagramUrl = `https://www.instagram.com/${config.instagramHandle}/`;
-          }
+          config.instagramUrl = `https://www.instagram.com/${config.instagramHandle}/`;
           break;
         case 'instagram_url': {
-          config.instagramUrl = val.trim();
-          const match = val.match(/instagram\.com\/([a-zA-Z0-9_\.]+)/i);
-          if (match && match[1]) {
-            config.instagramHandle = match[1];
+          if (val) {
+            const clean = val.split('?')[0].trim();
+            config.instagramUrl = clean.endsWith('/') ? clean : `${clean}/`;
+            const match = clean.match(/instagram\.com\/([a-zA-Z0-9_\.]+)/i);
+            if (match && match[1]) {
+              config.instagramHandle = match[1];
+            }
           }
           break;
         }
