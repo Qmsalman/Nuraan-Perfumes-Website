@@ -5093,6 +5093,44 @@ img {
     font-weight: 600;
   }
 
+  .card-compact-action-row {
+    width: 100%;
+    margin-top: 6px;
+  }
+
+  .compact-add-btn {
+    width: 100% !important;
+    height: 36px;
+    min-height: 36px;
+    padding: 6px 10px;
+    font-size: 0.76rem;
+    font-weight: 700;
+    border-radius: 6px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    background: #FFFFFF;
+    border: 1.5px solid var(--border-gold, #C5A059);
+    color: var(--color-text-main, #14171E);
+    box-shadow: 0 2px 6px rgba(197, 160, 89, 0.15);
+    transition: all 0.2s ease;
+    cursor: pointer;
+  }
+
+  .compact-add-btn:hover {
+    background: var(--bg-page, #FAF8F5);
+    border-color: var(--accent-gold, #C5A059);
+    color: var(--accent-gold-dark, #8A6D3B);
+  }
+
+  .compact-add-btn.added {
+    background: #059669 !important;
+    border-color: #059669 !important;
+    color: #FFFFFF !important;
+    box-shadow: 0 2px 8px rgba(5, 150, 105, 0.28) !important;
+  }
+
   .card-compact-dual-btns {
     display: grid !important;
     grid-template-columns: 1fr 1fr;
@@ -5727,6 +5765,44 @@ img {
   .compact-price {
     font-size: 0.88rem !important;
   }
+  .card-compact-action-row {
+    width: 100%;
+    margin-top: 6px;
+  }
+
+  .compact-add-btn {
+    width: 100% !important;
+    height: 36px;
+    min-height: 36px;
+    padding: 6px 10px;
+    font-size: 0.76rem;
+    font-weight: 700;
+    border-radius: 6px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    background: #FFFFFF;
+    border: 1.5px solid var(--border-gold, #C5A059);
+    color: var(--color-text-main, #14171E);
+    box-shadow: 0 2px 6px rgba(197, 160, 89, 0.15);
+    transition: all 0.2s ease;
+    cursor: pointer;
+  }
+
+  .compact-add-btn:hover {
+    background: var(--bg-page, #FAF8F5);
+    border-color: var(--accent-gold, #C5A059);
+    color: var(--accent-gold-dark, #8A6D3B);
+  }
+
+  .compact-add-btn.added {
+    background: #059669 !important;
+    border-color: #059669 !important;
+    color: #FFFFFF !important;
+    box-shadow: 0 2px 8px rgba(5, 150, 105, 0.28) !important;
+  }
+
   .card-compact-dual-btns {
     gap: 4px !important;
   }
