@@ -30,6 +30,8 @@ function initApp() {
     initOfferBanner();
   applyFilters();
   renderCombos(window.NURAAN_COMBOS || []);
+  if (typeof initComboAutoSliders === 'function') initComboAutoSliders();
+  if (typeof initProductCardAutoSliders === 'function') initProductCardAutoSliders();
   initCustomBoxBuilder();
   setupFilterTabs();
   setupCompassFilters();
@@ -179,15 +181,15 @@ window.updateHeroBanner = function(urlInput) {
     window.goToHeroSlide(currentIndex - 1);
   };
 
-  let isHovered = false;
-  sliderContainer.onmouseenter = () => { isHovered = true; };
-  sliderContainer.onmouseleave = () => { isHovered = false; };
+  let pauseUntil = 0;
+  sliderContainer.onmouseenter = () => { pauseUntil = Date.now() + 3000; };
+  sliderContainer.ontouchstart = () => { pauseUntil = Date.now() + 3000; };
 
   window._heroSliderInterval = setInterval(() => {
-    if (!isHovered && document.visibilityState !== 'hidden') {
+    if (Date.now() > pauseUntil && document.visibilityState !== 'hidden') {
       window.nextHeroSlide();
     }
-  }, 5000);
+  }, 3500);
 };
 
 function initHeroBanner() {
@@ -651,6 +653,9 @@ function renderCatalog(products) {
   // Re-attach 3D tilt engine to all newly rendered flacons
   if (window.Nuraan3D && window.Nuraan3D.SingleBottle3D) {
     window.Nuraan3D.SingleBottle3D.attachAll();
+  }
+  if (typeof window.initProductCardAutoSliders === 'function') {
+    window.initProductCardAutoSliders();
   }
 }
 window.renderCatalog = renderCatalog;
@@ -1140,7 +1145,6 @@ function renderCombos(combos) {
                     loading="lazy"
                     decoding="async"
                   />
-                  <div class="combo-zoom-badge" onclick="window.openLightbox(document.getElementById('combo-img-${combo.id}').src, '${combo.name}')">🔍 Expand Photo</div>
                 </div>
                 ${(combo.images && combo.images.length > 1) ? `
                   <div class="combo-thumbs-row">
@@ -1279,6 +1283,9 @@ function renderCombos(combos) {
 
   // Initialize the moving carousel and pagination dots
   initComboCarousel();
+  if (typeof window.initComboAutoSliders === 'function') {
+    window.initComboAutoSliders();
+  }
 }
 
 // ==============================================================================
@@ -2237,9 +2244,6 @@ window.openNotesModal = function(productId) {
               style="cursor: zoom-in;" 
               title="Click to view full image" 
             />
-            <div class="modal-zoom-hint" onclick="window.openLightbox(document.getElementById('modal-active-display-img').src, '${product.name}')">
-              <span>🔍 Click to expand full image</span>
-            </div>
           </div>
           ${hasMultipleImages ? `
             <div class="modal-thumbs-row">
@@ -2253,6 +2257,36 @@ window.openNotesModal = function(productId) {
           ` : ''}
         </div>
       `;
+
+      if (hasMultipleImages) {
+        if (window._modalSlideInterval) clearInterval(window._modalSlideInterval);
+        const modalImages = (product.images && product.images.length > 1) ? product.images : [product.image, product.image2];
+        let modalIdx = 0;
+        window._modalSlideInterval = setInterval(() => {
+          const modal = document.getElementById("notes-modal");
+          if (!modal || !modal.classList.contains("active")) {
+            clearInterval(window._modalSlideInterval);
+            return;
+          }
+          modalIdx = (modalIdx + 1) % modalImages.length;
+          const nextSrc = modalImages[modalIdx];
+          const activeImg = document.getElementById("modal-active-display-img");
+          if (activeImg) {
+            activeImg.style.opacity = '0.35';
+            setTimeout(() => {
+              activeImg.src = nextSrc;
+              activeImg.style.opacity = '1';
+            }, 180);
+          }
+          const thumbs = document.querySelectorAll('.modal-thumb-btn');
+          thumbs.forEach((t, i) => t.classList.toggle('active', i === modalIdx));
+        }, 3500);
+      } else {
+        if (window._modalSlideInterval) {
+          clearInterval(window._modalSlideInterval);
+          window._modalSlideInterval = null;
+        }
+      }
     } else {
       bottleContainer.innerHTML = renderProceduralBottle(product);
     }
@@ -2339,6 +2373,10 @@ window.openNotesModal = function(productId) {
 };
 
 window.closeNotesModal = function() {
+  if (window._modalSlideInterval) {
+    clearInterval(window._modalSlideInterval);
+    window._modalSlideInterval = null;
+  }
   const modal = document.getElementById("notes-modal");
   if (modal) {
     modal.classList.remove("active");
@@ -3401,6 +3439,81 @@ window.switchComboImage = function(comboId, src, btn) {
     parent.querySelectorAll('.combo-thumb-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
   }
+};
+
+/**
+ * Auto-Slideshow for Curated Gift Sets (Combos)
+ */
+window.initComboAutoSliders = function() {
+  if (window._comboSliderInterval) {
+    clearInterval(window._comboSliderInterval);
+    window._comboSliderInterval = null;
+  }
+  const combos = window.NURAAN_COMBOS || [];
+  const multiCombos = combos.filter(c => c.images && c.images.length > 1);
+  if (!multiCombos.length) return;
+
+  const indices = {};
+  multiCombos.forEach(c => { indices[c.id] = 0; });
+
+  window._comboSliderInterval = setInterval(() => {
+    if (document.visibilityState === 'hidden') return;
+    multiCombos.forEach(c => {
+      indices[c.id] = (indices[c.id] + 1) % c.images.length;
+      const nextUrl = c.images[indices[c.id]];
+      const imgEl = document.getElementById(`combo-img-${c.id}`);
+      if (imgEl) {
+        imgEl.style.opacity = '0.35';
+        setTimeout(() => {
+          imgEl.src = nextUrl;
+          imgEl.style.opacity = '1';
+        }, 180);
+      }
+      const cardEl = document.getElementById(`combo-${c.id}`);
+      if (cardEl) {
+        const btns = cardEl.querySelectorAll('.combo-thumb-btn');
+        btns.forEach((btn, idx) => {
+          btn.classList.toggle('active', idx === indices[c.id]);
+        });
+      }
+    });
+  }, 3500);
+};
+
+/**
+ * Auto-Slideshow for Perfume Cards with Multiple Photos
+ */
+window.initProductCardAutoSliders = function() {
+  if (window._productCardSliderInterval) {
+    clearInterval(window._productCardSliderInterval);
+    window._productCardSliderInterval = null;
+  }
+  const catalog = window.NURAAN_CATALOG || [];
+  const multiProducts = catalog.filter(p => (p.images && p.images.length > 1) || (p.image2 && p.image2 !== p.image));
+  if (!multiProducts.length) return;
+
+  const cardIndices = {};
+  multiProducts.forEach(p => { cardIndices[p.id] = 0; });
+
+  window._productCardSliderInterval = setInterval(() => {
+    if (document.visibilityState === 'hidden') return;
+    multiProducts.forEach(p => {
+      const imgs = (p.images && p.images.length > 1) ? p.images : [p.image, p.image2];
+      cardIndices[p.id] = (cardIndices[p.id] + 1) % imgs.length;
+      const nextUrl = imgs[cardIndices[p.id]];
+      const cardEl = document.getElementById(`card-${p.id}`);
+      if (cardEl) {
+        const imgEl = cardEl.querySelector('.real-product-photo');
+        if (imgEl) {
+          imgEl.style.opacity = '0.35';
+          setTimeout(() => {
+            imgEl.src = nextUrl;
+            imgEl.style.opacity = '1';
+          }, 180);
+        }
+      }
+    });
+  }, 3800);
 };
 
 /**

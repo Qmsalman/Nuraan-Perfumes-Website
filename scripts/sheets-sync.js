@@ -622,6 +622,9 @@ const NuraanSheetsSync = {
     }
     if (typeof window.renderCombos === 'function' && window.NURAAN_COMBOS) {
       window.renderCombos(window.NURAAN_COMBOS);
+      if (typeof window.initComboAutoSliders === 'function') {
+        window.initComboAutoSliders();
+      }
     }
     if (typeof window.initOfferBanner === 'function') {
       window.initOfferBanner();
@@ -795,9 +798,9 @@ const NuraanSheetsSync = {
       updateSelectionUI();
     }
     if (typeof window.updateHeroBanner === 'function' && window.NURAAN_CONFIG) {
-      const heroUrl = window.NURAAN_CONFIG.heroBannerUrl || window.NURAAN_CONFIG.heroImageOverride;
-      if (heroUrl) {
-        window.updateHeroBanner(heroUrl);
+      const heroUrls = window.NURAAN_CONFIG.heroBannerUrls || window.NURAAN_CONFIG.heroBannerUrl || window.NURAAN_CONFIG.heroImageOverride;
+      if (heroUrls) {
+        window.updateHeroBanner(heroUrls);
       }
     }
   },
