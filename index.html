@@ -1398,6 +1398,17 @@
     </div>
   </div>
 
+  <!-- 12B. GLOBAL HIGH-RESOLUTION LIGHTBOX MODAL (FULL UNGARBLED PHOTO VIEW) -->
+  <div id="nuraan-lightbox" class="nuraan-lightbox" style="display: none;" onclick="window.closeLightbox(event)" role="dialog" aria-modal="true" aria-label="Product Image Lightbox">
+    <div class="lightbox-dialog" onclick="event.stopPropagation()">
+      <button type="button" class="lightbox-close-btn" onclick="window.closeLightbox(event)" aria-label="Close Lightbox">✕</button>
+      <div class="lightbox-media-wrap">
+        <img id="lightbox-img" class="lightbox-img" src="" alt="Full Resolution View" />
+      </div>
+      <div class="lightbox-caption" id="lightbox-caption"></div>
+    </div>
+  </div>
+
   <!-- 13. FLOATING MOBILE GLASS DOCK -->
   <div class="floating-dock-bar" id="mobile-floating-dock">
     <button type="button" class="dock-pill-btn dock-pill-cart" onclick="openSelectionDrawer()">
@@ -1416,11 +1427,11 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
   <!-- Application Scripts -->
-  <script src="scripts/config.js?v=3.4"></script>
-  <script src="scripts/catalog-data.js?v=3.4"></script>
-  <script src="scripts/social-checkout.js?v=3.4"></script>
-  <script src="scripts/app.js?v=3.4"></script>
-  <script src="scripts/3d-experience.js?v=3.4"></script>
-  <script src="scripts/sheets-sync.js?v=3.4"></script>
+  <script src="scripts/config.js?v=3.5"></script>
+  <script src="scripts/catalog-data.js?v=3.5"></script>
+  <script src="scripts/social-checkout.js?v=3.5"></script>
+  <script src="scripts/app.js?v=3.5"></script>
+  <script src="scripts/3d-experience.js?v=3.5"></script>
+  <script src="scripts/sheets-sync.js?v=3.5"></script>
 </body>
 </html>
