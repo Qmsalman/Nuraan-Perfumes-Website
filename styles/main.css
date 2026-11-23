@@ -1523,13 +1523,12 @@ img {
   display: flex;
   flex-direction: column;
   gap: 4px;
-  background: linear-gradient(135deg, rgba(197, 155, 39, 0.16) 0%, rgba(255, 250, 240, 0.95) 100%);
-  border: 1.5px solid rgba(197, 155, 39, 0.45);
-  border-left: 4px solid var(--accent-gold-dark, #8c6b23);
-  border-radius: 8px;
-  padding: 10px 14px;
+  background: rgba(197, 160, 89, 0.08);
+  border: none;
+  border-radius: 10px;
+  padding: 10px 16px;
   margin: 8px 0 14px;
-  box-shadow: 0 4px 14px rgba(197, 155, 39, 0.12);
+  box-shadow: none;
 }
 
 .modal-inspired-pill {
@@ -2095,6 +2094,8 @@ img {
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
+  border-radius: 12px;
 }
 
 .combo-real-photo {
@@ -2105,28 +2106,19 @@ img {
   object-fit: contain;
   border-radius: 12px;
   box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
-  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+  /* Default subtle crop to leave the bottom-right Gemini watermark out of frame */
+  transform: scale(1.08);
+  transform-origin: 35% 35%;
+  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.25s ease;
   cursor: zoom-in;
 }
 
 .combo-card:hover .combo-real-photo {
-  transform: scale(1.02);
+  transform: scale(1.12);
 }
 
 .combo-zoom-badge {
-  position: absolute;
-  bottom: 8px;
-  right: 8px;
-  background: rgba(20, 23, 30, 0.72);
-  backdrop-filter: blur(6px);
-  color: #FFFFFF;
-  font-size: 0.68rem;
-  padding: 3px 8px;
-  border-radius: 12px;
-  cursor: pointer;
-  opacity: 0;
-  transition: opacity 0.2s ease;
-  pointer-events: auto;
+  display: none !important;
 }
 
 .combo-main-photo-wrap:hover .combo-zoom-badge {
@@ -3437,8 +3429,8 @@ img {
   width: 100%;
   max-height: 90vh;
   overflow-y: auto;
-  border: 1.5px solid var(--border-gold);
-  box-shadow: 0 25px 60px rgba(20, 23, 30, 0.35);
+  border: none;
+  box-shadow: 0 25px 60px rgba(20, 23, 30, 0.22);
   position: relative;
   animation: modalScaleUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -3477,13 +3469,14 @@ img {
 }
 
 .modal-left-col {
-  background: radial-gradient(circle at 50% 50%, #FFFFFF 0%, #EEF1F6 100%);
-  padding: 40px 24px;
+  background: radial-gradient(circle at 50% 50%, #FFFFFF 0%, #F5F2EB 100%);
+  padding: 32px 24px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  border-right: 1px solid var(--color-border);
+  border-right: none;
+  min-height: 440px;
 }
 
 .modal-right-col {
@@ -3521,10 +3514,10 @@ img {
 }
 
 .pyramid-container {
-  background: var(--bg-page);
-  border: 1px solid var(--color-border);
-  border-radius: 12px;
-  padding: 18px;
+  background: #F9F7F2;
+  border: none;
+  border-radius: 14px;
+  padding: 18px 20px;
   margin-bottom: 24px;
 }
 
@@ -3560,9 +3553,10 @@ img {
 
 .note-tag {
   background: #FFFFFF;
-  border: 1px solid var(--color-border);
+  border: none;
+  box-shadow: 0 1px 4px rgba(20, 23, 30, 0.06);
   border-radius: 12px;
-  padding: 3px 10px;
+  padding: 4px 11px;
   font-size: 0.76rem;
   color: var(--color-text-main);
   font-weight: 500;
@@ -3601,7 +3595,8 @@ img {
   background: rgba(255, 255, 255, 0.98);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
-  border-top: 1.5px solid rgba(212, 175, 55, 0.28);
+  border-top: none;
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.04);
   padding: 16px 0 6px;
   margin-top: auto;
   z-index: 20;
@@ -7091,42 +7086,67 @@ img {
   font-weight: 600;
 }
 
-/* Modal Dual Photo Switcher */
+/* Modal Dual Photo Switcher & Heroic Stage */
+.modal-bottle-stage {
+  width: 100%;
+  height: 100%;
+  min-height: 420px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
 .modal-gallery-container {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   width: 100%;
+  height: 100%;
 }
 .modal-active-img-wrap {
   width: 100%;
-  max-height: 360px;
+  height: 100%;
+  min-height: 400px;
+  max-height: 460px;
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
+  border-radius: 16px;
+  position: relative;
 }
 .modal-product-img {
-  max-width: 100%;
-  max-height: 340px;
+  max-width: 95%;
+  max-height: 440px;
+  width: auto;
+  height: auto;
   object-fit: contain;
-  filter: drop-shadow(0 12px 28px rgba(0, 0, 0, 0.2));
-  transition: opacity 0.2s ease;
+  /* Default zoomed-in, impactful presentation; crops bottom-right Gemini watermark out of frame */
+  transform: scale(1.14);
+  transform-origin: 36% 36%;
+  filter: drop-shadow(0 16px 36px rgba(0, 0, 0, 0.22));
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease;
+  cursor: zoom-in;
+}
+.modal-product-img:hover {
+  transform: scale(1.18);
 }
 .modal-thumbs-row {
   display: flex;
   gap: 10px;
-  margin-top: 14px;
+  margin-top: 16px;
   justify-content: center;
 }
 .modal-thumb-btn {
-  width: 52px;
-  height: 52px;
+  width: 48px;
+  height: 48px;
   border-radius: 8px;
-  border: 1.5px solid var(--border-gold, #C5A059);
+  border: 1px solid rgba(197, 160, 89, 0.3);
   padding: 2px;
   background: #FFFFFF;
   cursor: pointer;
-  opacity: 0.65;
+  opacity: 0.7;
   transition: all 0.2s ease;
   overflow: hidden;
 }
@@ -7507,6 +7527,10 @@ img {
   min-height: 440px;
   object-fit: cover;
   display: block;
+  /* Scale slightly to leave bottom-right Gemini watermark out of frame */
+  transform: scale(1.06);
+  transform-origin: 40% 40%;
+  transition: transform 0.5s ease, opacity 0.4s ease;
 }
 
 .hero-slider-nav {
@@ -7676,17 +7700,65 @@ img {
   transform: scale(1.1);
 }
 
-.modal-zoom-hint {
-  text-align: center;
-  margin-top: 8px;
-  font-size: 0.72rem;
-  color: var(--accent-gold);
-  cursor: pointer;
-  letter-spacing: 0.03em;
-  transition: opacity 0.2s ease;
+.modal-zoom-hint,
+.combo-zoom-badge {
+  display: none !important;
 }
 
-.modal-zoom-hint:hover {
-  opacity: 0.8;
-  text-decoration: underline;
+/* ==========================================================================
+   GLOBAL WATERMARK REMOVAL & LUXURY SOFT-BORDER POLISH
+   ========================================================================== */
+.card-visual-wrapper,
+.bottle-visual-container,
+.bottle-3d-stage,
+.modal-active-img-wrap,
+.modal-bottle-stage,
+.combo-main-photo-wrap,
+.combo-photo-container,
+.hero-slide {
+  overflow: hidden !important;
+}
+
+.real-product-photo {
+  transform: scale(1.08) !important;
+  transform-origin: 35% 35% !important;
+  transition: transform 0.35s ease, opacity 0.25s ease !important;
+}
+
+/* Eliminate AI-style hard borders across cards, boxes, and modal pills */
+.perfume-card,
+.combo-card,
+.hero-visual-card,
+.modal-window,
+.pyramid-container,
+.card-notes-pyramid {
+  border: none !important;
+}
+
+.card-notes-pyramid,
+.pyramid-container {
+  background: #F8F6F2 !important;
+}
+
+.modal-inspired-banner {
+  border: none !important;
+  border-left: none !important;
+  box-shadow: none !important;
+  background: rgba(197, 160, 89, 0.08) !important;
+}
+
+.note-tag {
+  border: none !important;
+  background: #FFFFFF !important;
+  box-shadow: 0 1px 4px rgba(20, 23, 30, 0.06) !important;
+}
+
+.modal-left-col {
+  border-right: none !important;
+  border-bottom: none !important;
+}
+
+.modal-sticky-footer {
+  border-top: none !important;
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.03) !important;
 }
