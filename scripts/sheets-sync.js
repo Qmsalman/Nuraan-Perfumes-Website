@@ -240,7 +240,10 @@ const NuraanSheetsSync = {
           product.fragranticaUrl = row[colFragrantica].trim();
         }
         if (colImage2 !== -1 && row[colImage2]) {
-          product.image2 = NuraanSheetsSync.convertGoogleDriveUrl(row[colImage2].trim());
+          const img2 = NuraanSheetsSync.convertGoogleDriveUrl(row[colImage2].trim());
+          if (img2 && img2 !== product.image) {
+            product.image2 = img2;
+          }
         }
         if (colDesc !== -1 && row[colDesc]) {
           let rawDesc = row[colDesc].trim();
@@ -377,26 +380,61 @@ const NuraanSheetsSync = {
         }
         case 'combo_french_photo': {
           const c = combos.find(x => x.id === 'combo-french');
-          if (c && val) c.image = NuraanSheetsSync.convertGoogleDriveUrl(val);
+          if (c && val) {
+            const urls = NuraanSheetsSync.parseMultiMediaUrls(val);
+            if (urls.length > 0) {
+              c.image = urls[0];
+              c.images = urls;
+              if (urls.length > 1) c.image2 = urls[1];
+              else delete c.image2;
+            }
+          }
           break;
         }
         case 'combo_arabic_photo': {
           const c = combos.find(x => x.id === 'combo-arabic');
-          if (c && val) c.image = NuraanSheetsSync.convertGoogleDriveUrl(val);
+          if (c && val) {
+            const urls = NuraanSheetsSync.parseMultiMediaUrls(val);
+            if (urls.length > 0) {
+              c.image = urls[0];
+              c.images = urls;
+              if (urls.length > 1) c.image2 = urls[1];
+              else delete c.image2;
+            }
+          }
           break;
         }
         case 'combo_women_photo': {
           const c = combos.find(x => x.id === 'combo-women');
-          if (c && val) c.image = NuraanSheetsSync.convertGoogleDriveUrl(val);
+          if (c && val) {
+            const urls = NuraanSheetsSync.parseMultiMediaUrls(val);
+            if (urls.length > 0) {
+              c.image = urls[0];
+              c.images = urls;
+              if (urls.length > 1) c.image2 = urls[1];
+              else delete c.image2;
+            }
+          }
           break;
         }
         case 'combo_oud_photo': {
           const c = combos.find(x => x.id === 'combo-oud');
-          if (c && val) c.image = NuraanSheetsSync.convertGoogleDriveUrl(val);
+          if (c && val) {
+            const urls = NuraanSheetsSync.parseMultiMediaUrls(val);
+            if (urls.length > 0) {
+              c.image = urls[0];
+              c.images = urls;
+              if (urls.length > 1) c.image2 = urls[1];
+              else delete c.image2;
+            }
+          }
           break;
         }
         case 'presentation_box_photo': {
-          if (val) config.presentationBoxPhoto = NuraanSheetsSync.convertGoogleDriveUrl(val);
+          if (val) {
+            const urls = NuraanSheetsSync.parseMultiMediaUrls(val);
+            if (urls.length > 0) config.presentationBoxPhoto = urls[0];
+          }
           break;
         }
         case 'hero_image_override':
@@ -404,11 +442,14 @@ const NuraanSheetsSync = {
         case 'hero_banner_url':
         case 'hero_image': {
           if (val) {
-            const converted = NuraanSheetsSync.convertGoogleDriveUrl(val);
-            config.heroBannerUrl = converted;
-            config.heroImageOverride = converted;
-            if (window.updateHeroBanner) {
-              window.updateHeroBanner(converted);
+            const urls = NuraanSheetsSync.parseMultiMediaUrls(val, '=w1400-h1400-rw');
+            if (urls.length > 0) {
+              config.heroBannerUrls = urls;
+              config.heroBannerUrl = urls[0];
+              config.heroImageOverride = urls[0];
+              if (window.updateHeroBanner) {
+                window.updateHeroBanner(urls);
+              }
             }
           }
           break;
@@ -539,18 +580,29 @@ const NuraanSheetsSync = {
         const catalog = window.NURAAN_CATALOG || [];
         const prod = catalog.find(p => p.id === normId || p.id.replace(/-/g, '_') === rawId);
         if (prod && val) {
+          const urls = NuraanSheetsSync.parseMultiMediaUrls(val);
           if (isImage2) {
-            prod.image2 = NuraanSheetsSync.convertGoogleDriveUrl(val);
-            console.log(`[Nuraan Sheets Sync] ✓ Mapped Image 2 for ${prod.name}: ${prod.image2}`);
-          } else {
-            prod.image = NuraanSheetsSync.convertGoogleDriveUrl(val);
-            // Check adjacent cell (Column E index 4) for Image 2
-            const valNext = (row[4] || '').trim();
-            if (valNext && (valNext.startsWith('http://') || valNext.startsWith('https://') || valNext.startsWith('//') || valNext.includes('drive.google.com'))) {
-              prod.image2 = NuraanSheetsSync.convertGoogleDriveUrl(valNext);
-              console.log(`[Nuraan Sheets Sync] ✓ Mapped Image 2 (adjacent cell) for ${prod.name}: ${prod.image2}`);
+            if (urls.length > 0 && urls[0] !== prod.image) {
+              prod.image2 = urls[0];
+              if (!prod.images) prod.images = [prod.image];
+              if (!prod.images.includes(urls[0])) prod.images.push(urls[0]);
+              console.log(`[Nuraan Sheets Sync] ✓ Mapped Image 2 for ${prod.name}: ${prod.image2}`);
             }
-            console.log(`[Nuraan Sheets Sync] ✓ Mapped Google Drive photo for ${prod.name}: ${prod.image}`);
+          } else {
+            if (urls.length > 1) {
+              prod.image = urls[0];
+              prod.image2 = urls[1];
+              prod.images = urls;
+              console.log(`[Nuraan Sheets Sync] ✓ Mapped multiple photos for ${prod.name}: [${urls.length} images]`);
+            } else if (urls.length === 1) {
+              prod.image = urls[0];
+              prod.images = [urls[0]];
+              // If image2 matches image, delete duplicate
+              if (prod.image2 === prod.image) {
+                delete prod.image2;
+              }
+              console.log(`[Nuraan Sheets Sync] ✓ Mapped single photo for ${prod.name}: ${prod.image}`);
+            }
           }
         }
       }
@@ -580,21 +632,52 @@ const NuraanSheetsSync = {
   },
 
   /**
+   * Split and convert raw string containing one or multiple URLs (comma, newline, or space separated)
+   */
+  parseMultiMediaUrls: function(rawText, customTransform) {
+    if (!rawText || typeof rawText !== 'string') return [];
+    const parts = rawText.split(/[\r\n,;]+/);
+    const results = [];
+    for (let part of parts) {
+      let trimmed = part.trim();
+      trimmed = trimmed.replace(/^["'\[]+|["'\]]+$/g, '').trim();
+      if (!trimmed) continue;
+      // Skip instruction placeholder text
+      const lower = trimmed.toLowerCase();
+      if (lower.startsWith('paste ') || lower.startsWith('image url') || lower.startsWith('http://...') || lower.startsWith('https://...')) {
+        continue;
+      }
+      if (trimmed.includes('drive.google.com') || trimmed.includes('docs.google.com') || trimmed.startsWith('http://') || trimmed.startsWith('https://') || trimmed.startsWith('//') || trimmed.startsWith('assets/')) {
+        const converted = NuraanSheetsSync.convertGoogleDriveUrl(trimmed, customTransform);
+        if (converted && !results.includes(converted)) {
+          results.push(converted);
+        }
+      }
+    }
+    return results;
+  },
+
+  /**
    * Convert any Google Drive sharing or viewer link into a direct high-speed image CDN URL
-   * Automatically applies Google's edge CDN WebP compression (=w600-h600-c-rw) to shrink multi-MB uploads to ~40KB
+   * Automatically applies Google's edge CDN WebP compression (=w800-h800-rw) to shrink multi-MB uploads
    * Supports:
    * - https://drive.google.com/file/d/{FILE_ID}/view?usp=sharing
    * - https://drive.google.com/open?id={FILE_ID}
    * - https://drive.google.com/uc?id={FILE_ID}
    * - Direct image URLs pass through untouched
    */
-  convertGoogleDriveUrl: function(url) {
+  convertGoogleDriveUrl: function(url, customTransform) {
     if (!url || typeof url !== 'string') return url;
     const trimmed = url.trim();
     if (!trimmed) return trimmed;
 
-    // Google CDN sizing & WebP optimization parameter
-    const cdnTransform = '=w600-h600-c-rw';
+    // Preserve animated GIF playback by avoiding static WebP transcode (-rw) when a GIF is detected
+    const isGif = trimmed.toLowerCase().includes('.gif') || trimmed.toLowerCase().includes('format=gif');
+    const defaultTransform = isGif ? '=w800-h800' : '=w800-h800-rw';
+    let cdnTransform = customTransform || defaultTransform;
+    if (isGif && cdnTransform.includes('-rw')) {
+      cdnTransform = cdnTransform.replace(/-rw/g, '');
+    }
 
     if (trimmed.includes('drive.google.com') || trimmed.includes('docs.google.com')) {
       // Pattern 1: /file/d/{FILE_ID}/

@@ -43,37 +43,158 @@ function initApp() {
 }
 
 /**
- * Update Hero Banner (Custom Image or Built-in Luxury Artwork)
+ * Update Hero Banner (Custom Image Slideshow, Video, or Built-in Luxury Artwork)
  */
-window.updateHeroBanner = function(url) {
-  const img = document.getElementById("hero-banner-img");
+window.updateHeroBanner = function(urlInput) {
+  const visualBox = document.getElementById("hero-visual-box");
   const defaultArt = document.getElementById("hero-art-default");
-  if (!img) return;
+  if (!visualBox) return;
 
-  if (url && typeof url === 'string' && url.trim().length > 5) {
-    let cleanUrl = url.trim();
-    // Convert Google Drive links if needed with WebP CDN transform
-    if (cleanUrl.includes('drive.google.com') || cleanUrl.includes('docs.google.com')) {
-      const fileIdMatch = cleanUrl.match(/\/d\/([a-zA-Z0-9_-]+)/) || cleanUrl.match(/[?&]id=([a-zA-Z0-9_-]+)/);
-      if (fileIdMatch && fileIdMatch[1]) {
-        cleanUrl = `https://lh3.googleusercontent.com/d/${fileIdMatch[1]}=w1200-h800-rw`;
+  if (window._heroSliderInterval) {
+    clearInterval(window._heroSliderInterval);
+    window._heroSliderInterval = null;
+  }
+
+  let urls = [];
+  if (Array.isArray(urlInput)) {
+    urls = urlInput.filter(Boolean);
+  } else if (typeof urlInput === 'string' && urlInput.trim()) {
+    if (window.NuraanSheetsSync && window.NuraanSheetsSync.parseMultiMediaUrls) {
+      urls = window.NuraanSheetsSync.parseMultiMediaUrls(urlInput, '=w1400-h1400-rw');
+    } else {
+      urls = [urlInput.trim()];
+    }
+  }
+
+  if (urls.length === 0) {
+    const existingSlider = document.getElementById("hero-slider-container");
+    if (existingSlider) existingSlider.remove();
+    const singleImg = document.getElementById("hero-banner-img");
+    if (singleImg) singleImg.style.display = "none";
+    const videoEl = document.getElementById("hero-banner-video");
+    if (videoEl) videoEl.style.display = "none";
+    if (defaultArt) defaultArt.style.display = "flex";
+    return;
+  }
+
+  if (defaultArt) defaultArt.style.display = "none";
+
+  const isVideoUrl = (u) => /\.(mp4|webm|mov)(\?|$)/i.test(u);
+
+  // Single media item
+  if (urls.length === 1) {
+    const singleUrl = urls[0];
+    const existingSlider = document.getElementById("hero-slider-container");
+    if (existingSlider) existingSlider.remove();
+
+    if (isVideoUrl(singleUrl)) {
+      let videoEl = document.getElementById("hero-banner-video");
+      if (!videoEl) {
+        videoEl = document.createElement("video");
+        videoEl.id = "hero-banner-video";
+        videoEl.className = "hero-custom-banner hero-media-element";
+        videoEl.autoplay = true;
+        videoEl.loop = true;
+        videoEl.muted = true;
+        videoEl.playsInline = true;
+        visualBox.appendChild(videoEl);
+      }
+      videoEl.src = singleUrl;
+      videoEl.style.display = "block";
+      const singleImg = document.getElementById("hero-banner-img");
+      if (singleImg) singleImg.style.display = "none";
+    } else {
+      let videoEl = document.getElementById("hero-banner-video");
+      if (videoEl) videoEl.style.display = "none";
+      const singleImg = document.getElementById("hero-banner-img");
+      if (singleImg) {
+        singleImg.src = singleUrl;
+        singleImg.style.display = "block";
+        singleImg.style.cursor = "zoom-in";
+        singleImg.title = "Click to view full image";
+        singleImg.onclick = () => window.openLightbox(singleUrl, "Nuraan Perfumes Luxury Collection");
       }
     }
-    img.src = cleanUrl;
-    img.decoding = "async";
-    img.style.display = "block";
-    if (defaultArt) defaultArt.style.display = "none";
-  } else {
-    img.style.display = "none";
-    if (defaultArt) defaultArt.style.display = "flex";
+    return;
   }
+
+  // Multiple media items (Slideshow)
+  const singleImg = document.getElementById("hero-banner-img");
+  if (singleImg) singleImg.style.display = "none";
+  let videoEl = document.getElementById("hero-banner-video");
+  if (videoEl) videoEl.style.display = "none";
+
+  let sliderContainer = document.getElementById("hero-slider-container");
+  if (!sliderContainer) {
+    sliderContainer = document.createElement("div");
+    sliderContainer.id = "hero-slider-container";
+    sliderContainer.className = "hero-slider-container";
+    visualBox.appendChild(sliderContainer);
+  }
+
+  sliderContainer.innerHTML = `
+    <div class="hero-slides-wrapper">
+      ${urls.map((u, i) => {
+        if (isVideoUrl(u)) {
+          return `
+            <div class="hero-slide ${i === 0 ? 'active' : ''}" data-index="${i}">
+              <video class="hero-media-element" autoplay loop muted playsinline src="${u}"></video>
+            </div>
+          `;
+        }
+        return `
+          <div class="hero-slide ${i === 0 ? 'active' : ''}" data-index="${i}" onclick="window.openLightbox('${u}', 'Nuraan Perfumes Luxury Showcase (${i + 1}/${urls.length})')" style="cursor: zoom-in;" title="Click to view full image">
+            <img class="hero-media-element" src="${u}" alt="Nuraan Perfumes Slide ${i + 1}" loading="${i === 0 ? 'eager' : 'lazy'}" />
+          </div>
+        `;
+      }).join('')}
+    </div>
+    <div class="hero-slider-nav">
+      ${urls.map((_, i) => `
+        <button type="button" class="hero-dot ${i === 0 ? 'active' : ''}" data-index="${i}" onclick="window.goToHeroSlide(${i})" aria-label="Go to slide ${i + 1}"></button>
+      `).join('')}
+    </div>
+    <button type="button" class="hero-arrow hero-arrow-prev" onclick="window.prevHeroSlide()" aria-label="Previous slide">‹</button>
+    <button type="button" class="hero-arrow hero-arrow-next" onclick="window.nextHeroSlide()" aria-label="Next slide">›</button>
+  `;
+
+  let currentIndex = 0;
+  window.goToHeroSlide = function(idx) {
+    const slides = sliderContainer.querySelectorAll(".hero-slide");
+    const dots = sliderContainer.querySelectorAll(".hero-dot");
+    if (!slides.length) return;
+    currentIndex = (idx + slides.length) % slides.length;
+    slides.forEach((s, i) => {
+      s.classList.toggle("active", i === currentIndex);
+    });
+    dots.forEach((d, i) => {
+      d.classList.toggle("active", i === currentIndex);
+    });
+  };
+
+  window.nextHeroSlide = function() {
+    window.goToHeroSlide(currentIndex + 1);
+  };
+  window.prevHeroSlide = function() {
+    window.goToHeroSlide(currentIndex - 1);
+  };
+
+  let isHovered = false;
+  sliderContainer.onmouseenter = () => { isHovered = true; };
+  sliderContainer.onmouseleave = () => { isHovered = false; };
+
+  window._heroSliderInterval = setInterval(() => {
+    if (!isHovered && document.visibilityState !== 'hidden') {
+      window.nextHeroSlide();
+    }
+  }, 5000);
 };
 
 function initHeroBanner() {
   const config = window.NURAAN_CONFIG || {};
-  const bannerUrl = config.heroBannerUrl || config.heroImageOverride;
-  if (bannerUrl) {
-    window.updateHeroBanner(bannerUrl);
+  const bannerUrls = config.heroBannerUrls || config.heroBannerUrl || config.heroImageOverride;
+  if (bannerUrls) {
+    window.updateHeroBanner(bannerUrls);
   }
 }
 
@@ -836,7 +957,9 @@ function renderProceduralBottle(product) {
             src="${product.image}" 
             alt="${name} by Nuraan Perfumes" 
             class="real-product-photo"
-            style="max-height: 220px; width: auto; object-fit: contain; border-radius: 6px; ${hasRealImage ? 'display: block;' : 'display: none;'}"
+            style="max-height: 220px; width: auto; object-fit: contain; border-radius: 6px; cursor: zoom-in; ${hasRealImage ? 'display: block;' : 'display: none;'}"
+            onclick="event.stopPropagation(); window.openLightbox(this.src, '${name}')"
+            title="Click to view full image"
             onload="const s = this.parentElement.querySelector('.svg-bottle-wrapper'); if(s) s.style.display='none'; this.style.display='block';"
             onerror="this.style.display='none'; const s = this.parentElement.querySelector('.svg-bottle-wrapper'); if(s) s.style.display='flex';"
             loading="lazy"
@@ -1004,14 +1127,30 @@ function renderCombos(combos) {
           <div class="combo-visual">
             ${hasRealComboImage ? `
               <div class="combo-photo-container">
-                <img 
-                  src="${combo.image}" 
-                  alt="${combo.name} by Nuraan Perfumes" 
-                  class="combo-real-photo"
-                  onerror="this.style.display='none'; const b = this.parentElement.querySelector('.combo-interactive-box'); if(b) b.style.display='block';"
-                  loading="lazy"
-                  decoding="async"
-                />
+                <div class="combo-main-photo-wrap">
+                  <img 
+                    src="${combo.image}" 
+                    alt="${combo.name} by Nuraan Perfumes" 
+                    class="combo-real-photo"
+                    id="combo-img-${combo.id}"
+                    onclick="window.openLightbox(this.src, '${combo.name}')"
+                    style="cursor: zoom-in;"
+                    title="Click to view full photo"
+                    onerror="this.style.display='none'; const b = this.parentElement.parentElement.querySelector('.combo-interactive-box'); if(b) b.style.display='block';"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <div class="combo-zoom-badge" onclick="window.openLightbox(document.getElementById('combo-img-${combo.id}').src, '${combo.name}')">🔍 Expand Photo</div>
+                </div>
+                ${(combo.images && combo.images.length > 1) ? `
+                  <div class="combo-thumbs-row">
+                    ${combo.images.map((imgUrl, idx) => `
+                      <button type="button" class="combo-thumb-btn ${idx === 0 ? 'active' : ''}" onclick="window.switchComboImage('${combo.id}', '${imgUrl}', this)" aria-label="View angle ${idx + 1}">
+                        <img src="${imgUrl}" alt="${combo.name} angle ${idx + 1}" />
+                      </button>
+                    `).join('')}
+                  </div>
+                ` : ''}
                 <div class="combo-interactive-box is-open" id="combo-box-${combo.id}" style="display: none;" onclick="window.toggleComboUnbox('${combo.id}')" title="Tap to toggle magnetic unboxing">
                   <!-- 3D Box Lid (Lifts and tilts in 3D perspective) -->
                   <div class="combo-box-lid" id="combo-lid-${combo.id}">
@@ -2084,20 +2223,34 @@ window.openNotesModal = function(productId) {
 
   const bottleContainer = document.getElementById("modal-bottle-container");
   if (bottleContainer) {
-    if (product.image2) {
+    const hasMultipleImages = Boolean(product.image2 && product.image && product.image2 !== product.image);
+    if (product.image) {
       bottleContainer.innerHTML = `
         <div class="modal-gallery-container">
           <div class="modal-active-img-wrap">
-            <img src="${product.image}" alt="${product.name}" class="modal-product-img" id="modal-active-display-img" />
+            <img 
+              src="${product.image}" 
+              alt="${product.name}" 
+              class="modal-product-img" 
+              id="modal-active-display-img" 
+              onclick="window.openLightbox(this.src, '${product.name}')" 
+              style="cursor: zoom-in;" 
+              title="Click to view full image" 
+            />
+            <div class="modal-zoom-hint" onclick="window.openLightbox(document.getElementById('modal-active-display-img').src, '${product.name}')">
+              <span>🔍 Click to expand full image</span>
+            </div>
           </div>
-          <div class="modal-thumbs-row">
-            <button type="button" class="modal-thumb-btn active" onclick="window.switchModalImage('${product.image}', this)">
-              <img src="${product.image}" alt="View 1" />
-            </button>
-            <button type="button" class="modal-thumb-btn" onclick="window.switchModalImage('${product.image2}', this)">
-              <img src="${product.image2}" alt="View 2" />
-            </button>
-          </div>
+          ${hasMultipleImages ? `
+            <div class="modal-thumbs-row">
+              <button type="button" class="modal-thumb-btn active" onclick="window.switchModalImage('${product.image}', this)" aria-label="View 1">
+                <img src="${product.image}" alt="View 1" />
+              </button>
+              <button type="button" class="modal-thumb-btn" onclick="window.switchModalImage('${product.image2}', this)" aria-label="View 2">
+                <img src="${product.image2}" alt="View 2" />
+              </button>
+            </div>
+          ` : ''}
         </div>
       `;
     } else {
@@ -3239,6 +3392,54 @@ window.switchModalImage = function(src, btn) {
     btn.classList.add('active');
   }
 };
+
+window.switchComboImage = function(comboId, src, btn) {
+  const activeImg = document.getElementById(`combo-img-${comboId}`);
+  if (activeImg) activeImg.src = src;
+  const parent = btn ? btn.parentElement : null;
+  if (parent) {
+    parent.querySelectorAll('.combo-thumb-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  }
+};
+
+/**
+ * Global High-Resolution Lightbox (Full uncropped photo view)
+ */
+window.openLightbox = function(imgSrc, caption) {
+  if (!imgSrc) return;
+  const lightbox = document.getElementById("nuraan-lightbox");
+  const lightboxImg = document.getElementById("lightbox-img");
+  const captionEl = document.getElementById("lightbox-caption");
+  if (!lightbox || !lightboxImg) return;
+
+  lightboxImg.src = imgSrc;
+  lightboxImg.alt = caption || "Nuraan Perfumes";
+  if (captionEl) {
+    captionEl.textContent = caption || "";
+  }
+  lightbox.style.display = "flex";
+  document.body.style.overflow = "hidden";
+};
+
+window.closeLightbox = function(event) {
+  if (event && event.stopPropagation) {
+    event.stopPropagation();
+  }
+  const lightbox = document.getElementById("nuraan-lightbox");
+  if (!lightbox) return;
+  lightbox.style.display = "none";
+  document.body.style.overflow = "";
+};
+
+window.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    const lightbox = document.getElementById("nuraan-lightbox");
+    if (lightbox && lightbox.style.display !== 'none') {
+      window.closeLightbox();
+    }
+  }
+});
 
 /**
  * Dynamic Offer Banner Initializer (Controlled via Google Sheets Control Panel)
