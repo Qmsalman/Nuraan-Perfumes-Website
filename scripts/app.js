@@ -182,14 +182,14 @@ window.updateHeroBanner = function(urlInput) {
   };
 
   let pauseUntil = 0;
-  sliderContainer.onmouseenter = () => { pauseUntil = Date.now() + 3000; };
-  sliderContainer.ontouchstart = () => { pauseUntil = Date.now() + 3000; };
+  sliderContainer.onmouseenter = () => { pauseUntil = Date.now() + 2000; };
+  sliderContainer.ontouchstart = () => { pauseUntil = Date.now() + 2000; };
 
   window._heroSliderInterval = setInterval(() => {
     if (Date.now() > pauseUntil && document.visibilityState !== 'hidden') {
       window.nextHeroSlide();
     }
-  }, 3500);
+  }, 3000);
 };
 
 function initHeroBanner() {

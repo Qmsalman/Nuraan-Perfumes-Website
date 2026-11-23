@@ -52,24 +52,20 @@ Thank you!`;
    */
   openInstagramDM: function(igHandle, summaryText, successMessage) {
     const handle = (igHandle || "nuraan_perfumes").replace(/^@/, '').trim();
-    const dmUrl = `https://www.instagram.com/direct/t/${handle}/`;
+    // Use Meta's official universal direct link for Instagram DM (ig.me/m/{username})
+    // On mobile: automatically opens the Instagram app directly into the Direct Message composer
+    // On desktop: opens the Direct Message chat thread with this user
+    const dmUrl = `https://ig.me/m/${handle}`;
     
     // Copy pre-formatted order summary to clipboard so user can simply paste into Instagram DM
     SocialCheckout.copyToClipboard(summaryText, function() {
-      SocialCheckout.showToast(successMessage || `✓ Copied inquiry to clipboard! Opening Instagram to message @${handle}...`, "success");
+      SocialCheckout.showToast(successMessage || `✓ Copied inquiry to clipboard! Opening Instagram DM with @${handle}... (Paste into chat)`, "success");
     });
 
-    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent || '');
     if (isMobile) {
-      // On mobile phones, open native Instagram app directly with fallback
-      const appUrl = `instagram://user?username=${handle}`;
-      const start = Date.now();
-      window.location.href = appUrl;
-      setTimeout(() => {
-        if (Date.now() - start < 1500) {
-          window.location.href = dmUrl;
-        }
-      }, 600);
+      // Direct mobile device to Instagram DM via official Universal Link
+      window.location.href = dmUrl;
     } else {
       // On desktop, open direct message thread in a new tab
       try {
