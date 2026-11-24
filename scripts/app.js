@@ -978,24 +978,40 @@ function renderProceduralBottle(product) {
   const accent = product.bottleColor || "#C59B27";
   const name = product.name;
 
-  const hasRealImage = Boolean(product.image && (product.image.startsWith('http://') || product.image.startsWith('https://') || product.image.startsWith('//') || product.image.startsWith('data:')));
+  const hasRealImage = Boolean(product.image && (product.image.startsWith('http://') || product.image.startsWith('https://') || product.image.startsWith('//') || product.image.startsWith('data:') || product.image.startsWith('Pics/')));
+  const secondaryImage = (product.images && product.images.length > 1) ? product.images[1] : (product.image2 || '');
+  const hasSecondary = Boolean(secondaryImage && (secondaryImage.startsWith('http://') || secondaryImage.startsWith('https://') || secondaryImage.startsWith('//') || secondaryImage.startsWith('data:') || secondaryImage.startsWith('Pics/')));
 
   return `
     <div class="procedural-bottle bottle-3d-stage" data-product-id="${product.id}" title="${name} by Nuraan Perfumes">
       <div class="bottle-3d-chassis">
         ${product.image ? `
-          <img 
-            src="${product.image}" 
-            alt="${name} by Nuraan Perfumes" 
-            class="real-product-photo"
-            style="max-height: 220px; width: auto; object-fit: contain; border-radius: 6px; cursor: zoom-in; ${hasRealImage ? 'display: block;' : 'display: none;'}"
-            onclick="event.stopPropagation(); window.openLightbox(this.src, '${name}')"
-            title="Click to view full image"
-            onload="const s = this.parentElement.querySelector('.svg-bottle-wrapper'); if(s) s.style.display='none'; this.style.display='block';"
-            onerror="this.style.display='none'; const s = this.parentElement.querySelector('.svg-bottle-wrapper'); if(s) s.style.display='flex';"
-            loading="lazy"
-            decoding="async"
-          />
+          <div class="product-photo-stack" id="photo-stack-${product.id}">
+            <img 
+              src="${product.image}" 
+              alt="${name} by Nuraan Perfumes" 
+              class="real-product-photo photo-primary"
+              style="max-height: 220px; width: auto; object-fit: contain; border-radius: 6px; cursor: zoom-in; ${hasRealImage ? 'display: block;' : 'display: none;'}"
+              onclick="event.stopPropagation(); window.openLightbox(this.src, '${name}')"
+              title="Click to view full image"
+              onload="const s = this.closest('.bottle-3d-chassis').querySelector('.svg-bottle-wrapper'); if(s) s.style.display='none'; this.style.display='block';"
+              onerror="this.style.display='none'; const s = this.closest('.bottle-3d-chassis').querySelector('.svg-bottle-wrapper'); if(s) s.style.display='flex';"
+              loading="lazy"
+              decoding="async"
+            />
+            ${hasSecondary ? `
+              <img 
+                src="${secondaryImage}" 
+                alt="${name} Motion by Nuraan Perfumes" 
+                class="real-product-photo photo-secondary"
+                style="max-height: 220px; width: auto; object-fit: contain; border-radius: 6px; cursor: zoom-in;"
+                onclick="event.stopPropagation(); window.openLightbox(this.src, '${name}')"
+                title="Click to view full image"
+                loading="lazy"
+                decoding="async"
+              />
+            ` : ''}
+          </div>
         ` : ''}
 
         <div class="svg-bottle-wrapper" style="width: 100%; height: 100%; display: ${hasRealImage ? 'none' : 'flex'}; align-items: center; justify-content: center;">
@@ -1145,7 +1161,9 @@ function renderCombos(combos) {
       .map(item => `<li><span class="bullet">✦</span> <strong>${item}</strong></li>`)
       .join("");
 
-    const hasRealComboImage = Boolean(combo.image && (combo.image.startsWith('http://') || combo.image.startsWith('https://') || combo.image.startsWith('//') || combo.image.startsWith('data:')));
+    const hasRealComboImage = Boolean(combo.image && (combo.image.startsWith('http://') || combo.image.startsWith('https://') || combo.image.startsWith('//') || combo.image.startsWith('data:') || combo.image.startsWith('Pics/')));
+    const secondaryComboImg = (combo.images && combo.images.length > 1) ? combo.images[1] : (combo.image2 || '');
+    const hasSecondaryCombo = Boolean(secondaryComboImg && (secondaryComboImg.startsWith('http://') || secondaryComboImg.startsWith('https://') || secondaryComboImg.startsWith('//') || secondaryComboImg.startsWith('data:') || secondaryComboImg.startsWith('Pics/')));
 
     return `
       <div class="combo-card" id="combo-${combo.id}">
@@ -1158,11 +1176,11 @@ function renderCombos(combos) {
           <div class="combo-visual">
             ${hasRealComboImage ? `
               <div class="combo-photo-container">
-                <div class="combo-main-photo-wrap">
+                <div class="combo-main-photo-wrap" id="combo-photo-wrap-${combo.id}">
                   <img 
                     src="${combo.image}" 
                     alt="${combo.name} by Nuraan Perfumes" 
-                    class="combo-real-photo"
+                    class="combo-real-photo combo-photo-primary"
                     id="combo-img-${combo.id}"
                     onclick="window.openLightbox(this.src, '${combo.name}')"
                     style="cursor: zoom-in;"
@@ -1171,6 +1189,19 @@ function renderCombos(combos) {
                     loading="lazy"
                     decoding="async"
                   />
+                  ${hasSecondaryCombo ? `
+                    <img 
+                      src="${secondaryComboImg}" 
+                      alt="${combo.name} Motion by Nuraan Perfumes" 
+                      class="combo-real-photo combo-photo-secondary"
+                      id="combo-img-sec-${combo.id}"
+                      onclick="window.openLightbox(this.src, '${combo.name}')"
+                      style="cursor: zoom-in;"
+                      title="Click to view full photo"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  ` : ''}
                 </div>
                 ${(combo.images && combo.images.length > 1) ? `
                   <div class="combo-thumbs-row">
@@ -3578,7 +3609,19 @@ window.showToast = function(msg, type = "success") {
 
 window.switchModalImage = function(src, btn) {
   const activeImg = document.getElementById("modal-active-display-img");
-  if (activeImg) activeImg.src = src;
+  if (activeImg) {
+    activeImg.style.opacity = '0.35';
+    const preloader = new Image();
+    preloader.onload = () => {
+      activeImg.src = src;
+      activeImg.style.opacity = '1';
+    };
+    preloader.onerror = () => {
+      activeImg.src = src;
+      activeImg.style.opacity = '1';
+    };
+    preloader.src = src;
+  }
   const parent = btn ? btn.parentElement : null;
   if (parent) {
     parent.querySelectorAll('.modal-thumb-btn').forEach(b => b.classList.remove('active'));
@@ -3587,9 +3630,24 @@ window.switchModalImage = function(src, btn) {
 };
 
 window.switchComboImage = function(comboId, src, btn) {
-  const activeImg = document.getElementById(`combo-img-${comboId}`);
-  if (activeImg) activeImg.src = src;
+  const cardEl = document.getElementById(`combo-${comboId}`);
   const parent = btn ? btn.parentElement : null;
+  const isFirstThumb = parent && parent.firstElementChild === btn;
+  const secImg = document.getElementById(`combo-img-sec-${comboId}`);
+
+  if (cardEl) {
+    if (secImg && isFirstThumb) {
+      cardEl.classList.remove('show-secondary');
+    } else if (secImg && (src === secImg.src || !isFirstThumb)) {
+      cardEl.classList.add('show-secondary');
+    }
+  }
+
+  const activeImg = document.getElementById(`combo-img-${comboId}`);
+  if (activeImg && isFirstThumb) {
+    activeImg.src = src;
+  }
+
   if (parent) {
     parent.querySelectorAll('.combo-thumb-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
@@ -3597,7 +3655,7 @@ window.switchComboImage = function(comboId, src, btn) {
 };
 
 /**
- * Auto-Slideshow for Curated Gift Sets (Combos)
+ * Auto-Slideshow for Curated Gift Sets (Combos) with Butter-Smooth Dual-Layer Crossfade
  */
 window.initComboAutoSliders = function() {
   if (window._comboSliderInterval) {
@@ -3605,38 +3663,66 @@ window.initComboAutoSliders = function() {
     window._comboSliderInterval = null;
   }
   const combos = window.NURAAN_COMBOS || [];
-  const multiCombos = combos.filter(c => c.images && c.images.length > 1);
+  const multiCombos = combos.filter(c => (c.images && c.images.length > 1) || (c.image2 && c.image2 !== c.image));
   if (!multiCombos.length) return;
 
-  const indices = {};
-  multiCombos.forEach(c => { indices[c.id] = 0; });
+  // 1. Preload secondary images and ensure DOM has secondary layer
+  multiCombos.forEach(c => {
+    const secondaryUrl = (c.images && c.images.length > 1) ? c.images[1] : c.image2;
+    if (!secondaryUrl) return;
 
+    // Cache preloader in memory
+    const preloader = new Image();
+    preloader.src = secondaryUrl;
+
+    const cardEl = document.getElementById(`combo-${c.id}`);
+    if (cardEl) {
+      const wrap = cardEl.querySelector('.combo-main-photo-wrap');
+      if (wrap && !wrap.querySelector('.combo-photo-secondary')) {
+        const secImg = document.createElement('img');
+        secImg.src = secondaryUrl;
+        secImg.alt = `${c.name} Motion by Nuraan Perfumes`;
+        secImg.className = 'combo-real-photo combo-photo-secondary';
+        secImg.id = `combo-img-sec-${c.id}`;
+        secImg.loading = 'lazy';
+        secImg.decoding = 'async';
+        secImg.onclick = function() { window.openLightbox(this.src, c.name); };
+        wrap.appendChild(secImg);
+      }
+    }
+  });
+
+  const comboStates = {};
+  multiCombos.forEach(c => { comboStates[c.id] = false; });
+
+  // 2. Smooth 4.8s interval alternating between primary and secondary layer
   window._comboSliderInterval = setInterval(() => {
     if (document.visibilityState === 'hidden') return;
     multiCombos.forEach(c => {
-      indices[c.id] = (indices[c.id] + 1) % c.images.length;
-      const nextUrl = c.images[indices[c.id]];
-      const imgEl = document.getElementById(`combo-img-${c.id}`);
-      if (imgEl) {
-        imgEl.style.opacity = '0.35';
-        setTimeout(() => {
-          imgEl.src = nextUrl;
-          imgEl.style.opacity = '1';
-        }, 180);
-      }
       const cardEl = document.getElementById(`combo-${c.id}`);
-      if (cardEl) {
-        const btns = cardEl.querySelectorAll('.combo-thumb-btn');
+      if (!cardEl) return;
+      if (cardEl.matches(':hover')) return;
+
+      comboStates[c.id] = !comboStates[c.id];
+      if (comboStates[c.id]) {
+        cardEl.classList.add('show-secondary');
+      } else {
+        cardEl.classList.remove('show-secondary');
+      }
+
+      // Sync active thumbnail dot
+      const btns = cardEl.querySelectorAll('.combo-thumb-btn');
+      if (btns.length >= 2) {
         btns.forEach((btn, idx) => {
-          btn.classList.toggle('active', idx === indices[c.id]);
+          btn.classList.toggle('active', comboStates[c.id] ? idx === 1 : idx === 0);
         });
       }
     });
-  }, 3500);
+  }, 4800);
 };
 
 /**
- * Auto-Slideshow for Perfume Cards with Multiple Photos
+ * Auto-Slideshow for Perfume Cards with Butter-Smooth Dual-Layer Crossfade
  */
 window.initProductCardAutoSliders = function() {
   if (window._productCardSliderInterval) {
@@ -3647,28 +3733,68 @@ window.initProductCardAutoSliders = function() {
   const multiProducts = catalog.filter(p => (p.images && p.images.length > 1) || (p.image2 && p.image2 !== p.image));
   if (!multiProducts.length) return;
 
-  const cardIndices = {};
-  multiProducts.forEach(p => { cardIndices[p.id] = 0; });
+  // 1. Ensure DOM has dual-layer stack and preload all secondary GIF assets into browser cache
+  multiProducts.forEach(p => {
+    const secondaryUrl = (p.images && p.images.length > 1) ? p.images[1] : p.image2;
+    if (!secondaryUrl) return;
 
+    // Preload image/GIF into memory immediately
+    const preloader = new Image();
+    preloader.src = secondaryUrl;
+
+    const cardEl = document.getElementById(`card-${p.id}`);
+    if (cardEl) {
+      let stack = cardEl.querySelector('.product-photo-stack');
+      const chassis = cardEl.querySelector('.bottle-3d-chassis');
+      if (!stack && chassis) {
+        const primaryImg = chassis.querySelector('.real-product-photo');
+        if (primaryImg) {
+          stack = document.createElement('div');
+          stack.className = 'product-photo-stack';
+          stack.id = `photo-stack-${p.id}`;
+          primaryImg.parentNode.insertBefore(stack, primaryImg);
+          stack.appendChild(primaryImg);
+          primaryImg.classList.add('photo-primary');
+        }
+      }
+      if (stack && !stack.querySelector('.photo-secondary')) {
+        const secImg = document.createElement('img');
+        secImg.src = secondaryUrl;
+        secImg.alt = `${p.name} Motion by Nuraan Perfumes`;
+        secImg.className = 'real-product-photo photo-secondary';
+        secImg.loading = 'lazy';
+        secImg.decoding = 'async';
+        secImg.onclick = function(e) {
+          e.stopPropagation();
+          window.openLightbox(this.src, p.name);
+        };
+        stack.appendChild(secImg);
+      }
+    }
+  });
+
+  // Track state for each product: false = primary (still photo), true = secondary (animated GIF)
+  const cardStates = {};
+  multiProducts.forEach(p => { cardStates[p.id] = false; });
+
+  // 2. Smooth 4.5s crossfade without any DOM recreation or src swapping
   window._productCardSliderInterval = setInterval(() => {
     if (document.visibilityState === 'hidden') return;
     multiProducts.forEach(p => {
-      const imgs = (p.images && p.images.length > 1) ? p.images : [p.image, p.image2];
-      cardIndices[p.id] = (cardIndices[p.id] + 1) % imgs.length;
-      const nextUrl = imgs[cardIndices[p.id]];
       const cardEl = document.getElementById(`card-${p.id}`);
-      if (cardEl) {
-        const imgEl = cardEl.querySelector('.real-product-photo');
-        if (imgEl) {
-          imgEl.style.opacity = '0.35';
-          setTimeout(() => {
-            imgEl.src = nextUrl;
-            imgEl.style.opacity = '1';
-          }, 180);
-        }
+      if (!cardEl) return;
+
+      // Do not interrupt if user is hovering over card
+      if (cardEl.matches(':hover')) return;
+
+      cardStates[p.id] = !cardStates[p.id];
+      if (cardStates[p.id]) {
+        cardEl.classList.add('show-secondary');
+      } else {
+        cardEl.classList.remove('show-secondary');
       }
     });
-  }, 3800);
+  }, 4500);
 };
 
 /**

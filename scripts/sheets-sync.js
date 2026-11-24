@@ -822,6 +822,12 @@ const NuraanSheetsSync = {
     if (typeof renderCatalog === 'function') {
       renderCatalog(window.NURAAN_CATALOG);
     }
+    if (typeof window.initComboAutoSliders === 'function') {
+      window.initComboAutoSliders();
+    }
+    if (typeof window.initProductCardAutoSliders === 'function') {
+      window.initProductCardAutoSliders();
+    }
     if (typeof updateCustomBoxTotal === 'function') {
       updateCustomBoxTotal();
     }
