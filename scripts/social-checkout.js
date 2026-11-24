@@ -333,9 +333,20 @@ Thank you!`;
     // 3. Other items
     const subtotalOther = otherItems.reduce((sum, o) => sum + (Number(o.price) || 0), 0);
 
+    // 4. Repeat Patron / Order ID Discount Engine
+    let repeatDiscountAmount = 0;
+    let repeatDiscountPct = 0;
+    let repeatOrderId = '';
+    if (window.appliedRepeatDiscount && window.appliedRepeatDiscount.pct) {
+      repeatDiscountPct = window.appliedRepeatDiscount.pct;
+      repeatOrderId = window.appliedRepeatDiscount.orderId;
+      const basePayable = payable12ml + payableSets + subtotalOther;
+      repeatDiscountAmount = Math.round(basePayable * (repeatDiscountPct / 100));
+    }
+
     const grossSubtotal = subtotal12ml + subtotalSets + subtotalOther;
-    const totalDiscount = disc12Amount + discSetsAmount;
-    const finalPayable = payable12ml + payableSets + subtotalOther;
+    const totalDiscount = disc12Amount + discSetsAmount + repeatDiscountAmount;
+    const finalPayable = Math.max(0, (payable12ml + payableSets + subtotalOther) - repeatDiscountAmount);
 
     return {
       bottles12ml,
@@ -352,6 +363,9 @@ Thank you!`;
       discSetsAmount,
       discSetsLabel,
       payableSets,
+      repeatDiscountAmount,
+      repeatDiscountPct,
+      repeatOrderId,
       grossSubtotal,
       totalDiscount,
       finalPayable
@@ -396,6 +410,9 @@ Thank you!`;
       }
       if (summary.discSetsAmount > 0) {
         discountBreakdown += `• *Gift Set Bundle Savings (${summary.discSetsLabel}):* -${currency}${summary.discSetsAmount.toLocaleString('en-IN')}\n`;
+      }
+      if (summary.repeatDiscountAmount > 0) {
+        discountBreakdown += `• *Repeat Patron Reward (${summary.repeatDiscountPct}% OFF via #${summary.repeatOrderId}):* -${currency}${summary.repeatDiscountAmount.toLocaleString('en-IN')}\n`;
       }
     }
 

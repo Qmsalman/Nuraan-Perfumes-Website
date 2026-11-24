@@ -869,6 +869,8 @@ const NuraanSheetsSync = {
           ? `${nameParts[0]} ${nameParts[nameParts.length - 1].charAt(0)}.` 
           : customerName;
 
+        const rawAmount = parseFloat(String(row[7] || '').replace(/[^0-9.]/g, '')) || 0;
+
         parsedOrders.push({
           orderId: rawId,
           customerName: customerName,
@@ -877,6 +879,7 @@ const NuraanSheetsSync = {
           city: String(row[4] || '').trim(),
           productType: String(row[5] || '').trim(),
           items: String(row[6] || '').trim(),
+          orderAmount: rawAmount,
           paymentStatus: String(row[11] || 'Paid').trim(),
           status: String(row[12] || 'Processing').trim(),
           phone: String(row[13] || '').trim(),

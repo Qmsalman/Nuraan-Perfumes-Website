@@ -1255,35 +1255,15 @@ function renderCombos(combos) {
               </div>
             </div>
 
-            <div class="combo-cta-buttons" style="display: flex; flex-direction: column; gap: 8px;">
+            <div class="combo-cta-buttons">
               <button 
                 type="button" 
                 class="btn-add-combo-sel" 
                 onclick="window.addComboToSelection('${combo.id}')"
-                style="background: var(--accent-gold); color: #000; font-weight: 800; padding: 12px; border-radius: 8px; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;"
+                style="background: var(--accent-gold, #C5A059); color: #14171E; font-family: var(--font-body, 'Plus Jakarta Sans', sans-serif); font-weight: 800; padding: 14px 18px; border-radius: 8px; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; font-size: 0.95rem; box-shadow: 0 4px 14px rgba(197, 160, 89, 0.28); transition: transform 0.2s ease;"
               >
-                <span>+ Add to Cart (${currency}${activePrice.toLocaleString('en-IN')})</span>
+                <span>+ Add Gift Set to Cart (${currency}${activePrice.toLocaleString('en-IN')})</span>
               </button>
-              <div style="display: flex; gap: 8px;">
-                <button 
-                  type="button" 
-                  class="btn-order-wa" 
-                  id="combo-wa-btn-${combo.id}"
-                  onclick="triggerComboWhatsApp('${combo.id}')"
-                  style="flex: 1;"
-                >
-                  <span>WhatsApp</span>
-                </button>
-                <button 
-                  type="button" 
-                  class="btn-inquire-ig" 
-                  id="combo-ig-btn-${combo.id}"
-                  onclick="triggerComboInstagram('${combo.id}')"
-                  style="flex: 1;"
-                >
-                  <span>Instagram DM</span>
-                </button>
-              </div>
             </div>
           </div>
         </div>
@@ -3031,6 +3011,58 @@ function updateSelectionUI() {
   if (drawerIgBtn) drawerIgBtn.disabled = count === 0;
 }
 window.updateSelectionUI = updateSelectionUI;
+
+window.applyRepeatOrderDiscount = function() {
+  const input = document.getElementById("drawer-promo-input");
+  const feedback = document.getElementById("drawer-promo-feedback");
+  if (!input || !feedback) return;
+  const raw = input.value.trim();
+  if (!raw) {
+    feedback.textContent = "Please enter your previous Order ID (e.g. NP-1001).";
+    feedback.className = "drawer-promo-feedback error";
+    feedback.style.display = "block";
+    return;
+  }
+
+  const lookup = (window.NuraanSheetsSync && window.NuraanSheetsSync.lookupOrder) 
+    ? window.NuraanSheetsSync.lookupOrder(raw) 
+    : null;
+
+  let pct = 15;
+  let orderLabel = raw.toUpperCase();
+  let prevAmount = 0;
+
+  if (lookup) {
+    prevAmount = lookup.orderAmount || 0;
+    orderLabel = lookup.orderId;
+    if (prevAmount >= 2999) pct = 25;
+    else if (prevAmount >= 2499) pct = 20;
+    else if (prevAmount >= 1699) pct = 15;
+    else pct = 10;
+  } else {
+    const cleanDigits = raw.replace(/[^0-9]/g, '');
+    if (raw.toUpperCase().startsWith('NP') || cleanDigits.length >= 3) {
+      pct = 15; // default generous repeat patron discount
+    } else {
+      feedback.textContent = "Order ID not found. Please enter your valid Order ID from your receipt or WhatsApp dispatch.";
+      feedback.className = "drawer-promo-feedback error";
+      feedback.style.display = "block";
+      return;
+    }
+  }
+
+  window.appliedRepeatDiscount = {
+    orderId: orderLabel,
+    pct: pct,
+    prevAmount: prevAmount
+  };
+
+  feedback.innerHTML = `✓ Verified Order #${orderLabel}${prevAmount ? ' (₹' + prevAmount.toLocaleString('en-IN') + ')' : ''}! <strong>${pct}% Repeat Customer Discount Applied!</strong>`;
+  feedback.className = "drawer-promo-feedback success";
+  feedback.style.display = "block";
+
+  window.updateSelectionUI();
+};
 
 window.triggerSelectionWhatsApp = function() {
   const summary = (window.SocialCheckout && window.SocialCheckout.calculateCartSummary) 
