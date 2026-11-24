@@ -41,6 +41,7 @@ function initApp() {
   updateSelectionUI();
   setupSectionTracking();
   handleDeepLink();
+  setupWardrobePopupAutoTrigger();
   window.addEventListener('hashchange', handleDeepLink);
 }
 
@@ -2981,9 +2982,9 @@ function updateSelectionUI() {
         if (summary.n12 === 1) msg = "Add 2 more bottles to unlock 15% OFF your entire cart!";
         else if (summary.n12 === 2) msg = "Add 1 more bottle to unlock 15% OFF your entire cart!";
         else if (summary.n12 === 3) msg = "15% OFF Unlocked! Add 1 more to reach 20% OFF!";
-        else if (summary.n12 === 4) msg = "20% OFF Unlocked! Add 2 more to get 30% OFF + Luxury Presentation Coffret!";
+        else if (summary.n12 === 4) msg = "20% OFF Unlocked! Add 2 more to get 30% OFF!";
         else if (summary.n12 === 5) msg = "25% OFF Unlocked! Just 1 more bottle for the Full Wardrobe 30% OFF!";
-        else msg = "CONNOISSEUR TIER UNLOCKED: 30% OFF Full 6-Bottle Wardrobe + Luxury Box!";
+        else msg = "CONNOISSEUR TIER UNLOCKED: 30% OFF Full 6+ Bottle Wardrobe!";
         msgEl.innerHTML = `<span>${msg}</span>`;
       }
     } else {
@@ -3088,6 +3089,11 @@ function updateSelectionUI() {
   if (drawerWaBtn) drawerWaBtn.disabled = count === 0;
   const drawerIgBtn = document.getElementById("drawer-ig-btn");
   if (drawerIgBtn) drawerIgBtn.disabled = count === 0;
+
+  // 8. Update Live Catalog Wardrobe Tracker & Modal Stepper
+  if (typeof window.updateCatalogWardrobeTracker === 'function') {
+    window.updateCatalogWardrobeTracker();
+  }
 }
 window.updateSelectionUI = updateSelectionUI;
 
@@ -3870,3 +3876,164 @@ window.closeCoffretScentsModal = function() {
   if (modal) modal.classList.remove("active");
   document.body.style.overflow = "";
 };
+
+/* ============================================================
+   12ML WARDROBE OFFER POPUP & LIVE CATALOG TRACKER LOGIC
+   ============================================================ */
+window.currentWardrobeTargetTier = 4; // Default target tier: 4 bottles (20% OFF)
+
+window.selectWardrobeTier = function(tier) {
+  window.currentWardrobeTargetTier = Number(tier) || 4;
+  document.querySelectorAll('.wardrobe-tier-btn').forEach(btn => {
+    btn.classList.toggle('active-selected', Number(btn.dataset.tier) === window.currentWardrobeTargetTier);
+  });
+  window.updateCatalogWardrobeTracker();
+};
+
+window.openWardrobeOfferModal = function() {
+  const modal = document.getElementById('wardrobe-modal');
+  if (modal) {
+    modal.classList.add('open');
+    if (typeof window.trackEvent === 'function') {
+      window.trackEvent('wardrobe_modal_opened', { targetTier: window.currentWardrobeTargetTier });
+    }
+  }
+};
+
+window.closeWardrobeOfferModal = function() {
+  const modal = document.getElementById('wardrobe-modal');
+  if (modal) modal.classList.remove('open');
+};
+
+window.chooseWardrobeTierFromModal = function(tier) {
+  window.selectWardrobeTier(tier);
+  window.closeWardrobeOfferModal();
+  const catalogEl = document.getElementById('catalog');
+  if (catalogEl) {
+    catalogEl.scrollIntoView({ behavior: 'smooth' });
+  }
+};
+
+window.updateCatalogWardrobeTracker = function() {
+  const trackerEl = document.getElementById('live-catalog-wardrobe-tracker');
+  if (!trackerEl) return;
+
+  const items = window.selectionList || [];
+  const summary = (window.SocialCheckout && typeof window.SocialCheckout.calculateCartSummary === 'function')
+    ? window.SocialCheckout.calculateCartSummary(items)
+    : { n12: items.filter(i => i.size === '12ml').length, subtotal12ml: 0, disc12Amount: 0, payable12ml: 0, disc12Pct: 0 };
+
+  const count = summary.n12;
+  const baseTarget = window.currentWardrobeTargetTier || 4;
+  // If user adds more bottles than selected targetTier, auto-advance target
+  const effectiveTarget = count > baseTarget ? Math.min(6, count + (count < 6 ? 1 : 0)) : baseTarget;
+
+  const tierDiscounts = { 3: 15, 4: 20, 5: 25, 6: 30 };
+  const targetPct = tierDiscounts[effectiveTarget] || 30;
+
+  const msgEl = document.getElementById('tracker-msg');
+  const pillEl = document.getElementById('tracker-pill');
+  const pricePillEl = document.getElementById('tracker-price-pill');
+  const fillEl = document.getElementById('tracker-fill');
+
+  const modalText = document.getElementById('modal-progress-text');
+  const modalCount = document.getElementById('modal-progress-count');
+  const modalFill = document.getElementById('modal-progress-fill');
+
+  const pctWidth = Math.min(100, Math.round((count / effectiveTarget) * 100));
+  if (fillEl) fillEl.style.width = pctWidth + '%';
+  if (modalFill) modalFill.style.width = Math.min(100, Math.round((count / 6) * 100)) + '%';
+  if (modalCount) modalCount.textContent = `${count} Added`;
+
+  let currentPct = Math.round(summary.disc12Pct * 100) || 0;
+  if (currentPct === 0) {
+    if (count >= 6) currentPct = 30;
+    else if (count === 5) currentPct = 25;
+    else if (count === 4) currentPct = 20;
+    else if (count === 3) currentPct = 15;
+  }
+
+  // Live Price and Savings Pill using actual 12ml cart items
+  if (pricePillEl) {
+    if (count > 0 && summary.subtotal12ml > 0) {
+      pricePillEl.style.display = 'inline-block';
+      if (summary.disc12Amount > 0) {
+        pricePillEl.textContent = `Total: ₹${summary.payable12ml.toLocaleString('en-IN')} (Saved ₹${summary.disc12Amount.toLocaleString('en-IN')})`;
+      } else {
+        pricePillEl.textContent = `Total: ₹${summary.subtotal12ml.toLocaleString('en-IN')}`;
+      }
+    } else {
+      pricePillEl.style.display = 'none';
+    }
+  }
+
+  // Dynamic "X Bottle(s) Away" Messaging
+  if (msgEl) {
+    if (count === 0) {
+      msgEl.innerHTML = `<strong>${effectiveTarget}-Bottle Tier (${targetPct}% OFF)</strong> selected — add <strong>${effectiveTarget} bottles</strong> to unlock ${targetPct}% OFF.`;
+      if (modalText) modalText.textContent = `Target: ${effectiveTarget} Bottles (${targetPct}% OFF)`;
+    } else if (count < effectiveTarget) {
+      const remaining = effectiveTarget - count;
+      const unit = remaining === 1 ? 'bottle' : 'bottles';
+      const prefix = currentPct > 0 ? `<strong>${currentPct}% OFF unlocked!</strong> ` : '';
+      msgEl.innerHTML = `${prefix}You are <strong>${remaining} ${unit} away</strong> from unlocking <strong>${targetPct}% OFF</strong>!`;
+      if (modalText) modalText.textContent = `${remaining} ${unit} away from ${targetPct}% OFF`;
+    } else if (count >= effectiveTarget && count < 6) {
+      const nextTier = count + 1;
+      const nextPct = tierDiscounts[nextTier];
+      msgEl.innerHTML = `✦ <strong>${currentPct}% OFF Unlocked!</strong> Add <strong>1 more bottle</strong> to reach <strong>${nextPct}% OFF</strong>!`;
+      if (modalText) modalText.textContent = `${currentPct}% OFF Unlocked • 1 away from ${nextPct}% OFF`;
+    } else {
+      msgEl.innerHTML = `✦ <strong>MAXIMUM PRIVILEGE UNLOCKED:</strong> <strong>30% OFF</strong> applied to your 12ml Wardrobe!`;
+      if (modalText) modalText.textContent = `30% OFF Unlocked (Max Tier)`;
+    }
+  }
+
+  if (pillEl) {
+    pillEl.textContent = `${count} / ${effectiveTarget} Selected`;
+  }
+
+  // Update Step Chips in Tracker Bar
+  [3, 4, 5, 6].forEach(t => {
+    const chip = document.getElementById(`chip-${t}`);
+    if (chip) {
+      chip.classList.toggle('target', t === effectiveTarget);
+      chip.classList.toggle('unlocked', count >= t);
+    }
+  });
+
+  // Sync modal tier active states
+  document.querySelectorAll('.wardrobe-tier-btn').forEach(btn => {
+    const bTier = Number(btn.dataset.tier);
+    btn.classList.toggle('active-selected', bTier === baseTarget);
+  });
+};
+
+function setupWardrobePopupAutoTrigger() {
+  if (sessionStorage.getItem('nuraan_wardrobe_popup_seen')) return;
+
+  let triggered = false;
+  const triggerPopup = () => {
+    if (triggered) return;
+    triggered = true;
+    sessionStorage.setItem('nuraan_wardrobe_popup_seen', '1');
+    window.removeEventListener('scroll', checkScroll);
+    clearTimeout(timerId);
+    window.openWardrobeOfferModal();
+  };
+
+  // Timer trigger after 7 seconds
+  const timerId = setTimeout(triggerPopup, 7000);
+
+  // Scroll trigger after ~35% scroll depth
+  const checkScroll = () => {
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    if (docHeight > 0) {
+      const scrolled = window.scrollY / docHeight;
+      if (scrolled >= 0.35) {
+        triggerPopup();
+      }
+    }
+  };
+  window.addEventListener('scroll', checkScroll, { passive: true });
+}

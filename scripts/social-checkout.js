@@ -248,7 +248,7 @@ Thank you!`;
    *   3 bottles: 15% discount
    *   4 bottles: 20% discount
    *   5 bottles: 25% discount
-   *   6+ bottles: 30% discount + Shipped in Bespoke 6-Bottle Luxury Presentation Coffret (₹67 box included free)
+   *   6+ bottles: 30% discount (Maximum 12ml Wardrobe Savings)
    * • Universal Gift Set Cross-Set Bundling:
    *   1 set: ₹999
    *   2 sets: ₹1,699 (30% off 2nd box — saves ₹299)
@@ -287,7 +287,7 @@ Thank you!`;
 
     if (n12 >= 6) {
       disc12Pct = 0.30;
-      disc12Label = '30% Off (6-Bottle Luxury Wardrobe Coffret Tier)';
+      disc12Label = '30% Off (6+ Bottle Wardrobe Tier)';
     } else if (n12 === 5) {
       disc12Pct = 0.25;
       disc12Label = '25% Off (5-Bottle Wardrobe Tier)';
@@ -418,11 +418,6 @@ Thank you!`;
       }
     }
 
-    let packagingNote = "";
-    if (summary.n12 >= 6) {
-      packagingNote = "• *Packaging:* Shipped in our Bespoke 6-Bottle Luxury Presentation Coffret (Included Free)\n";
-    }
-
     const countDetails = [];
     if (summary.n12 > 0) countDetails.push(`${summary.n12} × 12ml Bottles`);
     if (summary.nSets > 0) countDetails.push(`${summary.nSets} × Gift Sets`);
@@ -436,7 +431,7 @@ I would like to place an order for the following items:
 
 ${itemsFormatted}
 • *Total Items:* ${items.length} Product${items.length > 1 ? 's' : ''} (${countDetails.join(', ')})${discountBreakdown}
-${packagingNote}• *Total Payable:* ${currency}${summary.finalPayable.toLocaleString('en-IN')}
+• *Total Payable:* ${currency}${summary.finalPayable.toLocaleString('en-IN')}
 • *Shipping:* Free Express All-India Dispatch
 
 Please share your UPI / GPay / Bank details and confirm estimated delivery timeline.
