@@ -95,8 +95,12 @@ function generatePerfumePage(product) {
   <meta name="robots" content="index, follow">
   <meta name="theme-color" content="#14171E">
 
-  <!-- Favicon -->
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2314171E'/%3E%3Cpath d='M16 6 L22 12 L16 18 L10 12 Z' fill='%23C5A059'/%3E%3Ccircle cx='16' cy='23' r='3' fill='%23C5A059'/%3E%3C/svg%3E">
+  <!-- Authentic Nuraan Kufic Favicon -->
+  <link rel="icon" type="image/svg+xml" href="../../assets/brand/favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../assets/brand/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../../assets/brand/favicon-16x16.png">
+  <link rel="shortcut icon" href="../../favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="../../assets/brand/apple-touch-icon.png">
 
   <!-- Open Graph -->
   <meta property="og:site_name" content="Nuraan Perfumes">
@@ -351,7 +355,7 @@ function generatePerfumePage(product) {
 </head>
 <body>
   <header>
-    <a href="${BASE_URL}/" class="brand-logo">NURAAN</a>
+    <a href="${BASE_URL}/" class="brand-logo"><img src="../../assets/brand/favicon.svg" alt="Nuraan Emblem" width="22" height="22" style="border-radius:4px; vertical-align:middle; margin-right:6px;">NURAAN</a>
     <a href="${BASE_URL}/#catalog" class="back-nav">← Explore The Entire Collection</a>
   </header>
 
@@ -462,8 +466,12 @@ function generateComboPage(combo) {
   <meta name="robots" content="index, follow">
   <meta name="theme-color" content="#14171E">
 
-  <!-- Favicon -->
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2314171E'/%3E%3Cpath d='M16 6 L22 12 L16 18 L10 12 Z' fill='%23C5A059'/%3E%3Ccircle cx='16' cy='23' r='3' fill='%23C5A059'/%3E%3C/svg%3E">
+  <!-- Authentic Nuraan Kufic Favicon -->
+  <link rel="icon" type="image/svg+xml" href="../../assets/brand/favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../assets/brand/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../../assets/brand/favicon-16x16.png">
+  <link rel="shortcut icon" href="../../favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="../../assets/brand/apple-touch-icon.png">
 
   <!-- Open Graph -->
   <meta property="og:site_name" content="Nuraan Perfumes">
@@ -514,7 +522,7 @@ function generateComboPage(combo) {
 </head>
 <body>
   <header>
-    <a href="${BASE_URL}/" class="brand-logo">NURAAN</a>
+    <a href="${BASE_URL}/" class="brand-logo"><img src="../../assets/brand/favicon.svg" alt="Nuraan Emblem" width="22" height="22" style="border-radius:4px; vertical-align:middle; margin-right:6px;">NURAAN</a>
     <a href="${BASE_URL}/#combos" class="back-nav">← Back to Gift Sets</a>
   </header>
 

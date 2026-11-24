@@ -400,6 +400,9 @@ Thank you!`;
       const unitP = item.price || (isSet ? 999 : 499);
       const skuTag = item.sku ? ` [${item.sku}]` : '';
       itemsFormatted += `  ${idx + 1}. *${item.name}*${skuTag} (${sizeTag}) — ${currency}${unitP.toLocaleString('en-IN')}\n`;
+      if (item.customNotes) {
+        itemsFormatted += `     └ *Custom Scents:* ${item.customNotes}\n`;
+      }
     });
 
     let discountBreakdown = "";
@@ -466,7 +469,11 @@ Thank you!`;
     }
 
     const summary = SocialCheckout.calculateCartSummary(items);
-    const itemSummaries = items.map(item => `${item.name}${item.sku ? ' [' + item.sku + ']' : ''} (${item.size || '12ml'})`).join(", ");
+    const itemSummaries = items.map(item => {
+      let desc = `${item.name}${item.sku ? ' [' + item.sku + ']' : ''} (${item.size || '12ml'})`;
+      if (item.customNotes) desc += ` [Scents: ${item.customNotes}]`;
+      return desc;
+    }).join(", ");
     const summaryText = `Nuraan Perfumes Cart Inquiry (${items.length} items • ${currency}${summary.finalPayable.toLocaleString('en-IN')}): ${itemSummaries}`;
 
     SocialCheckout.openInstagramDM(igHandle, summaryText, `✓ Copied cart summary! Opening Instagram DM...`);

@@ -1493,6 +1493,11 @@ function updateCustomBoxTotal() {
   if (formatNotice) {
     formatNotice.textContent = "6 × 3ml Precision Roll-ons";
   }
+
+  const btnPriceEl = document.getElementById("custom-box-btn-price");
+  if (btnPriceEl) {
+    btnPriceEl.textContent = `${currency}${activePrice.toLocaleString('en-IN')}`;
+  }
 }
 
 function renderCustomBoxSlots() {
@@ -1695,6 +1700,54 @@ window.removeAttarFromCustomBox = function(index) {
 window.clearCustomBox = function() {
   customBoxState.selectedAttars = [];
   renderCustomBoxSlots();
+};
+
+window.addCustomBoxToCart = function() {
+  const selected = (customBoxState && customBoxState.selectedAttars) || [];
+  const count = selected.length;
+  if (count < 6) {
+    const remaining = 6 - count;
+    if (window.SocialCheckout && window.SocialCheckout.showToast) {
+      window.SocialCheckout.showToast(`Please select ${remaining} more fragrance${remaining > 1 ? 's' : ''} to complete your 6-box coffret (${count} of 6 selected).`, 'error');
+    } else {
+      alert(`Please select ${remaining} more fragrance(s) to complete your 6-box coffret.`);
+    }
+    return;
+  }
+
+  const price = getCustomBoxActivePrice();
+  const names = selected.map(p => p.name);
+  const namesSummary = names.join(', ');
+
+  const customItem = {
+    id: `custom-coffret-${Date.now()}`,
+    sku: 'NP-SET-BESPOKE-6X3',
+    name: 'Custom Attar Box (6 × 3ml)',
+    collection: 'Bespoke Wardrobe',
+    size: '6 × 3ml Gift Coffret',
+    customNotes: namesSummary,
+    price: price,
+    bottleColor: '#C5A059',
+    isCustomBox: true,
+    isGiftSet: true
+  };
+
+  window.selectionList.push(customItem);
+  window.updateSelectionUI();
+  window.openSelectionDrawer();
+
+  if (window.SocialCheckout && window.SocialCheckout.showToast) {
+    window.SocialCheckout.showToast('✓ Added Bespoke Gift Box to your Cart!', 'success');
+  }
+
+  trackEvent('add_to_cart', {
+    item_id: customItem.id,
+    item_name: customItem.name,
+    item_category: 'Custom Gift Set',
+    custom_scents: namesSummary,
+    value: price,
+    currency: 'INR'
+  });
 };
 
 window.triggerCustomBoxWhatsApp = function() {
@@ -2978,6 +3031,7 @@ function updateSelectionUI() {
             <div class="drawer-item-info">
               <div class="drawer-item-name">${item.name}</div>
               <div class="drawer-item-format">${formatLabel} • ${item.collection || 'Nuraan'}</div>
+              ${item.customNotes ? `<div style="font-size: 0.72rem; color: var(--accent-gold); margin-top: 3px; line-height: 1.35; padding: 4px 6px; background: rgba(197, 160, 89, 0.08); border-radius: 4px; border-left: 2px solid var(--accent-gold);">✦ <strong>Box:</strong> ${item.customNotes}</div>` : ''}
               <div class="drawer-item-price">${currency}${(item.price || 999).toLocaleString('en-IN')}</div>
             </div>
             <button type="button" class="drawer-item-remove-btn" onclick="removeFromSelection(${idx})" aria-label="Remove item">✕</button>
