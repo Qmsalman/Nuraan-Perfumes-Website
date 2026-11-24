@@ -731,6 +731,11 @@
         <p class="section-subtitle">
           Handcrafted 12ml luxury roll-on flacons distilled from aged agarwood, Mysore sandalwood, crimson rose, and solar ambergris. Pure concentrated perfume oil, 100% alcohol-free.
         </p>
+        <div style="margin-top: 14px;">
+          <button type="button" class="btn-wardrobe-tiers-trigger" onclick="openWardrobeOfferModal()">
+            <span>✦ View Bundle Tiers (Up to 30% Off)</span>
+          </button>
+        </div>
       </div>
 
       <!-- Search & Filters -->
@@ -841,6 +846,28 @@
             <span class="compass-match-count" id="compass-match-count">22 Attars Found</span>
             <button type="button" class="compass-clear-btn" onclick="resetCompassFilters()">Clear Filters ✕</button>
           </div>
+        </div>
+      </div>
+
+      <!-- Live Inline 12ml Wardrobe Tracker Bar -->
+      <div class="wardrobe-tracker-bar" id="live-catalog-wardrobe-tracker">
+        <div class="wardrobe-tracker-top">
+          <div class="wardrobe-tracker-status" id="tracker-msg">
+            <strong>4-Bottle Tier (20% OFF)</strong> selected — add <strong>4 bottles</strong> to unlock 20% OFF.
+          </div>
+          <div class="wardrobe-tracker-pills-wrap">
+            <span class="wardrobe-tracker-price-pill" id="tracker-price-pill" style="display: none;">Total: ₹0</span>
+            <span class="wardrobe-tracker-target-pill" id="tracker-pill">0 / 4 Selected</span>
+          </div>
+        </div>
+        <div class="wardrobe-progress-track">
+          <div class="wardrobe-progress-fill" id="tracker-fill"></div>
+        </div>
+        <div class="wardrobe-tracker-steps">
+          <div class="wardrobe-step-chip" id="chip-3" onclick="selectWardrobeTier(3)">3 Bottles • 15% Off</div>
+          <div class="wardrobe-step-chip target" id="chip-4" onclick="selectWardrobeTier(4)">4 Bottles • 20% Off</div>
+          <div class="wardrobe-step-chip" id="chip-5" onclick="selectWardrobeTier(5)">5 Bottles • 25% Off</div>
+          <div class="wardrobe-step-chip" id="chip-6" onclick="selectWardrobeTier(6)">6+ Bottles • 30% Off</div>
         </div>
       </div>
 
@@ -1168,7 +1195,7 @@
         <!-- 12ml 6-Bottle Wardrobe Progress Tracker -->
         <div class="wardrobe-progress-card" id="drawer-wardrobe-progress" style="display: none;">
           <div class="progress-header">
-            <span class="progress-title">✦ 6-Bottle Wardrobe Box</span>
+            <span class="progress-title">✦ 12ml Wardrobe Savings</span>
             <span class="progress-count" id="drawer-wardrobe-count">0 of 6 Added</span>
           </div>
           <div class="progress-bar-bg">
@@ -1662,6 +1689,92 @@
     <a href="https://wa.me/918591059608" target="_blank" rel="noopener noreferrer" class="dock-pill-btn dock-pill-wa">
       <span>WhatsApp</span>
     </a>
+  </div>
+
+  <!-- 14. 12ML WARDROBE OFFER POPUP MODAL (OPTION 1 + OPTION 3) -->
+  <div class="wardrobe-modal-overlay" id="wardrobe-modal" onclick="if(event.target === this) closeWardrobeOfferModal()">
+    <div class="wardrobe-modal-card" role="dialog" aria-modal="true" aria-labelledby="wardrobe-modal-title">
+      <div class="wardrobe-modal-inner">
+        <button type="button" class="wardrobe-modal-close" onclick="closeWardrobeOfferModal()" aria-label="Close modal">✕</button>
+
+        <div class="wardrobe-modal-brand">NURAAN PERFUMES</div>
+        <div class="wardrobe-modal-divider"></div>
+
+        <h2 class="wardrobe-modal-headline" id="wardrobe-modal-title">Curate Your 12ml Wardrobe</h2>
+        <p class="wardrobe-modal-subhook">Your signature scent deserves more than one.</p>
+
+        <!-- Gamified Progress Tracker -->
+        <div class="wardrobe-modal-stepper">
+          <div class="wardrobe-modal-stepper-label">
+            <span id="modal-progress-text">Choose your target bundle tier below</span>
+            <span id="modal-progress-count">0 Added</span>
+          </div>
+          <div class="wardrobe-progress-track">
+            <div class="wardrobe-progress-fill" id="modal-progress-fill"></div>
+          </div>
+          <div class="wardrobe-modal-stepper-dots">
+            <span>3 (15%)</span>
+            <span>4 (20%)</span>
+            <span>5 (25%)</span>
+            <span>6+ (30%)</span>
+          </div>
+        </div>
+
+        <!-- Clickable Tier Cards -->
+        <div class="wardrobe-tier-list">
+          <button type="button" class="wardrobe-tier-btn" data-tier="3" onclick="chooseWardrobeTierFromModal(3)">
+            <div class="wardrobe-tier-qty">
+              <span class="wardrobe-tier-num">03</span>
+              <span class="wardrobe-tier-unit">Bottles</span>
+            </div>
+            <div>
+              <div class="wardrobe-tier-info-title">15% OFF</div>
+              <span class="wardrobe-tier-info-sub">Starter 12ml Wardrobe</span>
+            </div>
+            <span class="wardrobe-tier-cta-arrow">Select →</span>
+          </button>
+
+          <button type="button" class="wardrobe-tier-btn active-selected" data-tier="4" onclick="chooseWardrobeTierFromModal(4)">
+            <div class="wardrobe-tier-qty">
+              <span class="wardrobe-tier-num">04</span>
+              <span class="wardrobe-tier-unit">Bottles</span>
+            </div>
+            <div>
+              <div class="wardrobe-tier-info-title">20% OFF <span class="wardrobe-popular-tag">Popular</span></div>
+              <span class="wardrobe-tier-info-sub">4-Bottle Signature Rotation</span>
+            </div>
+            <span class="wardrobe-tier-cta-arrow">Select →</span>
+          </button>
+
+          <button type="button" class="wardrobe-tier-btn" data-tier="5" onclick="chooseWardrobeTierFromModal(5)">
+            <div class="wardrobe-tier-qty">
+              <span class="wardrobe-tier-num">05</span>
+              <span class="wardrobe-tier-unit">Bottles</span>
+            </div>
+            <div>
+              <div class="wardrobe-tier-info-title">25% OFF</div>
+              <span class="wardrobe-tier-info-sub">Collector's 12ml Wardrobe</span>
+            </div>
+            <span class="wardrobe-tier-cta-arrow">Select →</span>
+          </button>
+
+          <button type="button" class="wardrobe-tier-btn best-deal" data-tier="6" onclick="chooseWardrobeTierFromModal(6)">
+            <span class="wardrobe-best-deal-badge">★ BEST DEAL ★</span>
+            <div class="wardrobe-tier-qty">
+              <span class="wardrobe-tier-num">06+</span>
+              <span class="wardrobe-tier-unit">Bottles</span>
+            </div>
+            <div>
+              <div class="wardrobe-tier-info-title">30% OFF</div>
+              <span class="wardrobe-tier-info-sub">Maximum 12ml Wardrobe Savings</span>
+            </div>
+            <span class="wardrobe-tier-cta-arrow">Select →</span>
+          </button>
+        </div>
+
+        <p class="wardrobe-modal-footnote">Discount applies automatically in your cart • 100% Pure Alcohol-Free Oils</p>
+      </div>
+    </div>
   </div>
 
   <!-- Application Scripts -->
