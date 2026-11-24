@@ -801,7 +801,7 @@ const NURAAN_CATALOG = [
     category: "Women",
     badge: "Tropical Fresh",
     tagline: "Exotic passion fruit nectar, coconut water & sun-kissed frangipani",
-    description: "A cheerful splash of tropical mango, passion fruit, and coconut breeze. Fruity, uplifting, and fun—like an exotic beach vacation in a bottle.",
+    description: "A cheerful splash of tropical mango, passion fruit, and coconut breeze. Fruity, uplifting, and fun, like an exotic beach vacation in a bottle.",
     accords: ["Passion Fruit", "Coconut Water", "Frangipani Blossom", "Solar Musk"],
     botanicals: [
       {

@@ -241,8 +241,14 @@ const NuraanSheetsSync = {
         }
         if (colImage2 !== -1 && row[colImage2]) {
           const img2 = NuraanSheetsSync.convertGoogleDriveUrl(row[colImage2].trim());
-          if (img2 && img2 !== product.image) {
+          if (img2 && !NuraanSheetsSync.isSameImageResource(img2, product.image)) {
             product.image2 = img2;
+            if (!product.images) product.images = [product.image];
+            if (!product.images.some(u => NuraanSheetsSync.isSameImageResource(u, img2))) {
+              product.images.push(img2);
+            }
+          } else {
+            delete product.image2;
           }
         }
         if (colDesc !== -1 && row[colDesc]) {
@@ -582,25 +588,33 @@ const NuraanSheetsSync = {
         if (prod && val) {
           const urls = NuraanSheetsSync.parseMultiMediaUrls(val);
           if (isImage2) {
-            if (urls.length > 0 && urls[0] !== prod.image) {
+            if (urls.length > 0 && !NuraanSheetsSync.isSameImageResource(urls[0], prod.image)) {
               prod.image2 = urls[0];
               if (!prod.images) prod.images = [prod.image];
-              if (!prod.images.includes(urls[0])) prod.images.push(urls[0]);
+              if (!prod.images.some(u => NuraanSheetsSync.isSameImageResource(u, urls[0]))) {
+                prod.images.push(urls[0]);
+              }
               console.log(`[Nuraan Sheets Sync] ✓ Mapped Image 2 for ${prod.name}: ${prod.image2}`);
+            } else {
+              delete prod.image2;
             }
           } else {
-            if (urls.length > 1) {
-              prod.image = urls[0];
-              prod.image2 = urls[1];
-              prod.images = urls;
-              console.log(`[Nuraan Sheets Sync] ✓ Mapped multiple photos for ${prod.name}: [${urls.length} images]`);
-            } else if (urls.length === 1) {
-              prod.image = urls[0];
-              prod.images = [urls[0]];
-              // If image2 matches image, delete duplicate
-              if (prod.image2 === prod.image) {
-                delete prod.image2;
+            // Deduplicate URLs
+            const distinctUrls = [];
+            for (const u of urls) {
+              if (!distinctUrls.some(existing => NuraanSheetsSync.isSameImageResource(existing, u))) {
+                distinctUrls.push(u);
               }
+            }
+            if (distinctUrls.length > 1) {
+              prod.image = distinctUrls[0];
+              prod.image2 = distinctUrls[1];
+              prod.images = distinctUrls;
+              console.log(`[Nuraan Sheets Sync] ✓ Mapped multiple photos for ${prod.name}: [${distinctUrls.length} images]`);
+            } else if (distinctUrls.length === 1) {
+              prod.image = distinctUrls[0];
+              prod.images = [distinctUrls[0]];
+              delete prod.image2;
               console.log(`[Nuraan Sheets Sync] ✓ Mapped single photo for ${prod.name}: ${prod.image}`);
             }
           }
@@ -658,6 +672,23 @@ const NuraanSheetsSync = {
       }
     }
     return results;
+  },
+
+  /**
+   * Compare two image URLs by Google Drive file ID or normalized base path to detect duplicates
+   */
+  isSameImageResource: function(urlA, urlB) {
+    if (!urlA || !urlB) return false;
+    if (urlA === urlB) return true;
+    const extractKey = (u) => {
+      if (typeof u !== 'string') return '';
+      const m = u.match(/\/d\/([a-zA-Z0-9_-]+)/) || u.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+      if (m && m[1]) return m[1];
+      return u.split('?')[0].split('=')[0].trim();
+    };
+    const keyA = extractKey(urlA);
+    const keyB = extractKey(urlB);
+    return Boolean(keyA && keyB && keyA === keyB);
   },
 
   /**

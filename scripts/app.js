@@ -182,14 +182,14 @@ window.updateHeroBanner = function(urlInput) {
   };
 
   let pauseUntil = 0;
-  sliderContainer.onmouseenter = () => { pauseUntil = Date.now() + 2000; };
-  sliderContainer.ontouchstart = () => { pauseUntil = Date.now() + 2000; };
+  sliderContainer.onmouseenter = () => { pauseUntil = Date.now() + 1500; };
+  sliderContainer.ontouchstart = () => { pauseUntil = Date.now() + 1500; };
 
   window._heroSliderInterval = setInterval(() => {
     if (Date.now() > pauseUntil && document.visibilityState !== 'hidden') {
       window.nextHeroSlide();
     }
-  }, 3000);
+  }, 2100);
 };
 
 function initHeroBanner() {
@@ -403,7 +403,7 @@ function getInspirationInfo(product) {
   // Pure model code badge (e.g., "Inspired by BR 540", "Inspired by Icon", "Inspired by Aventus")
   const badgeText = scent;
   const modalLead = `Formulated in the style of <strong>${scent}</strong>`;
-  const modalTitleSubtitle = `— Inspired by ${scent}`;
+  const modalTitleSubtitle = `• Inspired by ${scent}`;
 
   return {
     scent,
@@ -1230,6 +1230,16 @@ function renderCombos(combos) {
             <ul class="combo-items-grid">
               ${itemsHtml}
             </ul>
+            <button 
+              type="button" 
+              class="btn-inspect-coffret-scents" 
+              onclick="window.openCoffretScentsModal('${combo.id}')" 
+              aria-label="Inspect all 6 scent pyramids and fragrance profiles in ${combo.name}"
+            >
+              <span class="coffret-btn-sparkle">✦</span>
+              <span class="coffret-btn-text">Inspect All 6 Scent Pyramids & Notes</span>
+              <span class="coffret-btn-arrow">➔</span>
+            </button>
           </div>
 
           <div class="combo-pricing-bar">
@@ -2230,29 +2240,57 @@ window.openNotesModal = function(productId) {
 
   const bottleContainer = document.getElementById("modal-bottle-container");
   if (bottleContainer) {
-    const hasMultipleImages = Boolean(product.image2 && product.image && product.image2 !== product.image);
-    if (product.image) {
+    // Collect strictly distinct images for this product
+    const extractFileKey = (u) => {
+      if (!u || typeof u !== 'string') return '';
+      const m = u.match(/\/d\/([a-zA-Z0-9_-]+)/) || u.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+      if (m && m[1]) return m[1];
+      return u.split('?')[0].split('=')[0].trim();
+    };
+
+    const rawList = [];
+    if (Array.isArray(product.images) && product.images.length > 0) {
+      rawList.push(...product.images);
+    } else {
+      if (product.image) rawList.push(product.image);
+      if (product.image2) rawList.push(product.image2);
+    }
+
+    const seenKeys = new Set();
+    const productImages = [];
+    for (const url of rawList) {
+      if (!url) continue;
+      const k = extractFileKey(url);
+      if (k && !seenKeys.has(k)) {
+        seenKeys.add(k);
+        productImages.push(url);
+      }
+    }
+
+    const hasMultipleImages = productImages.length > 1;
+    const primaryImg = productImages[0] || product.image;
+
+    if (primaryImg) {
       bottleContainer.innerHTML = `
         <div class="modal-gallery-container">
           <div class="modal-active-img-wrap">
             <img 
-              src="${product.image}" 
+              src="${primaryImg}" 
               alt="${product.name}" 
               class="modal-product-img" 
               id="modal-active-display-img" 
               onclick="window.openLightbox(this.src, '${product.name}')" 
               style="cursor: zoom-in;" 
-              title="Click to view full image" 
+              title="Click to view full photo" 
             />
           </div>
           ${hasMultipleImages ? `
             <div class="modal-thumbs-row">
-              <button type="button" class="modal-thumb-btn active" onclick="window.switchModalImage('${product.image}', this)" aria-label="View 1">
-                <img src="${product.image}" alt="View 1" />
-              </button>
-              <button type="button" class="modal-thumb-btn" onclick="window.switchModalImage('${product.image2}', this)" aria-label="View 2">
-                <img src="${product.image2}" alt="View 2" />
-              </button>
+              ${productImages.map((imgUrl, idx) => `
+                <button type="button" class="modal-thumb-btn ${idx === 0 ? 'active' : ''}" onclick="window.switchModalImage('${imgUrl}', this)" aria-label="View angle ${idx + 1}">
+                  <img src="${imgUrl}" alt="${product.name} angle ${idx + 1}" />
+                </button>
+              `).join('')}
             </div>
           ` : ''}
         </div>
@@ -2260,7 +2298,7 @@ window.openNotesModal = function(productId) {
 
       if (hasMultipleImages) {
         if (window._modalSlideInterval) clearInterval(window._modalSlideInterval);
-        const modalImages = (product.images && product.images.length > 1) ? product.images : [product.image, product.image2];
+        const modalImages = productImages;
         let modalIdx = 0;
         window._modalSlideInterval = setInterval(() => {
           const modal = document.getElementById("notes-modal");
@@ -2280,7 +2318,7 @@ window.openNotesModal = function(productId) {
           }
           const thumbs = document.querySelectorAll('.modal-thumb-btn');
           thumbs.forEach((t, i) => t.classList.toggle('active', i === modalIdx));
-        }, 3500);
+        }, 3200);
       } else {
         if (window._modalSlideInterval) {
           clearInterval(window._modalSlideInterval);
@@ -2330,7 +2368,7 @@ window.openNotesModal = function(productId) {
       const inspName = product.inspiration || 'Designer Retail';
       modalSavingsHighlightEl.innerHTML = `
         <span><strong>Designer Benchmark (${inspName}):</strong> Retail MRP ~${currency}${product.originalMrp.toLocaleString('en-IN')}.<br>
-        You pay <strong>${currency}${modalPriceVal.toLocaleString('en-IN')}</strong> — <strong>Save ${currency}${savingsAmt.toLocaleString('en-IN')} (${savingsPct}%)</strong> in 100% pure alcohol-free perfume oil.</span>
+        You pay <strong>${currency}${modalPriceVal.toLocaleString('en-IN')}</strong> (Save <strong>${currency}${savingsAmt.toLocaleString('en-IN')} / ${savingsPct}%</strong>) in 100% pure alcohol-free perfume oil.</span>
       `;
       modalSavingsHighlightEl.style.display = 'block';
     }
@@ -3624,4 +3662,100 @@ window.toggleRecCart = function(id, type, btnEl) {
  */
 window.addAndOpenCart = function(id, type) {
   window.toggleRecCart(id, type);
+};
+
+/**
+ * Option B: Interactive Coffret Scent Profiles Discovery Modal
+ * Allows customers to inspect the full pyramid, longevity, season, and inspiration of all 6 bottles
+ */
+window.openCoffretScentsModal = function(comboId) {
+  const combo = (window.NURAAN_COMBOS || []).find(c => c.id === comboId);
+  if (!combo) return;
+
+  const modal = document.getElementById("coffret-scents-modal");
+  const titleEl = document.getElementById("coffret-modal-title");
+  const subtitleEl = document.getElementById("coffret-modal-subtitle");
+  const container = document.getElementById("coffret-scents-container");
+  const addCartBtn = document.getElementById("coffret-modal-add-cart-btn");
+
+  if (!modal || !container) return;
+
+  if (titleEl) titleEl.innerHTML = `${combo.name} <span class="coffret-header-sub">• 6 Artisanal Scent Profiles</span>`;
+  if (subtitleEl) subtitleEl.textContent = `Handcrafted 3ml precision roll-ons (100% pure alcohol-free concentrated perfume oil). Explore each fragrance pyramid below:`;
+
+  if (addCartBtn) {
+    const currency = (window.NURAAN_CONFIG && window.NURAAN_CONFIG.currencySymbol) || "₹";
+    const isIntroOffer = Boolean(window.NURAAN_CONFIG && window.NURAAN_CONFIG.introductoryOfferEnabled);
+    const activePrice = isIntroOffer ? (window.NURAAN_CONFIG.offerPriceCombos || 899) : (combo.price || 999);
+    addCartBtn.onclick = () => {
+      window.addComboToSelection(combo.id);
+      window.closeCoffretScentsModal();
+    };
+    addCartBtn.innerHTML = `<span>+ Add ${combo.name} to Cart (${currency}${activePrice.toLocaleString('en-IN')})</span>`;
+  }
+
+  const catalog = window.NURAAN_CATALOG || [];
+  const items = combo.itemsIncluded || [];
+
+  container.innerHTML = items.map((itemName, index) => {
+    const cleanItemName = itemName.trim().toLowerCase();
+    const prod = catalog.find(p => p.name.trim().toLowerCase() === cleanItemName || p.id.replace(/-/g, ' ').toLowerCase() === cleanItemName);
+    const insp = prod ? getInspirationInfo(prod) : { badgeText: '' };
+    const topNotes = (prod && prod.notes && prod.notes.top) ? prod.notes.top.join(", ") : "Bergamot, Fresh Accords";
+    const heartNotes = (prod && prod.notes && prod.notes.heart) ? prod.notes.heart.join(", ") : "Warm Florals, Precious Spices";
+    const baseNotes = (prod && prod.notes && prod.notes.base) ? prod.notes.base.join(", ") : "Rare Woods, Amber, Velvet Musk";
+    const longevity = (prod && prod.longevity) ? prod.longevity : "14+ Hours";
+    const season = (prod && prod.season) ? prod.season : "All Season";
+    const photo = (prod && prod.image) ? prod.image : '';
+
+    return `
+      <div class="coffret-scent-card">
+        <div class="coffret-scent-head">
+          <div class="coffret-scent-num">${index + 1}</div>
+          ${photo ? `
+            <div class="coffret-scent-thumb-wrap">
+              <img src="${photo}" alt="${itemName} by Nuraan Perfumes" class="coffret-scent-thumb" loading="lazy" />
+            </div>
+          ` : `
+            <div class="coffret-scent-thumb-wrap placeholder">
+              <span class="coffret-thumb-gem" style="background: ${(prod && prod.bottleColor) || '#C59B27'};"></span>
+            </div>
+          `}
+          <div class="coffret-scent-meta">
+            <h4 class="coffret-scent-name">${itemName}</h4>
+            ${insp.badgeText ? `<span class="coffret-scent-insp">✦ Inspired by <strong>${insp.badgeText}</strong></span>` : ''}
+          </div>
+        </div>
+
+        <div class="coffret-scent-pyramid">
+          <div class="coffret-tier">
+            <span class="coffret-tier-pill top-pill">Top Notes</span>
+            <span class="coffret-tier-text">${topNotes}</span>
+          </div>
+          <div class="coffret-tier">
+            <span class="coffret-tier-pill heart-pill">Heart Notes</span>
+            <span class="coffret-tier-text">${heartNotes}</span>
+          </div>
+          <div class="coffret-tier">
+            <span class="coffret-tier-pill base-pill">Base Notes</span>
+            <span class="coffret-tier-text">${baseNotes}</span>
+          </div>
+        </div>
+
+        <div class="coffret-scent-footer-pills">
+          <span class="coffret-footer-pill">⏳ ${longevity}</span>
+          <span class="coffret-footer-pill">🍂 ${season}</span>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  modal.classList.add("active");
+  document.body.style.overflow = "hidden";
+};
+
+window.closeCoffretScentsModal = function() {
+  const modal = document.getElementById("coffret-scents-modal");
+  if (modal) modal.classList.remove("active");
+  document.body.style.overflow = "";
 };
