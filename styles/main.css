@@ -7794,7 +7794,100 @@ img {
 .real-product-photo {
   transform: scale(1.08) !important;
   transform-origin: 35% 35% !important;
-  transition: transform 0.35s ease, opacity 0.25s ease !important;
+  transition: transform 0.35s ease, opacity 0.75s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* Dual-Layer Crossfade Stack for Fragrance Cards */
+.product-photo-stack {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.product-photo-stack .real-product-photo.photo-primary {
+  position: relative;
+  z-index: 1;
+  opacity: 1;
+}
+
+.product-photo-stack .real-product-photo.photo-secondary {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(1.08) !important;
+  transform-origin: 35% 35% !important;
+  opacity: 0;
+  z-index: 2;
+  pointer-events: none;
+  will-change: opacity;
+  transition: opacity 0.75s cubic-bezier(0.4, 0, 0.2, 1), transform 0.35s ease !important;
+}
+
+/* Active Secondary State (Smooth crossfade in) */
+.perfume-card.show-secondary .product-photo-stack .photo-secondary,
+.product-photo-stack.show-secondary .photo-secondary {
+  opacity: 1 !important;
+  pointer-events: auto;
+}
+
+/* Desktop Hover: Smooth crossfade to GIF when user hovers card */
+@media (hover: hover) and (pointer: fine) {
+  .perfume-card:hover .product-photo-stack .photo-secondary {
+    opacity: 1 !important;
+    pointer-events: auto;
+  }
+}
+
+/* Dual-Layer Crossfade for Curated Combos */
+.combo-real-photo {
+  max-width: 100%;
+  max-height: 250px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: 12px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+  transform: scale(1.08);
+  transform-origin: 35% 35%;
+  transition: opacity 0.75s cubic-bezier(0.4, 0, 0.2, 1), transform 0.35s ease !important;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.combo-real-photo.combo-photo-primary {
+  position: relative;
+  z-index: 1;
+  opacity: 1;
+}
+
+.combo-real-photo.combo-photo-secondary {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(1.08) !important;
+  transform-origin: 35% 35% !important;
+  opacity: 0;
+  z-index: 2;
+  pointer-events: none;
+  will-change: opacity;
+  transition: opacity 0.75s cubic-bezier(0.4, 0, 0.2, 1), transform 0.35s ease !important;
+}
+
+.combo-card.show-secondary .combo-photo-secondary {
+  opacity: 1 !important;
+  pointer-events: auto;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .combo-card:hover .combo-photo-secondary {
+    opacity: 1 !important;
+    pointer-events: auto;
+  }
 }
 
 /* Eliminate AI-style hard borders across cards, boxes, and modal pills */
