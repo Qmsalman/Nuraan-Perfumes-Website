@@ -52,31 +52,30 @@ Thank you!`;
    */
   openInstagramDM: function(igHandle, summaryText, successMessage) {
     const handle = (igHandle || "nuraan_perfumes").replace(/^@/, '').trim();
-    // Use Meta's official universal direct link for Instagram DM (ig.me/m/{username})
-    // On mobile: automatically opens the Instagram app directly into the Direct Message composer
-    // On desktop: opens the Direct Message chat thread with this user
+    // Meta official direct link for Instagram DM (ig.me/m/{username})
     const dmUrl = `https://ig.me/m/${handle}`;
-    
-    // Copy pre-formatted order summary to clipboard so user can simply paste into Instagram DM
-    SocialCheckout.copyToClipboard(summaryText, function() {
-      SocialCheckout.showToast(successMessage || `✓ Copied inquiry to clipboard! Opening Instagram DM with @${handle}... (Paste into chat)`, "success");
-    });
-
     const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent || '');
-    if (isMobile) {
-      // Direct mobile device to Instagram DM via official Universal Link
-      window.location.href = dmUrl;
-    } else {
-      // On desktop, open direct message thread in a new tab
-      try {
-        const opened = window.open(dmUrl, '_blank', 'noopener,noreferrer');
-        if (!opened || opened.closed || typeof opened.closed === 'undefined') {
+    
+    function navigateToInstagram() {
+      if (isMobile) {
+        window.location.href = dmUrl;
+      } else {
+        try {
+          const opened = window.open(dmUrl, '_blank', 'noopener,noreferrer');
+          if (!opened || opened.closed || typeof opened.closed === 'undefined') {
+            window.location.href = dmUrl;
+          }
+        } catch (e) {
           window.location.href = dmUrl;
         }
-      } catch (e) {
-        window.location.href = dmUrl;
       }
     }
+
+    // Copy pre-formatted order summary to clipboard, then launch Instagram DM
+    SocialCheckout.copyToClipboard(summaryText, function() {
+      SocialCheckout.showToast(successMessage || `✓ Copied inquiry to clipboard! Opening Instagram DM with @${handle}... (Paste into chat)`, "success");
+      setTimeout(navigateToInstagram, 180);
+    });
   },
 
   /**

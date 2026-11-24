@@ -201,6 +201,31 @@ function initHeroBanner() {
 }
 
 /**
+ * Trigger Instagram DM with auto-copied inquiry or cart summary
+ */
+window.triggerFloatingInstagramDM = function(event) {
+  if (event) {
+    try { event.preventDefault(); } catch(e) {}
+  }
+  const config = window.NURAAN_CONFIG || {};
+  const handle = config.instagramHandle || 'nuraan_perfumes';
+  
+  if (window.selectionList && window.selectionList.length > 0) {
+    if (window.SocialCheckout && window.SocialCheckout.inquireSelectionListOnInstagram) {
+      window.triggerSelectionInstagram();
+      return;
+    }
+  }
+
+  const defaultMsg = "Hello Nuraan Perfumes, I would like to inquire about your pure attars and artisanal perfume oils.";
+  if (window.SocialCheckout && window.SocialCheckout.openInstagramDM) {
+    window.SocialCheckout.openInstagramDM(handle, defaultMsg, `✓ Copied inquiry to clipboard! Opening Instagram DM with @${handle}... (Paste into chat)`);
+  } else {
+    window.open(`https://ig.me/m/${handle}`, '_blank');
+  }
+};
+
+/**
  * Open official Instagram profile with automatic native app deep linking on mobile
  */
 window.openInstagramProfile = function(event) {
@@ -273,20 +298,20 @@ function renderBrandHeader() {
 
   const dockIg = document.getElementById("floating-dock-ig");
   if (dockIg) {
-    dockIg.href = igUrl;
-    dockIg.onclick = function(e) { window.openInstagramProfile(e); return false; };
+    dockIg.href = `https://ig.me/m/${config.instagramHandle || 'nuraan_perfumes'}`;
+    dockIg.onclick = function(e) { window.triggerFloatingInstagramDM(e); return false; };
   }
 
   const floatingBtnIg = document.getElementById("floating-btn-ig");
   if (floatingBtnIg) {
-    floatingBtnIg.href = igUrl;
-    floatingBtnIg.onclick = function(e) { window.openInstagramProfile(e); return false; };
+    floatingBtnIg.href = `https://ig.me/m/${config.instagramHandle || 'nuraan_perfumes'}`;
+    floatingBtnIg.onclick = function(e) { window.triggerFloatingInstagramDM(e); return false; };
   }
 
   const mobileIg = document.getElementById("mobile-sticky-ig");
   if (mobileIg) {
-    mobileIg.href = igUrl;
-    mobileIg.onclick = function(e) { window.openInstagramProfile(e); return false; };
+    mobileIg.href = `https://ig.me/m/${config.instagramHandle || 'nuraan_perfumes'}`;
+    mobileIg.onclick = function(e) { window.triggerFloatingInstagramDM(e); return false; };
   }
 }
 
