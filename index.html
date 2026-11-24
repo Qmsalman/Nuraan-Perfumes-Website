@@ -12,7 +12,7 @@
 
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Nuraan Perfumes — Luxury Alcohol-Free Attars & Perfume Oils India | 12ml Roll-On</title>
+  <title>Nuraan Perfumes • Luxury Alcohol-Free Attars & Perfume Oils India | 12ml Roll-On</title>
   <meta name="description" content="Buy luxury 100% alcohol-free concentrated perfume oils in India. Artisanal 12ml roll-on attars inspired by Baccarat Rouge 540, Creed Aventus, Black Opium & more. 14+ hour longevity. Free nationwide dispatch.">
   <meta name="keywords" content="Nuraan Perfumes, alcohol free perfume oil India, attar roll on 12ml, long lasting attar India, luxury perfume oil, Baccarat Rouge 540 dupe India, Creed Aventus clone oil, pure attar online, non alcoholic perfume India, attar discovery box, oud attar, Kashmiri saffron">
   <link rel="canonical" href="https://nuraanperfumes.in/">
@@ -141,7 +141,7 @@
 
   <!-- Stylesheets -->
   <link rel="stylesheet" href="styles/typography.css">
-  <link rel="stylesheet" href="styles/main.css?v=3.6">
+  <link rel="stylesheet" href="styles/main.css?v=3.8">
 </head>
 <body>
 
@@ -188,7 +188,7 @@
           <h1 class="hero-headline">The Sublime Art of <em>Pure Concentrated</em> Fragrance</h1>
           <p class="hero-subhead">
             Crafted without alcohol or shortcuts. Experience our signature attars distilled from aged Assam agarwood, 
-            Mysore sandalwood, crimson Taif rose, and solar ambergris—bottled in precision roll-on flacons.
+            Mysore sandalwood, crimson Taif rose, and solar ambergris, bottled in precision roll-on flacons.
           </p>
 
           <div class="hero-cta-group">
@@ -816,7 +816,7 @@
             <span class="faq-icon">+</span>
           </div>
           <div class="faq-body">
-            Because our oils are 100% concentrated extract, you only need 1 to 2 precision roll-on glides per wear. A single 12ml flacon provides over 300+ applications—giving you 3 to 4 months of daily wear from one bottle.
+            Because our oils are 100% concentrated extract, you only need 1 to 2 precision roll-on glides per wear. A single 12ml flacon provides over 300+ applications, giving you 3 to 4 months of daily wear from one bottle.
           </div>
         </div>
 
@@ -1305,7 +1305,7 @@
                 <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
               </div>
               <div class="quiz-option-name">Daily Office & Professional Work</div>
-              <div class="quiz-option-sub">Polite, classy, clean — stays fresh for 10+ hours</div>
+              <div class="quiz-option-sub">Polite, classy, clean • stays fresh for 10+ hours</div>
             </div>
 
             <div class="quiz-option-btn selected" onclick="toggleSiteQuizOption(this, 2, 'dates')">
@@ -1314,7 +1314,7 @@
                 <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
               </div>
               <div class="quiz-option-name">Evening Dates & Dinners</div>
-              <div class="quiz-option-sub">Warm, intimate, inviting — guaranteed compliment getter</div>
+              <div class="quiz-option-sub">Warm, intimate, inviting • guaranteed compliment getter</div>
             </div>
 
             <div class="quiz-option-btn" onclick="toggleSiteQuizOption(this, 2, 'weddings')">
@@ -1409,6 +1409,32 @@
     </div>
   </div>
 
+  <!-- 12C. OPTION B: COFFRET SCENTS DISCOVERY MODAL -->
+  <div class="modal-overlay" id="coffret-scents-modal" role="dialog" aria-modal="true" aria-labelledby="coffret-modal-title" onclick="if(event.target === this) window.closeCoffretScentsModal()">
+    <div class="modal-window coffret-modal-window">
+      <button class="modal-close-btn" onclick="window.closeCoffretScentsModal()" aria-label="Close dialog">✕</button>
+      
+      <div class="coffret-modal-header">
+        <span class="coffret-modal-kicker">✦ LUXURY GIFT SET • COMPLETE SCENT PYRAMIDS</span>
+        <h3 class="coffret-modal-title" id="coffret-modal-title">Gift Set Fragrance Notes</h3>
+        <p class="coffret-modal-subtitle" id="coffret-modal-subtitle">Handcrafted 3ml precision roll-ons (100% pure alcohol-free concentrated perfume oil). Explore each fragrance pyramid below:</p>
+      </div>
+
+      <div class="coffret-scents-container" id="coffret-scents-container">
+        <!-- Injected dynamically via openCoffretScentsModal() in app.js -->
+      </div>
+
+      <div class="coffret-modal-footer">
+        <button type="button" class="btn-coffret-modal-cart" id="coffret-modal-add-cart-btn">
+          <span>+ Add Gift Set to Cart</span>
+        </button>
+        <button type="button" class="btn-coffret-modal-close" onclick="window.closeCoffretScentsModal()">
+          <span>Done Exploring</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- 13. FLOATING MOBILE GLASS DOCK -->
   <div class="floating-dock-bar" id="mobile-floating-dock">
     <button type="button" class="dock-pill-btn dock-pill-cart" onclick="openSelectionDrawer()">
@@ -1427,11 +1453,11 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
   <!-- Application Scripts -->
-  <script src="scripts/config.js?v=3.7"></script>
-  <script src="scripts/catalog-data.js?v=3.7"></script>
-  <script src="scripts/social-checkout.js?v=3.7"></script>
-  <script src="scripts/app.js?v=3.7"></script>
-  <script src="scripts/3d-experience.js?v=3.7"></script>
-  <script src="scripts/sheets-sync.js?v=3.7"></script>
+  <script src="scripts/config.js?v=3.8"></script>
+  <script src="scripts/catalog-data.js?v=3.8"></script>
+  <script src="scripts/social-checkout.js?v=3.8"></script>
+  <script src="scripts/app.js?v=3.8"></script>
+  <script src="scripts/3d-experience.js?v=3.8"></script>
+  <script src="scripts/sheets-sync.js?v=3.8"></script>
 </body>
 </html>
