@@ -1644,10 +1644,15 @@
   <div id="nuraan-lightbox" class="nuraan-lightbox" style="display: none;" onclick="window.closeLightbox(event)" role="dialog" aria-modal="true" aria-label="Product Image Lightbox">
     <div class="lightbox-dialog" onclick="event.stopPropagation()">
       <button type="button" class="lightbox-close-btn" onclick="window.closeLightbox(event)" aria-label="Close Lightbox">✕</button>
-      <div class="lightbox-media-wrap">
+      <button type="button" class="lightbox-nav-btn lightbox-prev" id="lightbox-prev-btn" onclick="window.stepLightbox(-1)" aria-label="Previous Image" style="display: none;">‹</button>
+      <div class="lightbox-media-wrap" id="lightbox-media-wrap">
         <img id="lightbox-img" class="lightbox-img" src="" alt="Full Resolution View" />
       </div>
-      <div class="lightbox-caption" id="lightbox-caption"></div>
+      <button type="button" class="lightbox-nav-btn lightbox-next" id="lightbox-next-btn" onclick="window.stepLightbox(1)" aria-label="Next Image" style="display: none;">›</button>
+      <div class="lightbox-footer-bar">
+        <div class="lightbox-caption" id="lightbox-caption"></div>
+        <div class="lightbox-dots" id="lightbox-dots"></div>
+      </div>
     </div>
   </div>
 
