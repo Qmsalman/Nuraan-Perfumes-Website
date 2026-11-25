@@ -7893,12 +7893,19 @@ img {
 
 /* Multi-slide dots & swipeable lightbox controls */
 .product-slide-dots {
+  position: absolute;
+  bottom: 4px;
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
   justify-content: center;
+  align-items: center;
   gap: 6px;
-  margin-top: 8px;
-  position: relative;
-  z-index: 4;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(4px);
+  z-index: 6;
 }
 .product-slide-dot {
   width: 8px;
