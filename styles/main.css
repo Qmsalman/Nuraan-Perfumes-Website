@@ -7891,31 +7891,80 @@ img {
   transform: scale(1.12);
 }
 
-/* Desktop Hover: Inactive primary fades out, secondary fades in (Zero ghosting) */
-@media (hover: hover) and (pointer: fine) {
-  .perfume-card:has(.slide-secondary):hover .product-photo-slide.slide-primary {
-    opacity: 0;
-    visibility: hidden;
-    z-index: 1;
-  }
-  .perfume-card:hover .product-photo-slide.slide-secondary {
-    opacity: 1;
-    visibility: visible;
-    z-index: 2;
-    pointer-events: auto;
-  }
+/* Multi-slide dots & swipeable lightbox controls */
+.product-slide-dots {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 8px;
+  position: relative;
+  z-index: 4;
+}
+.product-slide-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(179, 143, 77, 0.3);
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: width 0.2s ease, background 0.2s ease;
+}
+.product-slide-dot.active {
+  width: 20px;
+  background: var(--accent-gold, #B38F4D);
+}
 
-  .combo-card:has(.combo-slide-secondary):hover .combo-photo-slide.combo-slide-primary {
-    opacity: 0;
-    visibility: hidden;
-    z-index: 1;
-  }
-  .combo-card:hover .combo-photo-slide.combo-slide-secondary {
-    opacity: 1;
-    visibility: visible;
-    z-index: 2;
-    pointer-events: auto;
-  }
+.lightbox-nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  background: rgba(20, 23, 30, 0.78);
+  border: 1px solid rgba(247, 231, 196, 0.45);
+  color: #F7E7C4;
+  font-size: 26px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+.lightbox-nav-btn:hover {
+  background: rgba(179, 143, 77, 0.9);
+  color: #14171E;
+}
+.lightbox-prev { left: 12px; }
+.lightbox-next { right: 12px; }
+.lightbox-footer-bar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+}
+.lightbox-dots {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+.lightbox-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.35);
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: width 0.2s ease, background 0.2s ease;
+}
+.lightbox-dot.active {
+  width: 24px;
+  background: #F7E7C4;
 }
 
 @media (max-width: 768px) {
