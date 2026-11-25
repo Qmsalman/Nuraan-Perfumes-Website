@@ -978,44 +978,39 @@ function renderProceduralBottle(product) {
   const accent = product.bottleColor || "#C59B27";
   const name = product.name;
 
-  const hasRealImage = Boolean(product.image && (product.image.startsWith('http://') || product.image.startsWith('https://') || product.image.startsWith('//') || product.image.startsWith('data:') || product.image.startsWith('Pics/')));
-  const secondaryImage = (product.images && product.images.length > 1) ? product.images[1] : (product.image2 || '');
-  const hasSecondary = Boolean(secondaryImage && (secondaryImage.startsWith('http://') || secondaryImage.startsWith('https://') || secondaryImage.startsWith('//') || secondaryImage.startsWith('data:') || secondaryImage.startsWith('Pics/')));
+  const mediaList = (product.images && product.images.length)
+    ? product.images.filter(Boolean)
+    : [product.image, product.image2].filter(Boolean);
+  const hasRealImage = Boolean(mediaList[0] && (mediaList[0].startsWith('http://') || mediaList[0].startsWith('https://') || mediaList[0].startsWith('//') || mediaList[0].startsWith('data:') || mediaList[0].startsWith('Pics/') || mediaList[0].startsWith('assets/')));
 
   return `
     <div class="procedural-bottle bottle-3d-stage" data-product-id="${product.id}" title="${name} by Nuraan Perfumes">
       <div class="bottle-3d-chassis">
-        ${product.image ? `
+        ${mediaList.length ? `
           <div class="product-photo-slider" id="photo-slider-${product.id}">
-            <div class="product-photo-slide slide-primary active">
-              <img 
-                src="${product.image}" 
-                alt="${name} by Nuraan Perfumes" 
-                class="real-product-photo"
-                style="max-height: 220px; width: auto; object-fit: contain; border-radius: 6px; cursor: zoom-in; ${hasRealImage ? 'display: block;' : 'display: none;'}"
-                onclick="event.stopPropagation(); window.openLightbox(this.src, '${name}')"
-                title="Click to view full image"
-                onload="const s = this.closest('.bottle-3d-chassis').querySelector('.svg-bottle-wrapper'); if(s) s.style.display='none'; this.style.display='block';"
-                onerror="this.style.display='none'; const s = this.closest('.bottle-3d-chassis').querySelector('.svg-bottle-wrapper'); if(s) s.style.display='flex';"
-                loading="lazy"
-                decoding="async"
-              />
-            </div>
-            ${hasSecondary ? `
-              <div class="product-photo-slide slide-secondary">
+            ${mediaList.map((src, idx) => `
+              <div class="product-photo-slide ${idx === 0 ? 'slide-primary active' : 'slide-secondary'}" data-slide-idx="${idx}">
                 <img 
-                  src="${secondaryImage}" 
-                  alt="${name} Motion by Nuraan Perfumes" 
+                  src="${src}" 
+                  alt="${name} view ${idx + 1} by Nuraan Perfumes" 
                   class="real-product-photo"
-                  style="max-height: 220px; width: auto; object-fit: contain; border-radius: 6px; cursor: zoom-in;"
-                  onclick="event.stopPropagation(); window.openLightbox(this.src, '${name}')"
-                  title="Click to view full image"
+                  style="max-height: 220px; width: auto; object-fit: contain; border-radius: 6px; cursor: zoom-in; ${idx === 0 ? (hasRealImage ? 'display: block;' : 'display: none;') : ''}"
+                  onclick="event.stopPropagation(); window.pauseCardSlider('product', '${product.id}'); window.openItemLightbox('product', '${product.id}', ${idx});"
+                  title="Click to view full image & swipe gallery"
+                  ${idx === 0 ? `onload="const s = this.closest('.bottle-3d-chassis').querySelector('.svg-bottle-wrapper'); if(s) s.style.display='none'; this.style.display='block';" onerror="this.style.display='none'; const s = this.closest('.bottle-3d-chassis').querySelector('.svg-bottle-wrapper'); if(s) s.style.display='flex';"` : ''}
                   loading="lazy"
                   decoding="async"
                 />
               </div>
-            ` : ''}
+            `).join('')}
           </div>
+          ${mediaList.length > 1 ? `
+            <div class="product-slide-dots" id="product-dots-${product.id}" onclick="event.stopPropagation()">
+              ${mediaList.map((_, idx) => `
+                <button type="button" class="product-slide-dot ${idx === 0 ? 'active' : ''}" onclick="window.selectProductSlide('${product.id}', ${idx})" aria-label="View image ${idx + 1}"></button>
+              `).join('')}
+            </div>
+          ` : ''}
         ` : ''}
 
         <div class="svg-bottle-wrapper" style="width: 100%; height: 100%; display: ${hasRealImage ? 'none' : 'flex'}; align-items: center; justify-content: center;">
@@ -1165,9 +1160,10 @@ function renderCombos(combos) {
       .map(item => `<li><span class="bullet">✦</span> <strong>${item}</strong></li>`)
       .join("");
 
-    const hasRealComboImage = Boolean(combo.image && (combo.image.startsWith('http://') || combo.image.startsWith('https://') || combo.image.startsWith('//') || combo.image.startsWith('data:') || combo.image.startsWith('Pics/')));
-    const secondaryComboImg = (combo.images && combo.images.length > 1) ? combo.images[1] : (combo.image2 || '');
-    const hasSecondaryCombo = Boolean(secondaryComboImg && (secondaryComboImg.startsWith('http://') || secondaryComboImg.startsWith('https://') || secondaryComboImg.startsWith('//') || secondaryComboImg.startsWith('data:') || secondaryComboImg.startsWith('Pics/')));
+    const comboMedia = (combo.images && combo.images.length)
+      ? combo.images.filter(Boolean)
+      : [combo.image, combo.image2].filter(Boolean);
+    const hasRealComboImage = Boolean(comboMedia[0] && (comboMedia[0].startsWith('http://') || comboMedia[0].startsWith('https://') || comboMedia[0].startsWith('//') || comboMedia[0].startsWith('data:') || comboMedia[0].startsWith('Pics/') || comboMedia[0].startsWith('assets/')));
 
     return `
       <div class="combo-card" id="combo-${combo.id}">
@@ -1181,40 +1177,27 @@ function renderCombos(combos) {
             ${hasRealComboImage ? `
               <div class="combo-photo-container">
                 <div class="combo-main-photo-wrap" id="combo-photo-wrap-${combo.id}">
-                  <div class="combo-photo-slide combo-slide-primary active">
-                    <img 
-                      src="${combo.image}" 
-                      alt="${combo.name} by Nuraan Perfumes" 
-                      class="combo-real-photo"
-                      id="combo-img-${combo.id}"
-                      onclick="window.openLightbox(this.src, '${combo.name}')"
-                      style="cursor: zoom-in;"
-                      title="Click to view full photo"
-                      onerror="this.style.display='none'; const b = this.parentElement.parentElement.parentElement.querySelector('.combo-interactive-box'); if(b) b.style.display='block';"
-                      loading="lazy"
-                      decoding="async"
-                    />
-                  </div>
-                  ${hasSecondaryCombo ? `
-                    <div class="combo-photo-slide combo-slide-secondary">
+                  ${comboMedia.map((src, idx) => `
+                    <div class="combo-photo-slide ${idx === 0 ? 'combo-slide-primary active' : 'combo-slide-secondary'}" data-slide-idx="${idx}">
                       <img 
-                        src="${secondaryComboImg}" 
-                        alt="${combo.name} Motion by Nuraan Perfumes" 
+                        src="${src}" 
+                        alt="${combo.name} view ${idx + 1} by Nuraan Perfumes" 
                         class="combo-real-photo"
-                        id="combo-img-sec-${combo.id}"
-                        onclick="window.openLightbox(this.src, '${combo.name}')"
+                        id="${idx === 0 ? `combo-img-${combo.id}` : `combo-img-${idx}-${combo.id}`}"
+                        onclick="window.pauseCardSlider('combo', '${combo.id}'); window.openItemLightbox('combo', '${combo.id}', ${idx});"
                         style="cursor: zoom-in;"
-                        title="Click to view full photo"
+                        title="Click to view full photo & swipe gallery"
+                        ${idx === 0 ? `onerror="this.style.display='none'; const b = this.parentElement.parentElement.parentElement.querySelector('.combo-interactive-box'); if(b) b.style.display='block';"` : ''}
                         loading="lazy"
                         decoding="async"
                       />
                     </div>
-                  ` : ''}
+                  `).join('')}
                 </div>
-                ${(combo.images && combo.images.length > 1) ? `
+                ${comboMedia.length > 1 ? `
                   <div class="combo-thumbs-row">
-                    ${combo.images.map((imgUrl, idx) => `
-                      <button type="button" class="combo-thumb-btn ${idx === 0 ? 'active' : ''}" onclick="window.switchComboImage('${combo.id}', '${imgUrl}', this)" aria-label="View angle ${idx + 1}">
+                    ${comboMedia.map((imgUrl, idx) => `
+                      <button type="button" class="combo-thumb-btn ${idx === 0 ? 'active' : ''}" onclick="window.switchComboImage('${combo.id}', '${imgUrl}', this, ${idx})" aria-label="View angle ${idx + 1}">
                         <img src="${imgUrl}" alt="${combo.name} angle ${idx + 1}" />
                       </button>
                     `).join('')}
@@ -3637,32 +3620,53 @@ window.switchModalImage = function(src, btn) {
   }
 };
 
-window.switchComboImage = function(comboId, src, btn) {
+window._pausedSliders = window._pausedSliders || { combo: {}, product: {} };
+
+window.pauseCardSlider = function(type, id) {
+  if (!window._pausedSliders) window._pausedSliders = { combo: {}, product: {} };
+  if (!window._pausedSliders[type]) window._pausedSliders[type] = {};
+  window._pausedSliders[type][id] = true;
+};
+
+function getItemMediaList(item) {
+  if (!item) return [];
+  if (item.images && item.images.length) return item.images.filter(Boolean);
+  return [item.image, item.image2].filter(Boolean);
+}
+
+window.selectProductSlide = function(productId, targetIdx) {
+  window.pauseCardSlider('product', productId);
+  const slider = document.getElementById(`photo-slider-${productId}`);
+  if (!slider) return;
+  const slides = slider.querySelectorAll('.product-photo-slide');
+  if (!slides.length) return;
+  const idx = ((targetIdx % slides.length) + slides.length) % slides.length;
+  slides.forEach((s, i) => s.classList.toggle('active', i === idx));
+
+  const dotsWrap = document.getElementById(`product-dots-${productId}`);
+  if (dotsWrap) {
+    dotsWrap.querySelectorAll('.product-slide-dot').forEach((d, i) => d.classList.toggle('active', i === idx));
+  }
+};
+
+window.switchComboImage = function(comboId, src, btn, targetIdx) {
+  window.pauseCardSlider('combo', comboId);
   const cardEl = document.getElementById(`combo-${comboId}`);
   if (!cardEl) return;
 
   const wrap = cardEl.querySelector('.combo-main-photo-wrap');
   if (wrap) {
-    const slidePrimary = wrap.querySelector('.combo-slide-primary');
-    const slideSecondary = wrap.querySelector('.combo-slide-secondary');
+    const slides = wrap.querySelectorAll('.combo-photo-slide');
     const parent = btn ? btn.parentElement : null;
-    const isFirstThumb = parent && parent.firstElementChild === btn;
+    const idx = typeof targetIdx === 'number'
+      ? targetIdx
+      : (parent && btn ? Array.from(parent.children).indexOf(btn) : 0);
 
-    if (slidePrimary && slideSecondary) {
-      if (isFirstThumb) {
-        slideSecondary.classList.remove('active');
-        slidePrimary.classList.add('active');
-      } else {
-        slidePrimary.classList.remove('active');
-        slideSecondary.classList.add('active');
-        const secImg = slideSecondary.querySelector('img');
-        if (secImg && secImg.src !== src) {
-          secImg.src = src;
-        }
-      }
+    if (slides.length > 0 && idx >= 0 && idx < slides.length) {
+      slides.forEach((s, i) => s.classList.toggle('active', i === idx));
     } else {
       const activeImg = document.getElementById(`combo-img-${comboId}`);
-      if (activeImg) activeImg.src = src;
+      if (activeImg && src) activeImg.src = src;
     }
   }
 
@@ -3673,8 +3677,7 @@ window.switchComboImage = function(comboId, src, btn) {
 };
 
 /**
- * Auto-Slideshow for Curated Gift Sets (Combos) — Matched to Hero Section Settings
- * (0.5s cubic-bezier crossfade, visibility:hidden on inactive slide, zero background bleed)
+ * Uncapped Auto-Slideshow for Curated Gift Sets (Combos) — Stops on user click
  */
 window.initComboAutoSliders = function() {
   if (window._comboSliderInterval) {
@@ -3682,81 +3685,66 @@ window.initComboAutoSliders = function() {
     window._comboSliderInterval = null;
   }
   const combos = window.NURAAN_COMBOS || [];
-  const multiCombos = combos.filter(c => (c.images && c.images.length > 1) || (c.image2 && c.image2 !== c.image));
+  const multiCombos = combos.filter(c => getItemMediaList(c).length > 1);
   if (!multiCombos.length) return;
 
-  // 1. Preload secondary images and guarantee DOM slide elements
   multiCombos.forEach(c => {
-    const secondaryUrl = (c.images && c.images.length > 1) ? c.images[1] : c.image2;
-    if (!secondaryUrl) return;
-
-    const preloader = new Image();
-    preloader.src = secondaryUrl;
+    const urls = getItemMediaList(c);
+    urls.forEach(u => { const p = new Image(); p.src = u; });
 
     const cardEl = document.getElementById(`combo-${c.id}`);
-    if (cardEl) {
-      const wrap = cardEl.querySelector('.combo-main-photo-wrap');
-      if (wrap && !wrap.querySelector('.combo-slide-secondary')) {
-        const secSlide = document.createElement('div');
-        secSlide.className = 'combo-photo-slide combo-slide-secondary';
-        secSlide.innerHTML = `
-          <img 
-            src="${secondaryUrl}" 
-            alt="${c.name} Motion by Nuraan Perfumes" 
+    if (!cardEl) return;
+    const wrap = cardEl.querySelector('.combo-main-photo-wrap');
+    if (!wrap) return;
+
+    const existingCount = wrap.querySelectorAll('.combo-photo-slide').length;
+    if (existingCount < urls.length) {
+      wrap.innerHTML = urls.map((u, idx) => `
+        <div class="combo-photo-slide ${idx === 0 ? 'combo-slide-primary active' : 'combo-slide-secondary'}" data-slide-idx="${idx}">
+          <img
+            src="${u}"
+            alt="${c.name} view ${idx + 1} by Nuraan Perfumes"
             class="combo-real-photo"
-            id="combo-img-sec-${c.id}"
-            onclick="window.openLightbox(this.src, '${c.name}')"
+            id="${idx === 0 ? `combo-img-${c.id}` : `combo-img-${idx}-${c.id}`}"
+            onclick="window.pauseCardSlider('combo', '${c.id}'); window.openItemLightbox('combo', '${c.id}', ${idx});"
             style="cursor: zoom-in;"
-            title="Click to view full photo"
+            title="Click to view full photo & swipe gallery"
             loading="lazy"
             decoding="async"
           />
-        `;
-        wrap.appendChild(secSlide);
-      }
+        </div>
+      `).join('');
     }
   });
 
   const comboStates = {};
   multiCombos.forEach(c => { comboStates[c.id] = 0; });
 
-  // 2. Crisp 2.8s interval alternating slides (matching hero banner)
   window._comboSliderInterval = setInterval(() => {
     if (document.visibilityState === 'hidden') return;
     multiCombos.forEach(c => {
+      if (window._pausedSliders && window._pausedSliders.combo && window._pausedSliders.combo[c.id]) return;
       const cardEl = document.getElementById(`combo-${c.id}`);
       if (!cardEl || cardEl.matches(':hover')) return;
 
       const wrap = cardEl.querySelector('.combo-main-photo-wrap');
       if (!wrap) return;
+      const slides = wrap.querySelectorAll('.combo-photo-slide');
+      if (slides.length < 2) return;
 
-      const slidePrimary = wrap.querySelector('.combo-slide-primary');
-      const slideSecondary = wrap.querySelector('.combo-slide-secondary');
-      if (!slidePrimary || !slideSecondary) return;
+      comboStates[c.id] = (comboStates[c.id] + 1) % slides.length;
+      slides.forEach((s, i) => s.classList.toggle('active', i === comboStates[c.id]));
 
-      comboStates[c.id] = comboStates[c.id] === 0 ? 1 : 0;
-      if (comboStates[c.id] === 1) {
-        slidePrimary.classList.remove('active');
-        slideSecondary.classList.add('active');
-      } else {
-        slideSecondary.classList.remove('active');
-        slidePrimary.classList.add('active');
-      }
-
-      // Sync active thumbnail dot
       const btns = cardEl.querySelectorAll('.combo-thumb-btn');
-      if (btns.length >= 2) {
-        btns.forEach((btn, idx) => {
-          btn.classList.toggle('active', comboStates[c.id] === 1 ? idx === 1 : idx === 0);
-        });
+      if (btns.length) {
+        btns.forEach((btn, idx) => btn.classList.toggle('active', idx === comboStates[c.id]));
       }
     });
   }, 2800);
 };
 
 /**
- * Auto-Slideshow for Perfume Cards — Matched to Hero Section Settings
- * (0.5s cubic-bezier crossfade, visibility:hidden on inactive slide, zero background bleed)
+ * Uncapped Auto-Slideshow for Single Perfume Cards — Stops on user click
  */
 window.initProductCardAutoSliders = function() {
   if (window._productCardSliderInterval) {
@@ -3764,102 +3752,175 @@ window.initProductCardAutoSliders = function() {
     window._productCardSliderInterval = null;
   }
   const catalog = window.NURAAN_CATALOG || [];
-  const multiProducts = catalog.filter(p => (p.images && p.images.length > 1) || (p.image2 && p.image2 !== p.image));
+  const multiProducts = catalog.filter(p => getItemMediaList(p).length > 1);
   if (!multiProducts.length) return;
 
-  // 1. Preload secondary images and guarantee DOM slide elements
   multiProducts.forEach(p => {
-    const secondaryUrl = (p.images && p.images.length > 1) ? p.images[1] : p.image2;
-    if (!secondaryUrl) return;
-
-    const preloader = new Image();
-    preloader.src = secondaryUrl;
+    const urls = getItemMediaList(p);
+    urls.forEach(u => { const pre = new Image(); pre.src = u; });
 
     const cardEl = document.getElementById(`card-${p.id}`);
-    if (cardEl) {
-      let slider = cardEl.querySelector('.product-photo-slider');
-      const chassis = cardEl.querySelector('.bottle-3d-chassis');
-      if (!slider && chassis) {
-        const primaryImg = chassis.querySelector('.real-product-photo');
-        if (primaryImg) {
-          slider = document.createElement('div');
-          slider.className = 'product-photo-slider';
-          slider.id = `photo-slider-${p.id}`;
+    if (!cardEl) return;
+    const slider = cardEl.querySelector('.product-photo-slider');
+    if (!slider) return;
 
-          const slidePrimary = document.createElement('div');
-          slidePrimary.className = 'product-photo-slide slide-primary active';
-          primaryImg.parentNode.insertBefore(slider, primaryImg);
-          slidePrimary.appendChild(primaryImg);
-          slider.appendChild(slidePrimary);
-        }
-      }
-      if (slider && !slider.querySelector('.slide-secondary')) {
-        const secSlide = document.createElement('div');
-        secSlide.className = 'product-photo-slide slide-secondary';
-        secSlide.innerHTML = `
-          <img 
-            src="${secondaryUrl}" 
-            alt="${p.name} Motion by Nuraan Perfumes" 
+    const existingCount = slider.querySelectorAll('.product-photo-slide').length;
+    if (existingCount < urls.length) {
+      slider.innerHTML = urls.map((u, idx) => `
+        <div class="product-photo-slide ${idx === 0 ? 'slide-primary active' : 'slide-secondary'}" data-slide-idx="${idx}">
+          <img
+            src="${u}"
+            alt="${p.name} view ${idx + 1} by Nuraan Perfumes"
             class="real-product-photo"
             style="max-height: 220px; width: auto; object-fit: contain; border-radius: 6px; cursor: zoom-in;"
-            onclick="event.stopPropagation(); window.openLightbox(this.src, '${p.name}')"
-            title="Click to view full image"
+            onclick="event.stopPropagation(); window.pauseCardSlider('product', '${p.id}'); window.openItemLightbox('product', '${p.id}', ${idx});"
+            title="Click to view full image & swipe gallery"
             loading="lazy"
             decoding="async"
           />
-        `;
-        slider.appendChild(secSlide);
+        </div>
+      `).join('');
+
+      let dotsWrap = document.getElementById(`product-dots-${p.id}`);
+      if (!dotsWrap) {
+        dotsWrap = document.createElement('div');
+        dotsWrap.className = 'product-slide-dots';
+        dotsWrap.id = `product-dots-${p.id}`;
+        dotsWrap.onclick = (e) => e.stopPropagation();
+        slider.parentNode.appendChild(dotsWrap);
       }
+      dotsWrap.innerHTML = urls.map((_, idx) => `
+        <button type="button" class="product-slide-dot ${idx === 0 ? 'active' : ''}" onclick="window.selectProductSlide('${p.id}', ${idx})" aria-label="View image ${idx + 1}"></button>
+      `).join('');
     }
   });
 
   const cardStates = {};
   multiProducts.forEach(p => { cardStates[p.id] = 0; });
 
-  // 2. Crisp 2.8s interval alternating slides (matching hero banner)
   window._productCardSliderInterval = setInterval(() => {
     if (document.visibilityState === 'hidden') return;
     multiProducts.forEach(p => {
+      if (window._pausedSliders && window._pausedSliders.product && window._pausedSliders.product[p.id]) return;
       const cardEl = document.getElementById(`card-${p.id}`);
       if (!cardEl || cardEl.matches(':hover')) return;
 
       const slider = cardEl.querySelector('.product-photo-slider');
       if (!slider) return;
+      const slides = slider.querySelectorAll('.product-photo-slide');
+      if (slides.length < 2) return;
 
-      const slidePrimary = slider.querySelector('.slide-primary');
-      const slideSecondary = slider.querySelector('.slide-secondary');
-      if (!slidePrimary || !slideSecondary) return;
+      cardStates[p.id] = (cardStates[p.id] + 1) % slides.length;
+      slides.forEach((s, i) => s.classList.toggle('active', i === cardStates[p.id]));
 
-      cardStates[p.id] = cardStates[p.id] === 0 ? 1 : 0;
-      if (cardStates[p.id] === 1) {
-        slidePrimary.classList.remove('active');
-        slideSecondary.classList.add('active');
-      } else {
-        slideSecondary.classList.remove('active');
-        slidePrimary.classList.add('active');
+      const dotsWrap = document.getElementById(`product-dots-${p.id}`);
+      if (dotsWrap) {
+        dotsWrap.querySelectorAll('.product-slide-dot').forEach((d, i) => d.classList.toggle('active', i === cardStates[p.id]));
       }
     });
   }, 2800);
 };
 
 /**
- * Global High-Resolution Lightbox (Full uncropped photo view)
+ * Global High-Resolution Swipeable Lightbox (Full gallery navigation)
  */
-window.openLightbox = function(imgSrc, caption) {
-  if (!imgSrc) return;
-  const lightbox = document.getElementById("nuraan-lightbox");
-  const lightboxImg = document.getElementById("lightbox-img");
-  const captionEl = document.getElementById("lightbox-caption");
-  if (!lightbox || !lightboxImg) return;
+window._lightboxState = { images: [], index: 0, title: "" };
 
-  lightboxImg.src = imgSrc;
-  lightboxImg.alt = caption || "Nuraan Perfumes";
-  if (captionEl) {
-    captionEl.textContent = caption || "";
-  }
+window.openItemLightbox = function(type, id, startIdx) {
+  const list = type === 'combo' ? (window.NURAAN_COMBOS || []) : (window.NURAAN_CATALOG || []);
+  const item = list.find(x => x.id === id);
+  if (!item) return;
+  const urls = getItemMediaList(item);
+  if (!urls.length) return;
+  window.openLightbox(urls, item.name, startIdx || 0);
+};
+
+window.openLightbox = function(imgSrcOrList, caption, startIdx) {
+  const images = Array.isArray(imgSrcOrList) ? imgSrcOrList.filter(Boolean) : [imgSrcOrList].filter(Boolean);
+  if (!images.length) return;
+
+  window._lightboxState = {
+    images,
+    index: Math.max(0, Math.min(startIdx || 0, images.length - 1)),
+    title: caption || "Nuraan Perfumes"
+  };
+
+  const lightbox = document.getElementById("nuraan-lightbox");
+  if (!lightbox) return;
+
+  renderLightboxSlide();
   lightbox.style.display = "flex";
   document.body.style.overflow = "hidden";
 };
+
+function renderLightboxSlide() {
+  const st = window._lightboxState;
+  const lightboxImg = document.getElementById("lightbox-img");
+  const captionEl = document.getElementById("lightbox-caption");
+  const prevBtn = document.getElementById("lightbox-prev-btn");
+  const nextBtn = document.getElementById("lightbox-next-btn");
+  const dotsEl = document.getElementById("lightbox-dots");
+  if (!lightboxImg || !st.images.length) return;
+
+  lightboxImg.src = st.images[st.index];
+  lightboxImg.alt = `${st.title} (${st.index + 1}/${st.images.length})`;
+
+  if (captionEl) {
+    captionEl.textContent = st.images.length > 1
+      ? `${st.title}  •  ${st.index + 1} / ${st.images.length}`
+      : st.title;
+  }
+  const hasMulti = st.images.length > 1;
+  if (prevBtn) prevBtn.style.display = hasMulti ? "flex" : "none";
+  if (nextBtn) nextBtn.style.display = hasMulti ? "flex" : "none";
+  if (dotsEl) {
+    dotsEl.innerHTML = hasMulti
+      ? st.images.map((_, i) => `<button type="button" class="lightbox-dot ${i === st.index ? 'active' : ''}" onclick="window.goToLightboxSlide(${i})" aria-label="Slide ${i + 1}"></button>`).join('')
+      : '';
+  }
+}
+
+window.stepLightbox = function(dir) {
+  const st = window._lightboxState;
+  if (!st.images || st.images.length <= 1) return;
+  st.index = ((st.index + dir) % st.images.length + st.images.length) % st.images.length;
+  renderLightboxSlide();
+};
+
+window.goToLightboxSlide = function(idx) {
+  const st = window._lightboxState;
+  if (!st.images || !st.images.length) return;
+  st.index = Math.max(0, Math.min(idx, st.images.length - 1));
+  renderLightboxSlide();
+};
+
+(function initLightboxInteractions() {
+  let touchStartX = 0;
+  document.addEventListener("touchstart", (e) => {
+    const lb = document.getElementById("nuraan-lightbox");
+    if (lb && lb.style.display === "flex" && e.touches && e.touches.length === 1) {
+      touchStartX = e.touches[0].clientX;
+    }
+  }, { passive: true });
+
+  document.addEventListener("touchend", (e) => {
+    const lb = document.getElementById("nuraan-lightbox");
+    if (lb && lb.style.display === "flex" && e.changedTouches && e.changedTouches.length === 1) {
+      const dx = e.changedTouches[0].clientX - touchStartX;
+      if (Math.abs(dx) > 40) {
+        window.stepLightbox(dx < 0 ? 1 : -1);
+      }
+    }
+  }, { passive: true });
+
+  document.addEventListener("keydown", (e) => {
+    const lb = document.getElementById("nuraan-lightbox");
+    if (!lb || lb.style.display !== "flex") return;
+    if (e.key === "ArrowLeft") window.stepLightbox(-1);
+    else if (e.key === "ArrowRight") window.stepLightbox(1);
+    else if (e.key === "Escape") window.closeLightbox();
+  });
+})();
 
 window.closeLightbox = function(event) {
   if (event && event.stopPropagation) {
