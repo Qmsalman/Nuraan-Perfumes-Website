@@ -1459,12 +1459,17 @@ function startComboAutoplay() {
   }, 4800);
 }
 
-function pauseComboAutoplay() {
+function pauseComboAutoplay(permanent) {
   isComboUserInteracting = true;
   clearTimeout(comboInteractionResumeTimer);
+  if (permanent && comboCarouselTimer) {
+    clearInterval(comboCarouselTimer);
+    comboCarouselTimer = null;
+  }
 }
 
 function resumeComboAutoplay() {
+  if (!comboCarouselTimer) return; // Permanently stopped by user click
   clearTimeout(comboInteractionResumeTimer);
   comboInteractionResumeTimer = setTimeout(() => {
     isComboUserInteracting = false;
@@ -1474,6 +1479,7 @@ function resumeComboAutoplay() {
 window.moveComboCarousel = moveComboCarousel;
 window.scrollToComboCard = scrollToComboCard;
 window.initComboCarousel = initComboCarousel;
+window.pauseComboAutoplay = pauseComboAutoplay;
 
 // ==============================================================================
 // 7. BESPOKE "BUILD YOUR ATTAR BOX" CUSTOM GIFT SET (6 × 3ml PRECISION ROLL-ONS)
@@ -2350,6 +2356,8 @@ window.openNotesModal = function(productId) {
 
     const hasMultipleImages = productImages.length > 1;
     const primaryImg = productImages[0] || product.image;
+    window._currentModalImages = productImages.length ? productImages : [primaryImg];
+    window._currentModalIdx = 0;
 
     if (primaryImg) {
       bottleContainer.innerHTML = `
@@ -2360,15 +2368,15 @@ window.openNotesModal = function(productId) {
               alt="${product.name}" 
               class="modal-product-img" 
               id="modal-active-display-img" 
-              onclick="window.openLightbox(this.src, '${product.name}')" 
+              onclick="window.openLightbox(window._currentModalImages, '${product.name}', window._currentModalIdx || 0)" 
               style="cursor: zoom-in;" 
-              title="Click to view full photo" 
+              title="Click to view full photo & swipe gallery" 
             />
           </div>
           ${hasMultipleImages ? `
             <div class="modal-thumbs-row">
               ${productImages.map((imgUrl, idx) => `
-                <button type="button" class="modal-thumb-btn ${idx === 0 ? 'active' : ''}" onclick="window.switchModalImage('${imgUrl}', this)" aria-label="View angle ${idx + 1}">
+                <button type="button" class="modal-thumb-btn ${idx === 0 ? 'active' : ''}" onclick="window.switchModalImage('${imgUrl}', this, ${idx})" aria-label="View angle ${idx + 1}">
                   <img src="${imgUrl}" alt="${product.name} angle ${idx + 1}" />
                 </button>
               `).join('')}
@@ -3598,7 +3606,17 @@ window.showToast = function(msg, type = "success") {
   }
 };
 
-window.switchModalImage = function(src, btn) {
+window.switchModalImage = function(src, btn, targetIdx) {
+  if (window._modalSlideInterval) {
+    clearInterval(window._modalSlideInterval);
+    window._modalSlideInterval = null;
+  }
+  const parent = btn ? btn.parentElement : null;
+  const idx = typeof targetIdx === 'number'
+    ? targetIdx
+    : (parent && btn ? Array.from(parent.children).indexOf(btn) : 0);
+  window._currentModalIdx = idx;
+
   const activeImg = document.getElementById("modal-active-display-img");
   if (activeImg) {
     activeImg.style.opacity = '0.35';
@@ -3613,7 +3631,6 @@ window.switchModalImage = function(src, btn) {
     };
     preloader.src = src;
   }
-  const parent = btn ? btn.parentElement : null;
   if (parent) {
     parent.querySelectorAll('.modal-thumb-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
@@ -3626,6 +3643,9 @@ window.pauseCardSlider = function(type, id) {
   if (!window._pausedSliders) window._pausedSliders = { combo: {}, product: {} };
   if (!window._pausedSliders[type]) window._pausedSliders[type] = {};
   window._pausedSliders[type][id] = true;
+  if (type === 'combo' && typeof window.pauseComboAutoplay === 'function') {
+    window.pauseComboAutoplay(true);
+  }
 };
 
 function getItemMediaList(item) {
@@ -3865,12 +3885,12 @@ function renderLightboxSlide() {
   lightboxImg.src = st.images[st.index];
   lightboxImg.alt = `${st.title} (${st.index + 1}/${st.images.length})`;
 
+  const hasMulti = st.images.length > 1;
   if (captionEl) {
-    captionEl.textContent = st.images.length > 1
-      ? `${st.title}  •  ${st.index + 1} / ${st.images.length}`
+    captionEl.innerHTML = hasMulti
+      ? `<div>${st.title}</div><div style="font-size: 0.8rem; letter-spacing: 0.08em; opacity: 0.75; margin-top: 4px; text-transform: uppercase;">Swipe or use arrows • ${st.index + 1} of ${st.images.length}</div>`
       : st.title;
   }
-  const hasMulti = st.images.length > 1;
   if (prevBtn) prevBtn.style.display = hasMulti ? "flex" : "none";
   if (nextBtn) nextBtn.style.display = hasMulti ? "flex" : "none";
   if (dotsEl) {
@@ -3896,22 +3916,48 @@ window.goToLightboxSlide = function(idx) {
 
 (function initLightboxInteractions() {
   let touchStartX = 0;
+  let touchStartY = 0;
+  let isSwiping = false;
+
   document.addEventListener("touchstart", (e) => {
     const lb = document.getElementById("nuraan-lightbox");
     if (lb && lb.style.display === "flex" && e.touches && e.touches.length === 1) {
       touchStartX = e.touches[0].clientX;
+      touchStartY = e.touches[0].clientY;
+      isSwiping = true;
     }
   }, { passive: true });
 
   document.addEventListener("touchend", (e) => {
     const lb = document.getElementById("nuraan-lightbox");
-    if (lb && lb.style.display === "flex" && e.changedTouches && e.changedTouches.length === 1) {
+    if (lb && lb.style.display === "flex" && isSwiping && e.changedTouches && e.changedTouches.length === 1) {
+      isSwiping = false;
       const dx = e.changedTouches[0].clientX - touchStartX;
-      if (Math.abs(dx) > 40) {
+      const dy = e.changedTouches[0].clientY - touchStartY;
+      if (Math.abs(dx) > 30 && Math.abs(dx) > Math.abs(dy)) {
         window.stepLightbox(dx < 0 ? 1 : -1);
       }
     }
   }, { passive: true });
+
+  let mouseStartX = 0;
+  let isMouseDown = false;
+  document.addEventListener("mousedown", (e) => {
+    const lb = document.getElementById("nuraan-lightbox");
+    if (lb && lb.style.display === "flex" && e.target && (e.target.id === "lightbox-img" || e.target.closest("#lightbox-media-wrap"))) {
+      mouseStartX = e.clientX;
+      isMouseDown = true;
+    }
+  });
+  document.addEventListener("mouseup", (e) => {
+    if (isMouseDown) {
+      isMouseDown = false;
+      const dx = e.clientX - mouseStartX;
+      if (Math.abs(dx) > 40) {
+        window.stepLightbox(dx < 0 ? 1 : -1);
+      }
+    }
+  });
 
   document.addEventListener("keydown", (e) => {
     const lb = document.getElementById("nuraan-lightbox");

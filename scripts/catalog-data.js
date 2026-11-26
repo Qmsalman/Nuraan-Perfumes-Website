@@ -1105,6 +1105,11 @@ const NURAAN_COMBOS = [
     price3ml: 999,
     mrp3ml: 2499,
     image: "assets/images/combo-french.jpg",
+    images: [
+      "Pics/Gift sets/French Gift set.png",
+      "Pics/Gift sets/French Gift Set Open.png",
+      "Pics/Gift sets/French open Splashing.gif"
+    ],
     bottleColor: "#A63D40"
   },
   {
@@ -1122,6 +1127,11 @@ const NURAAN_COMBOS = [
     price3ml: 999,
     mrp3ml: 2499,
     image: "assets/images/combo-arabic.jpg",
+    images: [
+      "Pics/Gift sets/Arabic Discovery Box.png",
+      "Pics/Gift sets/Arabic Gift Set Open.png",
+      "Pics/Gift sets/Arabic open Splashing.gif"
+    ],
     bottleColor: "#C59B27"
   },
   {
@@ -1139,6 +1149,11 @@ const NURAAN_COMBOS = [
     price3ml: 999,
     mrp3ml: 2499,
     image: "assets/images/combo-women.jpg",
+    images: [
+      "Pics/Gift sets/Women's Discovery Box (2).png",
+      "Pics/Gift sets/Women Gift Set Open.png",
+      "Pics/Gift sets/Women open splashing.gif"
+    ],
     bottleColor: "#581845"
   },
   {
@@ -1156,6 +1171,11 @@ const NURAAN_COMBOS = [
     price3ml: 999,
     mrp3ml: 2499,
     image: "assets/images/combo-oud.jpg",
+    images: [
+      "Pics/Gift sets/Oud Discovery pack.png",
+      "Pics/Gift sets/Oud Gift Set Open.png",
+      "Pics/Gift sets/Oud Open Splashing.gif"
+    ],
     bottleColor: "#3E2723"
   }
 ];
