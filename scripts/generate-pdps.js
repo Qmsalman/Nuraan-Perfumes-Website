@@ -60,6 +60,7 @@ function generatePerfumePage(product) {
       "url": canonical,
       "priceCurrency": "INR",
       "price": price,
+      "validFrom": "2026-01-01",
       "priceValidUntil": "2027-12-31",
       "itemCondition": "https://schema.org/NewCondition",
       "availability": "https://schema.org/InStock",
@@ -76,10 +77,7 @@ function generatePerfumePage(product) {
       "hasMerchantReturnPolicy": {
         "@type": "MerchantReturnPolicy",
         "applicableCountry": "IN",
-        "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
-        "merchantReturnDays": 7,
-        "returnMethod": "https://schema.org/ReturnByMail",
-        "returnFees": "https://schema.org/FreeReturn"
+        "returnPolicyCategory": "https://schema.org/MerchantReturnNotPermitted"
       }
     }
   };
