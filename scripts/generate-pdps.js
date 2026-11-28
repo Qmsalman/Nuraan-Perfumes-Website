@@ -32,7 +32,7 @@ function escapeHtml(str) {
 // Common template generator for individual perfume PDPs
 function generatePerfumePage(product) {
   const title = `${escapeHtml(product.name)} Attar ${product.inspiration ? '(Inspired by ' + escapeHtml(product.inspiration) + ')' : ''} • 100% Alcohol-Free 12ml Roll-On | Nuraan Perfumes`;
-  const metaDesc = `Buy ${escapeHtml(product.name)} artisanal perfume oil in India. 100% alcohol-free 12ml roll-on ${product.inspiration ? 'inspired by ' + escapeHtml(product.inspiration) + '. ' : ''}Features ${(product.accords || []).slice(0, 3).join(', ')}. 14+ hours longevity. Free dispatch.`;
+  const metaDesc = `Buy ${escapeHtml(product.name)} artisanal perfume oil in India. 100% alcohol-free 12ml roll-on ${product.inspiration ? 'inspired by ' + escapeHtml(product.inspiration) + '. ' : ''}Features ${(product.accords || []).slice(0, 3).join(', ')}. Up to 14+ hours* longevity. Free dispatch.`;
   const canonical = `${BASE_URL}/perfumes/${product.id}/`;
   const photo = product.image || `${BASE_URL}/assets/images/logo.png`;
   const price = product.price12ml || 499;
@@ -396,7 +396,7 @@ function generatePerfumePage(product) {
         </div>
 
         <div class="pdp-specs">
-          <span class="spec-item">⏳ ${escapeHtml(product.longevity || '14+ Hours on Skin')}</span>
+          <span class="spec-item">⏳ ${escapeHtml(product.longevity || 'Up to 14+ Hours on Skin')}*</span>
           <span class="spec-item">✨ ${escapeHtml(product.sillage || 'Regal Aura')}</span>
           <span class="spec-item">🍂 ${escapeHtml(product.season || 'All Season')}</span>
         </div>
@@ -415,7 +415,8 @@ function generatePerfumePage(product) {
   </main>
 
   <footer>
-    &copy; 2026 Nuraan Perfumes. Artisanal Concentrated Perfume Oils. 100% Alcohol-Free.
+    &copy; 2026 Nuraan Perfumes. Artisanal Concentrated Perfume Oils. 100% Alcohol-Free.<br>
+    <span style="font-size: 0.72rem; opacity: 0.75;">*Longevity varies with weather, humidity, body temperature, skin type, and application. For external use only; patch test recommended for sensitive skin.</span>
   </footer>
 
   <script>
@@ -557,7 +558,8 @@ function generateComboPage(combo) {
   </main>
 
   <footer>
-    &copy; 2026 Nuraan Perfumes. Artisanal Concentrated Perfume Oils. 100% Alcohol-Free.
+    &copy; 2026 Nuraan Perfumes. Artisanal Concentrated Perfume Oils. 100% Alcohol-Free.<br>
+    <span style="font-size: 0.72rem; opacity: 0.75;">*Longevity varies with weather, humidity, body temperature, skin type, and application. For external use only; patch test recommended for sensitive skin.</span>
   </footer>
 
   <script>

@@ -44,7 +44,7 @@ const NURAAN_CATALOG = [
         type: "sandal",
         name: "Himalayan Cedar",
         role: "Woody Anchor • Base",
-        desc: "Crushed mountain cedarwood anchoring the sweet accords for 16+ hours."
+        desc: "Crushed mountain cedarwood anchoring the sweet accords for up to 16+ hours*."
       }
     ],
     notes: {
@@ -52,7 +52,7 @@ const NURAAN_CATALOG = [
       heart: ["Amberwood","Warm Ambergris","Egyptian Jasmine","Hedione"],
       base: ["Fir Resin","Himalayan Cedar","Warm Amber","Velvet Musk"]
     },
-    longevity: "16+ Hours on Skin • 48 Hours on Clothes",
+    longevity: "Up to 16+ Hours on Skin • 48 Hours on Clothes",
     sillage: "Radiant & Unforgettable",
     season: "All Season • Signature Evening",
     bottleColor: "#A63D40",
@@ -100,7 +100,7 @@ const NURAAN_CATALOG = [
       heart: ["Black Cardamom","Provence Lavender","Juniper Berries","Silver Sage"],
       base: ["Haitian Vetiver","Agarwood (Oud)","Smoked Leather","Oakmoss","Florentine Iris"]
     },
-    longevity: "14+ Hours on Skin",
+    longevity: "Up to 14+ Hours on Skin",
     sillage: "Refined & Sophisticated",
     season: "All Year Round • Everyday Luxury",
     bottleColor: "#C59B27",
@@ -140,7 +140,7 @@ const NURAAN_CATALOG = [
         type: "amber",
         name: "Imperial Ambergris",
         role: "Regal Anchor • Base",
-        desc: "Precious mineral ambergris ensuring 16+ hours of projection."
+        desc: "Precious mineral ambergris offering up to 16+ hours* of projection."
       }
     ],
     notes: {
@@ -148,7 +148,7 @@ const NURAAN_CATALOG = [
       heart: ["Smoked Birch","Dark Patchouli","Moroccan Jasmine","Pink Rose"],
       base: ["Oakmoss","Precious Ambergris","Clean Musk","Madagascar Vanilla"]
     },
-    longevity: "16+ Hours on Skin",
+    longevity: "Up to 16+ Hours on Skin",
     sillage: "Grand & Majestic",
     season: "Autumn / Winter • Formal Banquets",
     bottleColor: "#581845",
@@ -196,7 +196,7 @@ const NURAAN_CATALOG = [
       heart: ["Goa Sandalwood","Atlas Cedarwood"],
       base: ["Brazilian Rosewood","White Musk","Warm Spices","Golden Amber"]
     },
-    longevity: "13+ Hours on Skin",
+    longevity: "Up to 13+ Hours on Skin",
     sillage: "Crisp, Grounding & Woodsy",
     season: "Spring / Autumn • Daily Grounding",
     bottleColor: "#1E8449",
@@ -244,7 +244,7 @@ const NURAAN_CATALOG = [
       heart: ["Orange Blossom","Lily of the Valley"],
       base: ["Madagascar Vanilla","Tonka Bean","Golden Amber","Patchouli"]
     },
-    longevity: "12+ Hours on Skin",
+    longevity: "Up to 12+ Hours on Skin",
     sillage: "Crisp, Dynamic & Clean",
     season: "Spring / Summer • Daytime Dynamic",
     bottleColor: "#1A5276",
@@ -292,7 +292,7 @@ const NURAAN_CATALOG = [
       heart: ["Heliotrope","Jasmine Petals"],
       base: ["Warm Vanilla Bean","Salted Caramel Drizzle","Creamy Sandalwood"]
     },
-    longevity: "15+ Hours on Skin",
+    longevity: "Up to 15+ Hours on Skin",
     sillage: "Heady, Sweet & Mystical",
     season: "Autumn / Winter • Festive Evenings",
     bottleColor: "#7D6608",
@@ -344,7 +344,7 @@ const NURAAN_CATALOG = [
       heart: ["Royal Tahara White Musk","Powdery Violet","Florentine Iris"],
       base: ["Crystalline Amber","Soft Sandalwood","Vanilla Orchid"]
     },
-    longevity: "14+ Hours on Skin • Intimate Radiance",
+    longevity: "Up to 14+ Hours on Skin • Intimate Radiance",
     sillage: "Pristine, Pure & Heavenly",
     season: "All Year Round • Daily Purity & Meditation",
     bottleColor: "#D5D8DC",
@@ -392,7 +392,7 @@ const NURAAN_CATALOG = [
       heart: ["Centifolia Rose","Clary Sage","Sandalwood","Atlas Cedar"],
       base: ["Golden Amber","White Tahara Musk","Oakmoss","Whisper of Oud"]
     },
-    longevity: "15+ Hours on Skin",
+    longevity: "Up to 15+ Hours on Skin",
     sillage: "Stately, Rich & Beloved",
     season: "All Season • Festive & Weddings",
     bottleColor: "#D35400",
@@ -440,7 +440,7 @@ const NURAAN_CATALOG = [
       heart: ["Mineral Sea Spray","Blue Lotus","Night Jasmine","Lily of the Valley"],
       base: ["White Musk","Clean Ambroxan","Creamy Sandalwood"]
     },
-    longevity: "14+ Hours on Skin",
+    longevity: "Up to 14+ Hours on Skin",
     sillage: "Sharp, Authoritative & Intriguing",
     season: "Autumn / Winter / Rainy • Daily Power",
     bottleColor: "#4A235A",
@@ -488,7 +488,7 @@ const NURAAN_CATALOG = [
       heart: ["Bourbon Vanilla Pods","Elemi Gum Resin"],
       base: ["Roasted Hazelnut Praline","Ambroxan","Guaiacwood","Sensual Musk"]
     },
-    longevity: "14+ Hours on Skin",
+    longevity: "Up to 14+ Hours on Skin",
     sillage: "Chic, Modern & Aristocratic",
     season: "All Season • Boardroom to Banquet",
     bottleColor: "#2874A6",
@@ -536,7 +536,7 @@ const NURAAN_CATALOG = [
       heart: ["Kashmiri Saffron","Damask Rose","Cashmere Wood","Ceylon Cinnamon"],
       base: ["Sovereign Leather","Golden Amber","Ripe Raspberry","Assam Agarwood"]
     },
-    longevity: "24+ Hours on Skin • Indelible",
+    longevity: "Up to 24+ Hours on Skin • Indelible",
     sillage: "Imperial, Room-Filling & Rare",
     season: "Winter • Sovereign Milestones",
     bottleColor: "#2C1B0B",
@@ -584,7 +584,7 @@ const NURAAN_CATALOG = [
       heart: ["Ylang-Ylang","Lily of the Valley","Soft Spicy Florals"],
       base: ["Powdery White Musk","Virginian Cedar","Smooth Sandalwood","Soft Amber"]
     },
-    longevity: "12+ Hours on Skin",
+    longevity: "Up to 12+ Hours on Skin",
     sillage: "Intimate, Caressing & Gentle",
     season: "All Year Round • Bedtime & Meditative",
     bottleColor: "#E8DAEF",
@@ -636,7 +636,7 @@ const NURAAN_CATALOG = [
       heart: ["Persian Saffron Threads","Damask Rose"],
       base: ["Smooth Agarwood (Oud)","Smoky Cedarwood","Warm Spices"]
     },
-    longevity: "16+ Hours on Skin",
+    longevity: "Up to 16+ Hours on Skin",
     sillage: "Smooth, Luxuriously Cozy & Magnetic",
     season: "Autumn / Winter / Air-Conditioned Evenings",
     bottleColor: "#4A0E17",
@@ -684,7 +684,7 @@ const NURAAN_CATALOG = [
       heart: ["Velvet White Gardenia","Solar Jasmine","Frangipani Blossom"],
       base: ["Caramelized Brown Sugar","Indonesian Patchouli"]
     },
-    longevity: "12+ Hours on Skin",
+    longevity: "Up to 12+ Hours on Skin",
     sillage: "Euphoric & Floral Aura",
     season: "Spring / Summer • Celebrations",
     bottleColor: "#229954",
@@ -732,7 +732,7 @@ const NURAAN_CATALOG = [
       heart: ["Black Coffee","Jasmine Sambac","Bitter Almond","Licorice"],
       base: ["Bourbon Vanilla","Patchouli","Cashmere Wood","Cedar"]
     },
-    longevity: "18+ Hours on Skin • 3+ Days on Fabrics",
+    longevity: "Up to 18+ Hours on Skin • 3+ Days on Fabrics",
     sillage: "Powerful & Magnetic",
     season: "Autumn / Winter • Formal Evening",
     bottleColor: "#1B1B1E",
@@ -780,7 +780,7 @@ const NURAAN_CATALOG = [
       heart: ["White Gardenia","Orange Blossom","Jasmine Sambac","Spicy Accords"],
       base: ["Golden Amber","Royal Tahara Musk","Bourbon Vanilla","Light Woods"]
     },
-    longevity: "14+ Hours on Skin",
+    longevity: "Up to 14+ Hours on Skin",
     sillage: "Warm, Cozy & Addictive",
     season: "All Season • Daytime & Evening Glow",
     bottleColor: "#F39C12",
@@ -828,7 +828,7 @@ const NURAAN_CATALOG = [
       heart: ["White Peach","Magnolia Petals","Hibiscus Flower"],
       base: ["Creamy Coconut Milk","Light Tropical Woods","Clean White Musk"]
     },
-    longevity: "11+ Hours on Skin",
+    longevity: "Up to 11+ Hours on Skin",
     sillage: "Vibrant, Uplifting & Seductive",
     season: "Summer / Vacation • Sunny Days",
     bottleColor: "#E67E22",
@@ -880,7 +880,7 @@ const NURAAN_CATALOG = [
       heart: ["Rosemary Sprig","Cashmere Wood","Exotic Floral Accords"],
       base: ["Wild Forest Honey","Warm Golden Amber","Precious Musk"]
     },
-    longevity: "16+ Hours on Skin",
+    longevity: "Up to 16+ Hours on Skin",
     sillage: "Intimate, Sweet & Hypnotic",
     season: "Autumn / Winter • Evening Intimacy",
     bottleColor: "#784212",
@@ -928,7 +928,7 @@ const NURAAN_CATALOG = [
       heart: ["Cambodian Oud","Amber Resins","Damask Rose Petals","Kashmiri Saffron"],
       base: ["Aged Agarwood","Mysore Sandalwood","Animalic Tahara Musk","Bourbon Vanilla"]
     },
-    longevity: "18+ Hours on Skin",
+    longevity: "Up to 18+ Hours on Skin",
     sillage: "Evocative, Smoky & Deep",
     season: "Cool Weather • Contemplative",
     bottleColor: "#B7950B",
@@ -976,7 +976,7 @@ const NURAAN_CATALOG = [
       heart: ["Incense Bakhoor Smoke","Night Jasmine","Royal Orchid","Caramelized Sugar"],
       base: ["Aged Assam Agarwood","Patchouli","Ambroxan","Precious Amber Resins"]
     },
-    longevity: "16+ Hours on Skin",
+    longevity: "Up to 16+ Hours on Skin",
     sillage: "Warm, Inviting & Euphoric",
     season: "Autumn / Winter / Jummah Gatherings",
     bottleColor: "#6E2C00",
@@ -1024,7 +1024,7 @@ const NURAAN_CATALOG = [
       heart: ["Salted Caramel Nectar","Damask Rose","Tonka Bean"],
       base: ["Smoked Arabic Coffee","Dark Amber","Patchouli","Aged Cedar"]
     },
-    longevity: "16+ Hours on Skin",
+    longevity: "Up to 16+ Hours on Skin",
     sillage: "Smooth, Elegant & Approachable",
     season: "All Seasons • Oud Lovers & Connoisseurs",
     bottleColor: "#512E5F",
@@ -1072,7 +1072,7 @@ const NURAAN_CATALOG = [
       heart: ["Indonesian Patchouli","Delicate Jasmine"],
       base: ["Cuban Tobacco Leaf","Madagascar Vanilla","Golden Amber","Guaiacwood","Haitian Vetiver"]
     },
-    longevity: "18+ Hours on Skin",
+    longevity: "Up to 18+ Hours on Skin",
     sillage: "Romantic, Heavy & Regal",
     season: "All Season • Romantic Evenings & Weddings",
     bottleColor: "#922B21",
@@ -1256,7 +1256,7 @@ const NURAAN_SAMPLE_ORDERS = [
     courier: "Preparing Dispatch",
     awb: "Pending AWB",
     trackingUrl: "",
-    eta: "Ships within 24 Hours"
+    eta: "Typically ships within 24–48 Business Hours"
   },
   {
     orderId: "NP-1006",
@@ -1270,7 +1270,7 @@ const NURAAN_SAMPLE_ORDERS = [
     courier: "Preparing Dispatch",
     awb: "Pending AWB",
     trackingUrl: "",
-    eta: "Ships within 24 Hours"
+    eta: "Typically ships within 24–48 Business Hours"
   }
 ];
 

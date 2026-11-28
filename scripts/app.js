@@ -2313,7 +2313,7 @@ window.openNotesModal = function(productId) {
   document.getElementById("modal-heart-notes").innerHTML = (product.notes.heart || []).map(n => `<span class="note-tag">${n}</span>`).join("");
   document.getElementById("modal-base-notes").innerHTML = (product.notes.base || []).map(n => `<span class="note-tag">${n}</span>`).join("");
 
-  document.getElementById("modal-longevity").textContent = product.longevity || "14+ Hours";
+  document.getElementById("modal-longevity").textContent = product.longevity ? `${product.longevity}* (varies by weather & skin)` : "Up to 14+ Hours* (varies by weather & skin)";
   document.getElementById("modal-sillage").textContent = product.sillage || "Regal Aura";
   
   const occEl = document.getElementById("modal-occasion");
@@ -2660,7 +2660,7 @@ const RITUAL_DATA = {
       "Lightly dab your wrists together—strictly touch without rubbing or friction.",
       "Allow 30 seconds for your body warmth to awaken the sparkling opening top notes."
     ],
-    tags: ["Radial Artery", "Never Rub (Preserves Notes)", "14+ Hours Anchor"]
+    tags: ["Radial Artery", "Never Rub (Preserves Notes)", "Long-Lasting Anchor"]
   },
   2: {
     kicker: "RITUAL 02 • INTIMATE CONVECTION SILLAGE",
@@ -2682,7 +2682,7 @@ const RITUAL_DATA = {
     badge: "BODY HEAT POCKET",
     subtitle: "The Oud & Heavy Resin Anchor",
     rule: "The inner elbow fold (antecubital fossa) is shielded from open air, wind, and frequent handwashing. It is the single best location to anchor heavy Assam agarwood, amber, and leather base notes.",
-    science: "Joint flexion creates a constant micro-climate of concentrated warmth and humidity. This natural warmth pocket slows down rapid evaporation, allowing deep base resins to linger undisturbed for 18+ hours.",
+    science: "Joint flexion creates a constant micro-climate of concentrated warmth and humidity. This natural warmth pocket slows down rapid evaporation, allowing deep base resins to linger for up to 18+ hours* (depending on weather and skin chemistry).",
     steps: [
       "Roll a small amount into the soft crease of your inner arm.",
       "Bend arm gently once to spread the pure oil evenly along the skin fold.",
@@ -2696,13 +2696,13 @@ const RITUAL_DATA = {
     badge: "WARM IN PALMS → STROKE BEARD",
     subtitle: "0% Alcohol Scent Halo",
     rule: "Never roll heavy perfume oil directly into beard roots. Warm 1 single drop between palms for 3 seconds, then lightly stroke through the outer beard and hair tips.",
-    science: "Unlike commercial sprays with 80% drying ethanol, pure attar is 100% alcohol-free oil. Natural jojoba and sandalwood botanicals condition beard hair cuticles while creating a rich 24–48 hour scent halo that lingers with every breath.",
+    science: "Unlike commercial sprays with 80% drying ethanol, pure attar is 100% alcohol-free oil. A tiny warmed drop helps condition beard hair cuticles while creating a rich, long-lasting scent halo (up to 24–48 hours* on hair, varying by climate and wash cycle).",
     steps: [
       "Roll one precision drop onto the center of one palm.",
       "Rub palms together gently for 3 seconds to warm and spread the pure oil.",
       "Lightly comb palms downward through the beard and hair ends for an all-day luxury halo."
     ],
-    tags: ["0% Alcohol (Non-Drying)", "Warm in Palms First", "24–48H Hair Sillage"]
+    tags: ["0% Alcohol (Non-Drying)", "Warm in Palms First", "Up to 24–48H* Hair Sillage"]
   },
   5: {
     kicker: "RITUAL 05 • 72H+ LONGEVITY WITHOUT STAINING",
@@ -4099,7 +4099,7 @@ window.openCoffretScentsModal = function(comboId) {
     const topNotes = (prod && prod.notes && prod.notes.top) ? prod.notes.top.join(", ") : "Bergamot, Fresh Accords";
     const heartNotes = (prod && prod.notes && prod.notes.heart) ? prod.notes.heart.join(", ") : "Warm Florals, Precious Spices";
     const baseNotes = (prod && prod.notes && prod.notes.base) ? prod.notes.base.join(", ") : "Rare Woods, Amber, Velvet Musk";
-    const longevity = (prod && prod.longevity) ? prod.longevity : "14+ Hours";
+    const longevity = (prod && prod.longevity) ? `${prod.longevity}*` : "Up to 14+ Hours*";
     const season = (prod && prod.season) ? prod.season : "All Season";
     const photo = (prod && prod.image) ? prod.image : '';
 
